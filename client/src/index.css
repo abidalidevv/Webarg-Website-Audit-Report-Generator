@@ -2559,3 +2559,276 @@ details[open] .issue-chevron {
 .print-mode .cwv-needle-pin {
   border-color: #111827 !important;
 }
+
+/* ==========================================================================
+   BUSINESS IDENTITY & HEADER BADGE
+   ========================================================================== */
+
+.header-business-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  background: var(--ink-raised);
+  border: 1px solid var(--line);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   BEFORE / AFTER REMEDIATION SCORE DELTA STRIP (Sales Close Moment)
+   ========================================================================== */
+
+.before-after-strip {
+  background: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--signal-pass);
+  padding: 16px 20px;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: graphFadeIn 220ms ease forwards;
+}
+
+.before-after-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+
+.before-after-tag-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.before-after-sub {
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.resolved-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(76, 122, 94, 0.15);
+  border: 1px solid rgba(76, 122, 94, 0.4);
+  color: #7DB894;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  border-radius: 2px;
+}
+
+.resolved-check {
+  font-weight: 700;
+  color: var(--signal-pass);
+}
+
+.delta-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.delta-card {
+  background: var(--ink-raised);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.delta-card-main {
+  background: rgba(76, 122, 94, 0.08);
+  border-color: rgba(76, 122, 94, 0.35);
+}
+
+.delta-card-label {
+  font-size: 11px;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-family: var(--font-heading);
+}
+
+.delta-main-val-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.delta-prev {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.delta-arrow {
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+.delta-curr {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.delta-sub-val-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.delta-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.delta-pos {
+  background: rgba(76, 122, 94, 0.2);
+  color: #8CC4A0;
+  border: 1px solid rgba(76, 122, 94, 0.5);
+}
+
+.delta-neg {
+  background: rgba(193, 67, 43, 0.2);
+  color: #F09B8B;
+  border: 1px solid rgba(193, 67, 43, 0.5);
+}
+
+.delta-zero {
+  background: rgba(126, 137, 147, 0.15);
+  color: var(--text-soft);
+  border: 1px solid var(--line);
+}
+
+/* ==========================================================================
+   AI CLIENT CONSULTATION BRIEF
+   ========================================================================== */
+
+.consultation-card {
+  background: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.consultation-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.consultation-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.consultation-provider {
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.consultation-pitch {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Responsive Overrides (320px - 860px) */
+@media (max-width: 860px) {
+  .delta-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .delta-card-main {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .delta-grid {
+    grid-template-columns: 1fr;
+  }
+  .before-after-strip {
+    padding: 12px 14px;
+  }
+  .consultation-card {
+    padding: 12px 14px;
+  }
+}
+
+/* Print View Overrides */
+.print-mode .before-after-strip {
+  background: #FFFFFF !important;
+  border-color: #D1D5DB !important;
+  border-left-color: #4C7A5E !important;
+  color: #14181F !important;
+  break-inside: avoid;
+}
+
+.print-mode .delta-card {
+  background: #F9FAFB !important;
+  border-color: #E5E7EB !important;
+}
+
+.print-mode .delta-curr {
+  color: #111827 !important;
+}
+
+.print-mode .delta-card-label {
+  color: #4B5563 !important;
+}
+
+.print-mode .consultation-card {
+  background: #FFFFFF !important;
+  border-color: #D1D5DB !important;
+  border-left-color: #3E6E8E !important;
+  break-inside: avoid;
+}
+
+.print-mode .consultation-pitch {
+  color: #111827 !important;
+}

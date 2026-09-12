@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function RemediationPlan({ priorities = [] }) {
+export default function RemediationPlan({ priorities = [], consultation = null }) {
   if (!priorities || priorities.length === 0) return null;
 
   return (
@@ -12,6 +12,18 @@ export default function RemediationPlan({ priorities = [] }) {
         </div>
         <div className="section-note">SECTION 82 OF WEBARG PLAYBOOK · WHAT TO FIX FIRST</div>
       </div>
+
+      {consultation?.executivePitch && (
+        <div className="consultation-card">
+          <div className="consultation-card-header">
+            <span className="consultation-badge mono">
+              {consultation.isAiGenerated ? '✦ AI CLIENT TALKING POINTS' : '✦ DIAGNOSTIC CONSULTATION BRIEF'}
+            </span>
+            <span className="consultation-provider mono">{consultation.aiProvider}</span>
+          </div>
+          <p className="consultation-pitch">{consultation.executivePitch}</p>
+        </div>
+      )}
 
       <div className="remediation-list">
         {priorities.map((item, idx) => {

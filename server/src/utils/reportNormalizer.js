@@ -136,9 +136,37 @@ export function normalizeReport({
     }
   ];
 
+  // Extract business identity from Schema.org NAP, OpenGraph, or Title (Section 11a)
+  let businessName = null;
+  if (schemaData?.napConsistency?.schemaName) {
+    businessName = String(schemaData.napConsistency.schemaName).trim();
+  } else if (cheerioData?.socialGraph?.ogSiteName) {
+    businessName = String(cheerioData.socialGraph.ogSiteName).trim();
+  } else if (cheerioData?.title) {
+    const rawTitle = cheerioData.title.trim();
+    const segments = rawTitle.split(/[|\-–—:•]/);
+    if (segments.length > 1) {
+      const first = segments[0].trim();
+      const last = segments[segments.length - 1].trim();
+      businessName = (first.length >= 3 && first.length <= 35) ? first : ((last.length >= 3 && last.length <= 35) ? last : first);
+    } else {
+      businessName = rawTitle.slice(0, 40);
+    }
+  }
+
+  if (!businessName) {
+    try {
+      const host = new URL(url).hostname.replace(/^www\./, '');
+      businessName = host.charAt(0).toUpperCase() + host.slice(1);
+    } catch {
+      businessName = 'Client Website';
+    }
+  }
+
   return {
     id: reportId,
     targetUrl: url,
+    businessName,
     mode: scanMode,
     timestamp: scanDate,
     overallScore,

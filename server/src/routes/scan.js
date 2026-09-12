@@ -11,7 +11,8 @@ import { auditAssetPipeline } from '../services/assetPipelineAuditor.js';
 import { runBrowserlessScan } from '../services/browserlessScanner.js';
 import { runPerformanceAudit } from '../services/lighthouseRunner.js';
 import { normalizeReport } from '../utils/reportNormalizer.js';
-import { saveReport } from '../services/reportStorage.js';
+import { saveReport, findPreviousReportForUrl, calculateScoreDelta } from '../services/reportStorage.js';
+import { generateClientNarrative } from '../services/llmExplainer.js';
 
 export const scanRouter = Router();
 
@@ -188,7 +189,24 @@ scanRouter.post('/', scanRateLimiter, ssrfGuard, async (req, res) => {
       allIssues
     });
 
-    // 14. Persist to disk for shareable URL & PDF rendering
+    // 14. Check for previous baseline scan on same domain & compute score delta
+    try {
+      const previousReport = findPreviousReportForUrl(targetUrl, normalized.id);
+      if (previousReport) {
+        normalized.comparison = calculateScoreDelta(normalized, previousReport);
+      }
+    } catch (compErr) {
+      console.warn('Failed to calculate comparison delta:', compErr);
+    }
+
+    // 15. Generate Client Consultation Narrative (Gemini / Groq / Fallback)
+    try {
+      normalized.consultation = await generateClientNarrative(normalized);
+    } catch (narrativeErr) {
+      console.warn('Failed to generate narrative:', narrativeErr);
+    }
+
+    // 16. Persist to disk for shareable URL & PDF rendering
     try {
       saveReport(normalized);
     } catch (saveErr) {

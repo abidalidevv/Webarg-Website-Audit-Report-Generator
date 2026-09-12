@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import BeforeAfterComparison from './BeforeAfterComparison';
 
 export default function ExecutiveSummary({ report }) {
   const overallRef = useRef(null);
@@ -50,10 +51,18 @@ export default function ExecutiveSummary({ report }) {
 
   return (
     <div className="report-summary-wrap">
+      {/* Before/After Remediation Score Delta (Sales Close moment) */}
+      <BeforeAfterComparison comparison={report.comparison} />
+
       <div className="report-head shell">
         <div>
-          <div className="report-meta-tag">INSPECTION REPORT ID #{report.id?.slice(0, 8).toUpperCase()}</div>
-          <h2 className="report-title">AUDIT FINDINGS</h2>
+          <div className="report-meta-tag">
+            INSPECTION REPORT ID #{report.id?.slice(0, 8).toUpperCase()}
+            {report.businessName && ` • ${report.businessName.toUpperCase()}`}
+          </div>
+          <h2 className="report-title">
+            {report.businessName ? `${report.businessName} — TECHNICAL AUDIT` : 'AUDIT FINDINGS'}
+          </h2>
           <div className="report-url-sub">{report.targetUrl}</div>
         </div>
 

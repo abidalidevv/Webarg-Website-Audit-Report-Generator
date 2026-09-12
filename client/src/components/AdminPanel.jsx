@@ -13,6 +13,7 @@ export default function AdminPanel({ onNavigateHome }) {
   const [config, setConfig] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [browserlessKeyInput, setBrowserlessKeyInput] = useState('');
+  const [geminiKeyInput, setGeminiKeyInput] = useState('');
   const [configMessage, setConfigMessage] = useState('');
 
   useEffect(() => {
@@ -121,21 +122,24 @@ export default function AdminPanel({ onNavigateHome }) {
     setConfigMessage('');
 
     try {
+      const payload = {};
+      if (browserlessKeyInput.trim()) payload.browserlessApiKey = browserlessKeyInput.trim();
+      if (geminiKeyInput.trim()) payload.geminiApiKey = geminiKeyInput.trim();
+
       const res = await fetch(`${API_BASE_URL}/admin-api/config`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({
-          browserlessApiKey: browserlessKeyInput
-        })
+        body: JSON.stringify(payload)
       });
 
       const data = await res.json();
       if (res.ok) {
-        setConfigMessage('Browserless API key updated successfully.');
+        setConfigMessage('Runtime configuration updated successfully.');
         setBrowserlessKeyInput('');
+        setGeminiKeyInput('');
         loadAdminData();
         setTimeout(() => setConfigMessage(''), 3000);
       } else {
@@ -261,13 +265,25 @@ export default function AdminPanel({ onNavigateHome }) {
                   : 'Using local Chrome binary'}
               </div>
             </div>
+
+            <div className="admin-stat-card">
+              <div className="admin-stat-label">GEMINI AI NARRATIVE</div>
+              <div className="admin-stat-num mono" style={{ fontSize: '20px' }}>
+                {config?.gemini?.isConfigured ? 'CONNECTED' : 'STANDBY'}
+              </div>
+              <div className="admin-stat-sub">
+                {config?.gemini?.isConfigured
+                  ? `Key: ${config.gemini.maskedKey}`
+                  : 'Deterministic fallback active'}
+              </div>
+            </div>
           </div>
 
-          {/* Browserless Key Update Form */}
+          {/* API Keys Runtime Update Form */}
           <form onSubmit={handleSaveConfig} className="admin-api-key-form">
             <div className="admin-api-key-fields">
               <label htmlFor="browserlessInput" className="admin-field-label mono">
-                UPDATE BROWSERLESS.IO API KEY (LIVE RUNTIME UPDATE):
+                BROWSERLESS.IO API KEY (LIVE RUNTIME UPDATE):
               </label>
               <div className="admin-api-input-wrap">
                 <input
@@ -278,12 +294,28 @@ export default function AdminPanel({ onNavigateHome }) {
                   value={browserlessKeyInput}
                   onChange={(e) => setBrowserlessKeyInput(e.target.value)}
                 />
+              </div>
+            </div>
+
+            <div className="admin-api-key-fields" style={{ marginTop: '16px' }}>
+              <label htmlFor="geminiInput" className="admin-field-label mono">
+                GOOGLE GEMINI API KEY (FREE TIER VIA GOOGLE AI STUDIO / GROQ):
+              </label>
+              <div className="admin-api-input-wrap">
+                <input
+                  id="geminiInput"
+                  type="password"
+                  className="admin-api-input mono"
+                  placeholder="Paste free Gemini API Key (AIza...) or Groq Key..."
+                  value={geminiKeyInput}
+                  onChange={(e) => setGeminiKeyInput(e.target.value)}
+                />
                 <button
                   type="submit"
                   className="btn-primary"
-                  disabled={!browserlessKeyInput.trim()}
+                  disabled={!browserlessKeyInput.trim() && !geminiKeyInput.trim()}
                 >
-                  Apply Key
+                  Save Keys
                 </button>
               </div>
             </div>
@@ -322,21 +354,20 @@ export default function AdminPanel({ onNavigateHome }) {
                 <tbody>
                   {reports.map((r) => (
                     <tr key={r.id}>
-                      <td className="admin-cell-url">
+                      <td className="admin-cell-url mono" title={r.targetUrl}>
                         <a
-                          href={`/report/${r.id}`}
+                          href={r.targetUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="admin-url-link mono"
-                          title={r.targetUrl}
+                          className="admin-url-link"
                         >
                           {r.targetUrl}
                         </a>
                       </td>
-                      <td className="mono" style={{ textTransform: 'uppercase' }}>
-                        {r.mode}
+                      <td>
+                        <span className="tech-badge-inline mono">{r.mode?.toUpperCase() || 'QUICK'}</span>
                       </td>
-                      <td className="mono admin-cell-date">
+                      <td className="admin-cell-date mono">
                         {new Date(r.timestamp).toLocaleDateString()} {new Date(r.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </td>
                       <td>
@@ -353,6 +384,15 @@ export default function AdminPanel({ onNavigateHome }) {
                           className="admin-btn-action"
                         >
                           View
+                        </a>
+                        <a
+                          href={`/report/${r.id}?compare=true`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="admin-btn-action"
+                          title="View report with Before/After score comparison"
+                        >
+                          Delta
                         </a>
                         <a
                           href={`${API_BASE_URL}/report/${r.id}/pdf`}

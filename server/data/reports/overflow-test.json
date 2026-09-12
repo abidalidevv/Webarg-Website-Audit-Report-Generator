@@ -1,12 +1,13 @@
 {
   "id": "overflow-test",
   "targetUrl": "https://subdomain.test-organization-enterprise.com/very/long/nested/directory/structure/and/parameters?tracking_id=abcdef1234567890&session_token=xyz987654321",
+  "businessName": "Enterprise Global Solutions LLC",
   "mode": "quick",
   "timestamp": "2026-09-12T21:57:33.930Z",
-  "overallScore": 78,
-  "overallStatus": "NEEDS ATTENTION",
+  "overallScore": 91,
+  "overallStatus": "HEALTHY",
   "scores": {
-    "overall": 78,
+    "overall": 91,
     "performance": 99,
     "seo": 69,
     "accessibility": 95,

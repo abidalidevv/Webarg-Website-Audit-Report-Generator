@@ -1,0 +1,65 @@
+{
+  "id": "overflow-baseline",
+  "targetUrl": "https://subdomain.test-organization-enterprise.com/very/long/nested/directory/structure/and/parameters?tracking_id=abcdef1234567890&session_token=xyz987654321",
+  "businessName": "Enterprise Global Solutions LLC",
+  "mode": "quick",
+  "timestamp": "2026-08-15T10:00:00.000Z",
+  "overallScore": 58,
+  "overallStatus": "AT RISK",
+  "scores": {
+    "overall": 58,
+    "performance": 45,
+    "seo": 60,
+    "accessibility": 65,
+    "conversion": 35,
+    "security": 40
+  },
+  "metrics": {
+    "lcp": "4.2s",
+    "cls": "0.28",
+    "tbt": "620ms"
+  },
+  "summary": {
+    "total": 18,
+    "critical": 5,
+    "warning": 13,
+    "pass": 0,
+    "narrative": "Baseline inspection identified 18 verified checks across technical and conversion surfaces."
+  },
+  "revenueImpact": {
+    "title": "CRITICAL REVENUE LEAKAGE DETECTED",
+    "description": "5 high-severity barriers preventing prospect phone calls and checkout."
+  },
+  "findings": [
+    {
+      "id": "base-1",
+      "headline": "Missing Content-Security-Policy header",
+      "severity": "Warning",
+      "category": "Security"
+    },
+    {
+      "id": "base-2",
+      "headline": "Severe render-blocking CSS and JavaScript assets",
+      "severity": "Critical",
+      "category": "Performance"
+    },
+    {
+      "id": "base-3",
+      "headline": "Broken mobile touch target sizing on navigation drawer",
+      "severity": "Critical",
+      "category": "Accessibility"
+    },
+    {
+      "id": "base-4",
+      "headline": "Unlinked raw phone numbers in contact section",
+      "severity": "Critical",
+      "category": "Conversion"
+    },
+    {
+      "id": "base-5",
+      "headline": "Cumulative Layout Shift exceeds Google Poor threshold",
+      "severity": "Critical",
+      "category": "Core Web Vitals"
+    }
+  ]
+}

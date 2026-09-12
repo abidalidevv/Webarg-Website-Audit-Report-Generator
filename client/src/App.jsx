@@ -205,13 +205,17 @@ export default function App() {
       const a = document.createElement('a');
       a.href = downloadUrl;
 
-      // Clean domain name for filename
-      let domain = 'target';
-      try {
-        domain = new URL(report.targetUrl).hostname;
-      } catch (_) {}
+      // Clean business or domain name for filename
+      let namePart = 'target';
+      if (report.businessName && report.businessName !== 'Client Website') {
+        namePart = report.businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      } else {
+        try {
+          namePart = new URL(report.targetUrl).hostname.replace(/[^a-zA-Z0-9.-]/g, '_');
+        } catch (_) {}
+      }
       const dateStr = new Date().toISOString().slice(0, 10);
-      a.download = `webarg-audit-${domain}-${dateStr}.pdf`;
+      a.download = `webarg-audit-${namePart}-${dateStr}.pdf`;
 
       document.body.appendChild(a);
       a.click();
@@ -244,6 +248,7 @@ export default function App() {
     <div className={`webarg-root ${isPrintView ? 'print-mode' : ''}`}>
       <StickyHeader
         currentUrl={currentUrl}
+        businessName={report?.businessName}
         hasReport={!!report}
         reportId={report?.id}
         onNewScan={handleNewScan}
@@ -291,7 +296,10 @@ export default function App() {
             />
 
             {/* 5. Prioritized Sprint Remediation Plan (Section 82) */}
-            <RemediationPlan priorities={report.remediationPriorities} />
+            <RemediationPlan
+              priorities={report.remediationPriorities}
+              consultation={report.consultation}
+            />
 
             {/* 6. View Mode Switcher: Table View vs Graph View */}
             <div className="view-mode-bar shell">

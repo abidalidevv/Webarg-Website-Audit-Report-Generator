@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 export default function StickyHeader({
   currentUrl,
+  businessName,
   hasReport,
   reportId,
   onNewScan,
@@ -19,8 +20,8 @@ export default function StickyHeader({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Webarg Audit — ${currentUrl}`,
-          text: `Technical and conversion inspection report for ${currentUrl}`,
+          title: `Webarg Audit — ${businessName ? `${businessName} (${currentUrl})` : currentUrl}`,
+          text: `Technical and conversion inspection report for ${businessName || currentUrl}`,
           url: shareUrl
         });
         return;
@@ -47,6 +48,11 @@ export default function StickyHeader({
         </div>
 
         <div className="header-meta">
+          {businessName && (
+            <span className="header-business-badge" title={businessName}>
+              {businessName}
+            </span>
+          )}
           {currentUrl && (
             <div className="header-active-url" title={currentUrl}>
               {currentUrl}

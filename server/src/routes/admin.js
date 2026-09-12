@@ -80,11 +80,25 @@ adminRouter.get('/config', requireAdminAuth, (req, res) => {
   const apiKey = process.env.BROWSERLESS_API_KEY || '';
   const maskedKey = apiKey.length > 4 ? `sk_...${apiKey.slice(-4)}` : (apiKey ? 'Configured' : 'Not Configured');
 
+  const geminiKey = process.env.GEMINI_API_KEY || '';
+  const maskedGemini = geminiKey.length > 4 ? `AIza...${geminiKey.slice(-4)}` : (geminiKey ? 'Configured' : 'Not Configured');
+
+  const groqKey = process.env.GROQ_API_KEY || '';
+  const maskedGroq = groqKey.length > 4 ? `gsk_...${groqKey.slice(-4)}` : (groqKey ? 'Configured' : 'Not Configured');
+
   return res.status(200).json({
     browserless: {
       isConfigured: Boolean(apiKey),
       maskedKey,
       endpoint: process.env.BROWSERLESS_WS_ENDPOINT || 'wss://chrome.browserless.io'
+    },
+    gemini: {
+      isConfigured: Boolean(geminiKey),
+      maskedKey: maskedGemini
+    },
+    groq: {
+      isConfigured: Boolean(groqKey),
+      maskedKey: maskedGroq
     },
     system: {
       uptimeSeconds: Math.round(process.uptime()),
@@ -95,15 +109,21 @@ adminRouter.get('/config', requireAdminAuth, (req, res) => {
   });
 });
 
-// POST /admin/config - Update Browserless API key without server restart
+// POST /admin/config - Update Browserless, Gemini, or Groq API keys without server restart
 adminRouter.post('/config', requireAdminAuth, (req, res) => {
-  const { browserlessApiKey, browserlessEndpoint } = req.body || {};
+  const { browserlessApiKey, browserlessEndpoint, geminiApiKey, groqApiKey } = req.body || {};
 
   if (browserlessApiKey !== undefined) {
     process.env.BROWSERLESS_API_KEY = String(browserlessApiKey).trim();
   }
   if (browserlessEndpoint !== undefined) {
     process.env.BROWSERLESS_WS_ENDPOINT = String(browserlessEndpoint).trim();
+  }
+  if (geminiApiKey !== undefined) {
+    process.env.GEMINI_API_KEY = String(geminiApiKey).trim();
+  }
+  if (groqApiKey !== undefined) {
+    process.env.GROQ_API_KEY = String(groqApiKey).trim();
   }
 
   return res.status(200).json({
