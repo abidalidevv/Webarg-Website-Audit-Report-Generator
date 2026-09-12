@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Webarg — Evidence, not guesswork.</title>
+<meta name="description" content="Webarg turns website inspections into clear, evidence-based technical reports.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --ink:#14181f;
+  --ink2:#181d24;
+  --ink3:#1e252d;
+  --paper:#e7eaec;
+  --muted:#99a3ac;
+  --muted2:#727d87;
+  --line:#2d353e;
+  --line2:#39424c;
+  --teal:#3e6e8e;
+  --red:#c1432b;
+  --ochre:#b8863d;
+  --sage:#4c7a5e;
+  --white:#f2f4f5;
+  --max:1240px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--white);font-family:Manrope,Arial,sans-serif;line-height:1.45}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.mono{font-family:"DM Mono",monospace}
+.condensed{font-family:"Barlow Condensed",sans-serif}
+
+.shell{width:min(var(--max),calc(100% - 56px));margin:auto}
+header{height:84px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px}
+.mark{width:22px;height:22px;position:relative;border:1px solid #7b8791}
+.mark:before,.mark:after{content:"";position:absolute;background:#a9b4bc}
+.mark:before{width:1px;height:100%;left:50%;top:0}
+.mark:after{height:1px;width:100%;left:0;top:50%}
+.brand-name{font:700 30px/1 "Barlow Condensed",sans-serif;letter-spacing:-.015em}
+.header-meta{font:500 11px/1 "DM Mono",monospace;color:var(--muted2);letter-spacing:.01em}
+
+.hero{min-height:calc(100vh - 84px);display:grid;grid-template-columns:1fr 320px;gap:70px;align-items:center;padding:70px 0 90px}
+.hero-main{max-width:900px}
+.kicker{display:inline-flex;align-items:center;gap:9px;color:#9faab3;font:500 11px/1 "DM Mono",monospace;margin-bottom:25px}
+.kicker i{width:6px;height:6px;border-radius:50%;background:var(--teal);display:block}
+.hero h1{font:600 clamp(72px,9vw,144px)/.82 "Barlow Condensed",sans-serif;letter-spacing:-.042em;margin:0 0 34px}
+.hero h1 em{font-style:normal;color:#89939c}
+.hero-deck{font-size:18px;color:#aeb6bd;max-width:660px;margin:0 0 43px}
+.scan-form{display:grid;grid-template-columns:1fr auto;max-width:900px;border:1px solid #4a555f;background:#171c23;min-height:82px}
+.scan-form:focus-within{border-color:var(--teal)}
+.scan-form input{min-width:0;background:transparent;border:0;outline:0;padding:0 24px;color:var(--white);font:500 17px "DM Mono",monospace}
+.scan-form input::placeholder{color:#646f79}
+.scan-btn{border:0;border-left:1px solid #587083;background:var(--teal);color:#fff;padding:0 31px;font-weight:800;min-width:192px}
+.scan-btn span{display:inline-block;transition:transform .2s}
+.scan-btn:hover span{transform:translateX(2px)}
+.hero-rail{border-left:1px solid var(--line);padding-left:27px}
+.rail-title{font:600 25px/1 "Barlow Condensed",sans-serif;margin-bottom:15px}
+.rail-copy{font-size:13px;color:var(--muted);margin:0 0 25px}
+.protocol{border-top:1px solid var(--line);padding:17px 0}
+.protocol-line{display:flex;justify-content:space-between;gap:10px;font-size:12px}
+.protocol-line span:first-child{color:var(--muted)}
+.protocol-line span:last-child{font-family:"DM Mono",monospace;color:#c6cdd2}
+.note{font:11px/1.55 "DM Mono",monospace;color:var(--muted2);margin-top:28px}
+
+#scanStage{display:none;height:430px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;overflow:hidden;background:#10151b}
+#scanCanvas{position:absolute;inset:0;width:100%;height:100%}
+.scan-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.scan-status{background:rgba(20,24,31,.86);border:1px solid var(--line2);padding:20px 25px;min-width:290px}
+.scan-status .big{font:600 36px "Barlow Condensed",sans-serif}
+.scan-status .url{font:11px "DM Mono",monospace;color:var(--muted);margin-top:6px;word-break:break-all}
+.scan-progress{margin-top:16px;height:2px;background:#2b333c;position:relative;overflow:hidden}
+.scan-progress i{position:absolute;left:0;top:0;height:100%;width:36%;background:var(--teal);animation:progress 2.6s ease-out forwards}
+@keyframes progress{to{width:100%}}
+
+#results{display:none;padding-top:0}
+.report-top{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;padding:54px 0 30px}
+.report-kicker{font:500 11px "DM Mono",monospace;color:var(--muted2);margin-bottom:8px}
+.report-title{font:600 clamp(44px,5vw,68px)/.9 "Barlow Condensed",sans-serif;margin:0}
+.report-url{margin-top:12px;font:12px "DM Mono",monospace;color:#a7b0b8;word-break:break-all}
+.report-state{text-align:right}
+.state-dot{color:var(--sage);font:500 11px "DM Mono",monospace}
+.state-time{font:11px "DM Mono",monospace;color:var(--muted2);margin-top:7px}
+
+.summary-grid{display:grid;grid-template-columns:1.3fr repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.summary-hero{padding:28px 25px;border-right:1px solid var(--line)}
+.overall-label{font:500 11px "DM Mono",monospace;color:var(--muted)}
+.overall{display:flex;align-items:end;gap:11px;margin-top:4px}
+.overall-number{font:500 86px/.9 "DM Mono",monospace;letter-spacing:-.06em}
+.overall-out{font:700 14px "Barlow Condensed",sans-serif;padding-bottom:8px;color:var(--ochre)}
+.overall-copy{font-size:12px;color:var(--muted);max-width:250px;margin-top:12px}
+.score-cell{padding:28px 18px;border-right:1px solid var(--line)}
+.score-cell:last-child{border-right:0}
+.score-label{font:500 10px "DM Mono",monospace;color:var(--muted2)}
+.score-num{font:500 42px/1 "DM Mono",monospace;margin:14px 0 4px}
+.score-foot{font-size:11px;color:var(--muted)}
+
+.findings{margin-top:42px}
+.findings-head{display:flex;align-items:end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:15px}
+.findings-head h2{font:600 37px/1 "Barlow Condensed",sans-serif;margin:0}
+.findings-head p{font:11px "DM Mono",monospace;color:var(--muted2);margin:0}
+
+.issue{border-bottom:1px solid var(--line)}
+.issue summary{list-style:none;min-height:85px;display:grid;grid-template-columns:240px 1fr auto 28px;align-items:center;gap:20px;padding:0 5px}
+.issue summary::-webkit-details-marker{display:none}
+.issue summary:hover{background:#161b22}
+.issue-name{font:600 24px "Barlow Condensed",sans-serif}
+.issue-meta{font:12px "DM Mono",monospace;color:var(--muted)}
+.issue-severity{font:500 11px "DM Mono",monospace;white-space:nowrap;display:flex;gap:9px;align-items:center}
+.issue-severity.critical{color:var(--red)}
+.issue-severity.warning{color:var(--ochre)}
+.issue-severity.pass{color:var(--sage)}
+.issue-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.issue-dot.critical{background:var(--red)} .issue-dot.warning{background:var(--ochre)} .issue-dot.pass{background:var(--sage)}
+.issue-chevron{font:700 16px "DM Mono",monospace;color:#6e7983;transition:transform .2s}
+.issue[open] .issue-chevron{transform:rotate(90deg)}
+.issue[open] summary{border-bottom:1px solid var(--line)}
+.issue-body{padding:25px 5px 38px}
+.issue-desc{color:#adb6bd;font-size:13px;max-width:850px;margin:0 0 23px}
+.audit-table{width:100%;border-collapse:collapse}
+.audit-table th{text-align:left;padding:0 12px 11px;font:500 10px "DM Mono",monospace;color:var(--muted2);border-bottom:1px solid var(--line)}
+.audit-table td{padding:15px 12px;border-bottom:1px solid #252d35;font-size:12px;vertical-align:top}
+.audit-table tr:last-child td{border-bottom:0}
+.audit-table .mono{color:#cbd2d7}
+.td-red{color:var(--red);font-weight:700}.td-ochre{color:var(--ochre);font-weight:700}.td-sage{color:var(--sage);font-weight:700}
+.evidence{color:#8f99a2}
+.fix{color:#c5cbd0}
+
+.actions{margin-top:55px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.action-note{font:11px "DM Mono",monospace;color:var(--muted2)}
+.action-bar{display:flex;gap:9px}
+.action{height:43px;padding:0 17px;border:1px solid #45515b;background:transparent;color:var(--white);font-weight:700;font-size:12px}
+.action:hover{border-color:var(--teal);color:#c6d5de}
+.action.primary{background:var(--teal);border-color:var(--teal)}
+.action.primary:hover{filter:brightness(1.08)}
+
+footer{padding:35px 0 55px;display:flex;justify-content:space-between;gap:30px;color:var(--muted2)}
+.footer-left{font:11px/1.6 "DM Mono",monospace}
+.footer-right{font-size:11px;text-align:right;max-width:440px}
+
+@media print{
+  body{background:white;color:#111}
+  header,.hero,#scanStage,.actions,footer{display:none!important}
+  #results{display:block!important}
+  .summary-grid,.issue, .report-top{border-color:#bbb}
+  .score-cell,.summary-hero{border-color:#bbb}
+  .report-url,.report-kicker,.findings-head p,.issue-meta,.score-label,.score-foot,.overall-label{color:#555}
+  .issue summary:hover{background:transparent}
+}
+@media(max-width:880px){
+ .hero{grid-template-columns:1fr;gap:45px}.hero-rail{border-left:0;border-top:1px solid var(--line);padding:25px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:25px}.note{grid-column:1/-1;margin-top:0}
+ .summary-grid{grid-template-columns:1fr 1fr}.summary-hero{grid-column:1/-1;border-right:0;border-bottom:1px solid var(--line)}
+ .score-cell:nth-child(3){border-right:0}
+ .issue summary{grid-template-columns:190px 1fr auto 20px}
+}
+@media(max-width:620px){
+ .shell{width:min(var(--max),calc(100% - 34px))}
+ header{height:72px}.header-meta{display:none}
+ .hero{min-height:auto;padding:58px 0 75px}.hero h1{font-size:70px}.hero-deck{font-size:15px}
+ .scan-form{grid-template-columns:1fr;border:0;background:none;gap:8px}.scan-form input{height:66px;border:1px solid #4a555f;background:#171c23}.scan-btn{height:60px;border:0}
+ .hero-rail{grid-template-columns:1fr}
+ .report-top{grid-template-columns:1fr}.report-state{text-align:left}
+ .summary-grid{grid-template-columns:1fr 1fr}.summary-hero{grid-column:1/-1}
+ .issue summary{grid-template-columns:1fr auto;gap:8px;padding:14px 0}.issue-meta{grid-column:1}.issue-severity{grid-column:2;grid-row:1/3}.issue-chevron{display:none}
+ .audit-table{display:block;overflow-x:auto;white-space:nowrap}
+ .actions{align-items:flex-start;gap:16px;flex-direction:column}.footer-right{text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="brand"><span class="mark" aria-hidden="true"></span><span class="brand-name">webarg</span></div>
+  <div class="header-meta">WEBSITE AUDIT REPORT GENERATOR / 01</div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-main">
+    <div class="kicker"><i></i> TECHNICAL INSPECTION, MADE LEGIBLE</div>
+    <h1>Evidence,<br><em>not guesswork.</em></h1>
+    <p class="hero-deck">A website audit should make the state of a site obvious. Webarg turns technical inspection data into a report business owners can trust, verify, and act on.</p>
+    <form class="scan-form" id="scanForm">
+      <input id="urlInput" type="url" required placeholder="https://yourwebsite.com" aria-label="Website URL">
+      <button class="scan-btn" type="submit"><span>Scan your website</span></button>
+    </form>
+    <div class="note">READ-ONLY INSPECTION · NO ACCOUNT REQUIRED · RESULTS ARE GENERATED AS A REPORT, NOT A SALES DASHBOARD</div>
+  </div>
+
+  <aside class="hero-rail">
+    <div>
+      <div class="rail-title">What gets inspected</div>
+      <p class="rail-copy">A technical cross-section of the page, organized by risk rather than vanity metrics.</p>
+      <div class="protocol"><div class="protocol-line"><span>Runtime</span><span>console / requests</span></div></div>
+      <div class="protocol"><div class="protocol-line"><span>Discoverability</span><span>metadata / crawl</span></div></div>
+    </div>
+    <div>
+      <div class="protocol"><div class="protocol-line"><span>Experience</span><span>WCAG checks</span></div></div>
+      <div class="protocol"><div class="protocol-line"><span>Delivery</span><span>web vitals</span></div></div>
+      <div class="protocol"><div class="protocol-line"><span>Protection</span><span>headers / TLS</span></div></div>
+    </div>
+    <div class="note">The report is deliberately dense where the evidence is dense — and quiet everywhere else.</div>
+  </aside>
+</section>
+
+<section id="scanStage" aria-live="polite">
+  <canvas id="scanCanvas"></canvas>
+  <div class="scan-overlay">
+    <div class="scan-status">
+      <div class="big">Inspecting website</div>
+      <div class="url" id="scanUrl">https://yourwebsite.com</div>
+      <div class="scan-progress"><i></i></div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="report-top">
+    <div>
+      <div class="report-kicker">WEBARG / TECHNICAL INSPECTION</div>
+      <h2 class="report-title">Audit report</h2>
+      <div class="report-url" id="reportUrl">https://yourwebsite.com</div>
+    </div>
+    <div class="report-state">
+      <div class="state-dot">● SCAN COMPLETE</div>
+      <div class="state-time" id="scanTime">generated just now</div>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-hero">
+      <div class="overall-label">OVERALL HEALTH</div>
+      <div class="overall"><div class="overall-number">74</div><div class="overall-out">NEEDS ATTENTION</div></div>
+      <div class="overall-copy">The site is usable, but several technical issues have enough impact to justify remediation.</div>
+    </div>
+    <div class="score-cell"><div class="score-label">PERFORMANCE</div><div class="score-num" data-score="91">91</div><div class="score-foot td-sage">healthy</div></div>
+    <div class="score-cell"><div class="score-label">SEO</div><div class="score-num" data-score="76">76</div><div class="score-foot td-ochre">attention</div></div>
+    <div class="score-cell"><div class="score-label">ACCESSIBILITY</div><div class="score-num" data-score="68">68</div><div class="score-foot td-ochre">attention</div></div>
+    <div class="score-cell"><div class="score-label">SECURITY</div><div class="score-num" data-score="52">52</div><div class="score-foot td-red">at risk</div></div>
+  </div>
+
+  <div class="findings">
+    <div class="findings-head">
+      <h2>Findings</h2>
+      <p>5 CATEGORIES / PRIORITIZED BY SEVERITY</p>
+    </div>
+
+    <details class="issue" open>
+      <summary>
+        <span class="issue-name">Console errors</span>
+        <span class="issue-meta">runtime / browser execution · 2 findings</span>
+        <span class="issue-severity critical"><i class="issue-dot critical"></i>2 critical</span>
+        <span class="issue-chevron">›</span>
+      </summary>
+      <div class="issue-body">
+        <p class="issue-desc">JavaScript failures were observed during execution. These are functional defects, not aesthetic warnings: visitors can encounter broken interactions or incomplete page behavior.</p>
+        <table class="audit-table">
+          <thead><tr><th>SEVERITY</th><th>FINDING</th><th>LOCATION</th><th>EVIDENCE</th><th>RECOMMENDATION</th></tr></thead>
+          <tbody>
+            <tr><td class="td-red">Critical</td><td><b>Uncaught TypeError</b></td><td class="mono">/assets/app.js:184</td><td class="evidence mono">Cannot read properties of null</td><td class="fix">Guard selector before invocation; add regression test.</td></tr>
+            <tr><td class="td-red">Critical</td><td><b>Failed resource request</b></td><td class="mono">/api/products</td><td class="evidence mono">500 · application/json</td><td class="fix">Resolve upstream response and expose graceful UI fallback.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details class="issue">
+      <summary><span class="issue-name">SEO</span><span class="issue-meta">crawl / metadata / semantics · 4 findings</span><span class="issue-severity warning"><i class="issue-dot warning"></i>4 warnings</span><span class="issue-chevron">›</span></summary>
+      <div class="issue-body">
+        <p class="issue-desc">Search engines can discover the page, but several signals are under-specified. The findings below are straightforward to verify in source.</p>
+        <table class="audit-table"><thead><tr><th>SEVERITY</th><th>FINDING</th><th>EVIDENCE</th><th>STATUS</th><th>NEXT STEP</th></tr></thead><tbody>
+        <tr><td class="td-ochre">Warning</td><td><b>Missing meta description</b></td><td class="evidence mono">&lt;meta name="description"&gt; absent</td><td class="mono">MISSING</td><td class="fix">Add a unique, intent-led description.</td></tr>
+        <tr><td class="td-ochre">Warning</td><td><b>Duplicate H1</b></td><td class="evidence mono">2 H1 elements found</td><td class="mono">2 FOUND</td><td class="fix">Keep one primary page heading.</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+
+    <details class="issue">
+      <summary><span class="issue-name">Accessibility</span><span class="issue-meta">WCAG checks / semantics · 3 findings</span><span class="issue-severity warning"><i class="issue-dot warning"></i>3 warnings</span><span class="issue-chevron">›</span></summary>
+      <div class="issue-body">
+        <p class="issue-desc">Assistive-technology support is inconsistent in a few places. These issues are usually low-complexity fixes with a meaningful usability payoff.</p>
+        <table class="audit-table"><thead><tr><th>SEVERITY</th><th>FINDING</th><th>SELECTOR</th><th>COUNT</th><th>RECOMMENDATION</th></tr></thead><tbody>
+        <tr><td class="td-ochre">Warning</td><td><b>Images missing alt text</b></td><td class="mono">img.product</td><td class="mono">7</td><td class="fix">Add informative alternative text; mark decorative assets accordingly.</td></tr>
+        <tr><td class="td-ochre">Warning</td><td><b>Insufficient contrast</b></td><td class="mono">.footer-note</td><td class="mono">2</td><td class="fix">Raise foreground contrast to meet WCAG AA.</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+
+    <details class="issue">
+      <summary><span class="issue-name">Performance</span><span class="issue-meta">Core Web Vitals / delivery · 2 findings</span><span class="issue-severity pass"><i class="issue-dot pass"></i>1 pass · 1 warning</span><span class="issue-chevron">›</span></summary>
+      <div class="issue-body">
+        <p class="issue-desc">Core loading behavior is broadly healthy. One metric is close enough to the threshold to merit optimization rather than waiting for regression.</p>
+        <table class="audit-table"><thead><tr><th>METRIC</th><th>VALUE</th><th>TARGET</th><th>STATUS</th><th>CONTEXT</th></tr></thead><tbody>
+        <tr><td><b>Largest Contentful Paint</b></td><td class="mono">1.8s</td><td class="mono">&lt; 2.5s</td><td class="td-sage">PASS</td><td class="evidence">Hero content paints inside the recommended range.</td></tr>
+        <tr><td><b>Total Blocking Time</b></td><td class="mono">214ms</td><td class="mono">&lt; 200ms</td><td class="td-ochre">NEAR LIMIT</td><td class="evidence">Reduce non-critical JavaScript on initial load.</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+
+    <details class="issue">
+      <summary><span class="issue-name">Security</span><span class="issue-meta">headers / transport · 3 findings</span><span class="issue-severity critical"><i class="issue-dot critical"></i>2 critical · 1 warning</span><span class="issue-chevron">›</span></summary>
+      <div class="issue-body">
+        <p class="issue-desc">The inspection found missing defensive controls at the response layer. These should be treated as technical hardening work, not cosmetic recommendations.</p>
+        <table class="audit-table"><thead><tr><th>SEVERITY</th><th>FINDING</th><th>EVIDENCE</th><th>STATUS</th><th>RECOMMENDATION</th></tr></thead><tbody>
+        <tr><td class="td-red">Critical</td><td><b>Content-Security-Policy absent</b></td><td class="evidence mono">response header missing</td><td class="td-red">MISSING</td><td class="fix">Define a policy appropriate to loaded script and asset sources.</td></tr>
+        <tr><td class="td-red">Critical</td><td><b>Legacy TLS accepted</b></td><td class="evidence mono">TLS 1.0 offered</td><td class="td-red">FAIL</td><td class="fix">Disable deprecated protocol versions at the edge.</td></tr>
+        <tr><td class="td-ochre">Warning</td><td><b>Server signature exposed</b></td><td class="evidence mono">Apache/2.4.57</td><td class="td-ochre">EXPOSED</td><td class="fix">Reduce unnecessary server fingerprinting.</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+  </div>
+
+  <div class="actions">
+    <div class="action-note">REPORT / READY TO SEND · FINDINGS ARE EVIDENCE-LED</div>
+    <div class="action-bar">
+      <button class="action" id="printBtn">Export PDF</button>
+      <button class="action primary" id="shareBtn">Share report</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">WEBARG<br>TECHNICAL INSPECTION REPORT GENERATOR</div>
+  <div class="footer-right">Built for developers who need their technical findings to feel credible to the person paying for the work.</div>
+</footer>
+</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js';
+
+const form = document.getElementById('scanForm');
+const input = document.getElementById('urlInput');
+const stage = document.getElementById('scanStage');
+const results = document.getElementById('results');
+const canvas = document.getElementById('scanCanvas');
+const scanUrl = document.getElementById('scanUrl');
+const reportUrl = document.getElementById('reportUrl');
+const scanTime = document.getElementById('scanTime');
+const printBtn = document.getElementById('printBtn');
+const shareBtn = document.getElementById('shareBtn');
+
+function formatUrl(value){
+  let url=value.trim();
+  if(!/^https?:\/\//i.test(url)) url='https://'+url;
+  return url;
+}
+
+form.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const url=formatUrl(input.value);
+  input.value=url;
+  scanUrl.textContent=url;
+  reportUrl.textContent=url;
+  scanTime.textContent='generated '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  stage.style.display='block';
+  results.style.display='none';
+  stage.scrollIntoView({behavior:'smooth', block:'center'});
+  playScan();
+});
+
+printBtn.addEventListener('click',()=>window.print());
+shareBtn.addEventListener('click',async()=>{
+  const data={title:'Webarg Audit Report',text:'Technical website audit generated with Webarg.',url:location.href};
+  try{
+    if(navigator.share){ await navigator.share(data); }
+    else { await navigator.clipboard.writeText(location.href); shareBtn.textContent='Link copied'; setTimeout(()=>shareBtn.textContent='Share report',1500); }
+  }catch{}
+});
+
+let activeScan=false;
+function playScan(){
+  if(activeScan)return;
+  activeScan=true;
+
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setClearColor(0x10151b,1);
+
+  const scene=new THREE.Scene();
+  const camera=new THREE.OrthographicCamera(-12,12,6,-6,.1,100);
+  camera.position.z=30;
+
+  const structure=new THREE.Group();
+  scene.add(structure);
+
+  const lineMat=new THREE.LineBasicMaterial({color:0x52616d,transparent:true,opacity:.72});
+  const accentMat=new THREE.LineBasicMaterial({color:0x3e6e8e,transparent:true,opacity:.9});
+
+  // Wireframe “website” — exactly one Three.js role on the page.
+  const boxes=[
+    [-8,-3.2,16,1.3],
+    [-8,-1.2,10,0.85], [3,-1.2,5,0.85],
+    [-8,.3,5,2.6], [-2.5,.3,5,2.6], [3,.3,5,2.6],
+    [-8,3.25,16,.45]
+  ];
+  boxes.forEach(([x,y,w,h])=>{
+    const pts=[
+      new THREE.Vector3(x,y,0),
+      new THREE.Vector3(x+w,y,0),
+      new THREE.Vector3(x+w,y+h,0),
+      new THREE.Vector3(x,y+h,0),
+      new THREE.Vector3(x,y,0)
+    ];
+    structure.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),lineMat));
+  });
+
+  // internal content lines
+  for(let row=0; row<8; row++){
+    const y=-2.55+row*.42;
+    const pts=[new THREE.Vector3(-7.4,y,0),new THREE.Vector3(7.4,y,0)];
+    structure.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),lineMat));
+  }
+
+  const beam=new THREE.Mesh(
+    new THREE.PlaneGeometry(.12,12),
+    new THREE.MeshBasicMaterial({color:0x3e6e8e,transparent:true,opacity:.72})
+  );
+  beam.position.x=-11;
+  structure.add(beam);
+
+  const started=performance.now();
+  const duration=2700;
+
+  function resize(){
+    renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);
+    const aspect=canvas.clientWidth/Math.max(canvas.clientHeight,1);
+    camera.left=-12; camera.right=12; camera.top=7; camera.bottom=-7;
+    camera.updateProjectionMatrix();
+  }
+
+  function frame(now){
+    resize();
+    const t=Math.min((now-started)/duration,1);
+    beam.position.x=-11+22*t;
+    structure.position.x=Math.sin(t*Math.PI)*.05;
+    structure.rotation.y=Math.sin(t*Math.PI)*.012;
+    renderer.render(scene,camera);
+
+    if(t<1) requestAnimationFrame(frame);
+    else{
+      renderer.dispose();
+      activeScan=false;
+      stage.style.display='none';
+      results.style.display='block';
+      results.scrollIntoView({behavior:'smooth',block:'start'});
+      animateScores();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function animateScores(){
+  document.querySelectorAll('[data-score]').forEach(el=>{
+    const target=Number(el.dataset.score), start=0, t0=performance.now();
+    function tick(now){
+      const p=Math.min((now-t0)/650,1);
+      const v=Math.round(start+(target-start)*(1-Math.pow(1-p,3)));
+      el.textContent=v;
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+{
+  "id": "1Ng5jX7ks92T",
+  "targetUrl": "https://cloudflare.com/",
+  "mode": "quick",
+  "timestamp": "2026-09-12T22:43:09.698Z",
+  "overallScore": 96,
+  "overallStatus": "HEALTHY",
+  "scores": {
+    "overall": 96,
+    "performance": 99,
+    "seo": 90,
+    "accessibility": 95,
+    "conversion": 85,
+    "security": 99
+  },
+  "summary": {
+    "total": 5,
+    "critical": 0,
+    "warning": 3,
+    "pass": 0,
+    "narrative": "Inspection identified 5 verified checks. 0 require immediate remediation to prevent lead leakage, 3 affect conversion consistency or search visibility, and 0 passed technical standards."
+  },
+  "revenueImpact": {
+    "title": "CONVERSION FRICTION IDENTIFIED",
+    "description": "Server version exposed: Causes customer friction and potential bounce."
+  },
+  "techStack": [
+    {
+      "category": "Payments",
+      "name": "Stripe",
+      "confidence": "Medium"
+    },
+    {
+      "category": "Framework",
+      "name": "React",
+      "confidence": "Medium"
+    },
+    {
+      "category": "Tag Management",
+      "name": "Google Tag Manager",
+      "confidence": "High"
+    },
+    {
+      "category": "Analytics",
+      "name": "Google Analytics 4",
+      "confidence": "High"
+    },
+    {
+      "category": "CDN / Security",
+      "name": "Cloudflare",
+      "confidence": "High"
+    }
+  ],
+  "conversionJourney": {
+    "phone": {
+      "count": 0,
+      "items": [],
+      "unlinkedInBody": false
+    },
+    "whatsapp": {
+      "count": 0,
+      "items": []
+    },
+    "email": {
+      "count": 0,
+      "items": []
+    },
+    "maps": {
+      "present": false
+    },
+    "forms": {
+      "count": 0,
+      "details": []
+    },
+    "socials": {
+      "count": 0,
+      "genericCount": 0
+    }
+  },
+  "trustSignals": {
+    "privacyPolicy": true,
+    "termsOfService": true,
+    "deadCtasCount": 0
+  },
+  "assetPipeline": {
+    "semantics": {
+      "hasDoctype": true,
+      "htmlLang": "en",
+      "hasCharset": true
+    },
+    "images": {
+      "total": 66,
+      "nonModernFormatCount": 3,
+      "missingLazyCount": 63
+    },
+    "fonts": {
+      "count": 0,
+      "hasPreconnect": false,
+      "hasDisplaySwap": false
+    },
+    "compression": {
+      "enabled": true,
+      "encoding": "br"
+    },
+    "caching": {
+      "cacheControl": "max-age=10",
+      "hasEtag": false
+    },
+    "issues": [
+      {
+        "category": "Asset Pipeline",
+        "severity": "Low",
+        "title": "Below-the-fold images missing loading=\"lazy\"",
+        "evidence": "63 images load eagerly during initial page load.",
+        "userImpact": "Bandwidth competition delays rendering of primary hero content.",
+        "businessImpact": "Degrades mobile Core Web Vitals (LCP/Speed Index).",
+        "recommendation": "Add loading=\"lazy\" and decoding=\"async\" to all non-critical images.",
+        "effort": "Low"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "1LDEhz",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Server version exposed",
+      "evidence": "Server header revealed: \"cloudflare\"",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "RMk6PT",
+      "category": "DNS / Email",
+      "severity": "Warning",
+      "headline": "Missing SPF record",
+      "evidence": "No TXT record starting with v=spf1 found",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Configure an SPF record to protect domain against email spoofing.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "soardK",
+      "category": "Asset Pipeline",
+      "severity": "Low",
+      "headline": "Below-the-fold images missing loading=\"lazy\"",
+      "evidence": "63 images load eagerly during initial page load.",
+      "userImpact": "Bandwidth competition delays rendering of primary hero content.",
+      "businessImpact": "Degrades mobile Core Web Vitals (LCP/Speed Index).",
+      "recommendation": "Add loading=\"lazy\" and decoding=\"async\" to all non-critical images.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "Xtgx-B",
+      "category": "SEO / Structure",
+      "severity": "Warning",
+      "headline": "Duplicate <h1> headings",
+      "evidence": "2 separate <h1> tags found",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Consolidate to one primary <h1> and use <h2>/<h3> for sub-sections.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "mQ7IOv",
+      "category": "Performance",
+      "severity": "Low",
+      "headline": "Images without explicit width/height",
+      "evidence": "65 images lack width and height attributes (CLS risk)",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Include explicit width and height dimensions to prevent cumulative layout shifts.",
+      "effort": "Low",
+      "status": "Open"
+    }
+  ],
+  "accessLevelMatrix": [
+    {
+      "surface": "Public Website & DOM",
+      "accessRequired": "None (Public URL)",
+      "status": "Audited Live",
+      "coverage": "Frontend performance, mobile layout shifts, click-to-call, SEO crawlability, public DNS/SSL, security headers, tracking scripts."
+    },
+    {
+      "surface": "CMS Admin & Plugins",
+      "accessRequired": "WordPress / Shopify / Webflow Login",
+      "status": "Requires Manual Playbook",
+      "coverage": "Plugin vulnerabilities, theme bloat, database overhead, auto-update health, user privilege audit."
+    },
+    {
+      "surface": "CRM & GoHighLevel Automations",
+      "accessRequired": "GHL / ActiveCampaign Account Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "Workflow triggers, SMS/Email autoresponders, webhook delivery, pipeline tag integrity, UTM attribution."
+    },
+    {
+      "surface": "Physical Mobile Devices & Carriers",
+      "accessRequired": "Real iPhone / Android Hardware",
+      "status": "Requires Manual Playbook",
+      "coverage": "Real carrier click-to-call dialers, Safari iOS keyboard viewport clipping, WhatsApp native handoff, mobile touch gesture conflicts."
+    },
+    {
+      "surface": "Payment Gateways & Checkout Sandboxes",
+      "accessRequired": "Stripe / PayPal / E-commerce Admin",
+      "status": "Requires Manual Playbook",
+      "coverage": "End-to-end sandbox purchase, webhook reconciliation, 3D Secure triggers, cart abandonment sequences."
+    },
+    {
+      "surface": "Screen Readers & Assistive Accessibility",
+      "accessRequired": "NVDA / VoiceOver Assistive Software",
+      "status": "Requires Manual Playbook",
+      "coverage": "Full manual keyboard focus traps, screen reader audio fidelity, cognitive readability, aria-live dynamic region announcements."
+    },
+    {
+      "surface": "Server, Hosting & PHP Logs",
+      "accessRequired": "Hosting / cPanel / Cloud Console Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "PHP error logs, slow database queries, disk I/O bottlenecks, off-site backup restoration drills."
+    }
+  ],
+  "details": {
+    "dns": {
+      "records": {
+        "a": [
+          "104.16.132.229"
+        ],
+        "aaaa": [
+          "2606:4700::6810:84e5",
+          "2606:4700::6810:85e5"
+        ],
+        "mx": [
+          {
+            "exchange": "mxb.global.inbound.cf-emailsecurity.net",
+            "priority": 10,
+            "type": "MX"
+          },
+          {
+            "exchange": "mxb-canary.global.inbound.cf-emailsecurity.net",
+            "priority": 5,
+            "type": "MX"
+          },
+          {
+            "exchange": "mxa-canary.global.inbound.cf-emailsecurity.net",
+            "priority": 5,
+            "type": "MX"
+          },
+          {
+            "exchange": "mxa.global.inbound.cf-emailsecurity.net",
+            "priority": 10,
+            "type": "MX"
+          }
+        ],
+        "txt": []
+      },
+      "spf": {
+        "present": false,
+        "record": null,
+        "valid": false
+      },
+      "dmarc": {
+        "present": true,
+        "record": "v=DMARC1; p=reject; sp=reject; adkim=r; aspf=r; pct=100; rua=mailto:a1c47f179bc04efd8ee4dcd4d85dfc65@dmarc-reports.cloudflare.net,mailto:rua@cloudflare.com",
+        "policy": "reject"
+      },
+      "issues": [
+        {
+          "category": "DNS / Email",
+          "severity": "Warning",
+          "title": "Missing SPF record",
+          "evidence": "No TXT record starting with v=spf1 found",
+          "recommendation": "Configure an SPF record to protect domain against email spoofing."
+        }
+      ]
+    },
+    "ssl": {
+      "valid": true,
+      "daysRemaining": 83,
+      "issuer": "Google Trust Services",
+      "validTo": "2026-12-04T23:29:33.000Z",
+      "tlsVersion": "TLSv1.3",
+      "issues": []
+    },
+    "redirects": {
+      "hops": [
+        {
+          "url": "https://cloudflare.com/",
+          "status": 301,
+          "location": "https://www.cloudflare.com/"
+        },
+        {
+          "url": "https://www.cloudflare.com/",
+          "status": 200,
+          "location": null
+        }
+      ],
+      "finalUrl": "https://www.cloudflare.com/",
+      "loopDetected": false,
+      "issues": []
+    },
+    "accuracy404": {
+      "status": 404,
+      "isAccurate": true,
+      "issues": []
+    },
+    "robotsAndSitemap": {
+      "robots": {
+        "present": true,
+        "status": 200
+      },
+      "sitemap": {
+        "present": true,
+        "status": 200
+      },
+      "issues": []
+    },
+    "structuredData": {
+      "schemasCount": 3,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Cloudflare",
+          "url": "https://www.cloudflare.com",
+          "logo": "https://www.cloudflare.com/logo.svg",
+          "sameAs": [
+            "https://github.com/cloudflare",
+            "https://www.linkedin.com/company/cloudflare",
+            "https://x.com/cloudflare"
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Cloudflare",
+          "url": "https://www.cloudflare.com",
+          "inLanguage": "en",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.cloudflare.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Cloudflare: Build for the agent era",
+          "description": "Welcome to Cloudflare - Powering the next generation of applications",
+          "url": "https://www.cloudflare.com/",
+          "inLanguage": "en"
+        }
+      ],
+      "napConsistency": {
+        "schemaFound": true,
+        "schemaName": "Cloudflare",
+        "schemaPhone": null,
+        "schemaAddress": null,
+        "footerMatched": true
+      },
+      "issues": []
+    },
+    "socialGraph": {
+      "ogTitle": "Cloudflare: Build for the agent era",
+      "ogImage": "https://www.cloudflare.com/preview.png",
+      "ogDescription": "Welcome to Cloudflare - Powering the next generation of applications",
+      "twitterCard": "summary_large_image"
+    },
+    "thirdPartyScripts": [
+      "static.cloudflareinsights.com"
+    ],
+    "cookieConsent": false,
+    "mixedContentCount": 0,
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": []
+  },
+  "remediationPriorities": [
+    {
+      "rank": 1,
+      "title": "Server version exposed",
+      "action": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 2,
+      "title": "Missing SPF record",
+      "action": "Configure an SPF record to protect domain against email spoofing.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 3,
+      "title": "Duplicate <h1> headings",
+      "action": "Consolidate to one primary <h1> and use <h2>/<h3> for sub-sections.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    }
+  ]
+}

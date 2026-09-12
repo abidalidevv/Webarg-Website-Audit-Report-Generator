@@ -1,0 +1,432 @@
+{
+  "id": "_nq27B-FURI6",
+  "targetUrl": "https://news.ycombinator.com/",
+  "mode": "quick",
+  "timestamp": "2026-09-12T22:11:37.353Z",
+  "overallScore": 87,
+  "overallStatus": "HEALTHY",
+  "scores": {
+    "overall": 87,
+    "performance": 99,
+    "seo": 62,
+    "accessibility": 87,
+    "conversion": 50,
+    "security": 99
+  },
+  "summary": {
+    "total": 11,
+    "critical": 1,
+    "warning": 7,
+    "pass": 0,
+    "narrative": "Inspection identified 11 verified checks. 1 require immediate remediation to prevent lead leakage, 7 affect conversion consistency or search visibility, and 0 passed technical standards."
+  },
+  "revenueImpact": {
+    "title": "LEAD & REVENUE LEAKAGE DETECTED",
+    "description": "Form missing dedicated submit button: 100% loss of form-generated leads."
+  },
+  "techStack": [
+    {
+      "category": "Analytics",
+      "name": "Google Analytics 4",
+      "confidence": "High"
+    },
+    {
+      "category": "Web Server",
+      "name": "Nginx",
+      "confidence": "High"
+    }
+  ],
+  "conversionJourney": {
+    "phone": {
+      "count": 0,
+      "items": [],
+      "unlinkedInBody": false
+    },
+    "whatsapp": {
+      "count": 0,
+      "items": []
+    },
+    "email": {
+      "count": 1,
+      "items": [
+        {
+          "href": "mailto:hn@ycombinator.com",
+          "address": "hn@ycombinator.com",
+          "isValid": true
+        }
+      ]
+    },
+    "maps": {
+      "present": false
+    },
+    "forms": {
+      "count": 1,
+      "details": [
+        {
+          "action": "//hn.algolia.com/",
+          "method": "GET",
+          "inputs": 1,
+          "hasSubmit": false,
+          "hasSpamProtection": false
+        }
+      ]
+    },
+    "socials": {
+      "count": 4,
+      "genericCount": 0
+    }
+  },
+  "trustSignals": {
+    "privacyPolicy": false,
+    "termsOfService": false,
+    "deadCtasCount": 0
+  },
+  "assetPipeline": {
+    "semantics": {
+      "hasDoctype": false,
+      "htmlLang": "en",
+      "hasCharset": false
+    },
+    "images": {
+      "total": 2,
+      "nonModernFormatCount": 0,
+      "missingLazyCount": 0
+    },
+    "fonts": {
+      "count": 0,
+      "hasPreconnect": false,
+      "hasDisplaySwap": false
+    },
+    "compression": {
+      "enabled": true,
+      "encoding": "gzip"
+    },
+    "caching": {
+      "cacheControl": "private; max-age=0",
+      "hasEtag": false
+    },
+    "issues": [
+      {
+        "category": "Accessibility & Semantics",
+        "severity": "Low",
+        "title": "Missing UTF-8 character encoding declaration",
+        "evidence": "<meta charset=\"utf-8\"> was not found in document <head>.",
+        "userImpact": "Special characters, currency symbols or accents can display as broken glyphs.",
+        "businessImpact": "Unprofessional appearance on certain browser locales.",
+        "recommendation": "Add <meta charset=\"utf-8\"> within the first 1024 bytes of the <head>.",
+        "effort": "Low"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "6vptOX",
+      "category": "Conversion Journey",
+      "severity": "Critical",
+      "headline": "Form missing dedicated submit button",
+      "evidence": "1 form(s) do not contain a visible submit button.",
+      "userImpact": "Users unable to complete or send form submissions on mobile.",
+      "businessImpact": "100% loss of form-generated leads.",
+      "recommendation": "Add an explicit <button type=\"submit\"> to all enquiry and lead capture forms.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "M4_Zik",
+      "category": "Legal & Trust",
+      "severity": "Warning",
+      "headline": "Missing Privacy Policy link",
+      "evidence": "No link containing \"privacy\" was detected in footer or navigation.",
+      "userImpact": "No disclosure on how visitor contact data is processed or stored.",
+      "businessImpact": "GDPR / CCPA compliance exposure; required for Google Ads approval.",
+      "recommendation": "Add a dedicated Privacy Policy page linked in the global footer.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "gZopRk",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Server version exposed",
+      "evidence": "Server header revealed: \"nginx\"",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "ZGqa1p",
+      "category": "SEO",
+      "severity": "Warning",
+      "headline": "Missing or inaccessible XML Sitemap",
+      "evidence": "/sitemap.xml returned status 404",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Generate an XML sitemap and reference it in robots.txt to assist discovery.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "mllRMK",
+      "category": "Accessibility & Semantics",
+      "severity": "Low",
+      "headline": "Missing UTF-8 character encoding declaration",
+      "evidence": "<meta charset=\"utf-8\"> was not found in document <head>.",
+      "userImpact": "Special characters, currency symbols or accents can display as broken glyphs.",
+      "businessImpact": "Unprofessional appearance on certain browser locales.",
+      "recommendation": "Add <meta charset=\"utf-8\"> within the first 1024 bytes of the <head>.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "H5Sut5",
+      "category": "SEO",
+      "severity": "Warning",
+      "headline": "Missing meta description",
+      "evidence": "<meta name=\"description\"> tag is absent",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add an intent-focused meta description between 120–160 characters.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "7NV_8H",
+      "category": "SEO / Structure",
+      "severity": "Warning",
+      "headline": "Missing <h1> heading",
+      "evidence": "Page does not contain an <h1> tag",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add a single primary <h1> element representing the main topic.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "Qv_V-F",
+      "category": "SEO",
+      "severity": "Low",
+      "headline": "Missing canonical URL",
+      "evidence": "<link rel=\"canonical\"> tag is absent",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Specify a self-referencing canonical tag to prevent duplicate content indexing.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "rspAyK",
+      "category": "SEO / Social",
+      "severity": "Low",
+      "headline": "Incomplete Open Graph tags",
+      "evidence": "og:title=false, og:image=false",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add og:title, og:description, and og:image to ensure rich previews when shared on WhatsApp/social media.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "mXXMWk",
+      "category": "Accessibility",
+      "severity": "Warning",
+      "headline": "Images missing alt text",
+      "evidence": "2 of 2 images have no alt attribute",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add descriptive alt text for informative images or alt=\"\" for decorative graphics.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "gwpKBe",
+      "category": "SEO / Structured Data",
+      "severity": "Warning",
+      "headline": "Missing structured data (Schema.org)",
+      "evidence": "No JSON-LD schema found on page",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add Organization or LocalBusiness Schema.org JSON-LD to enhance rich snippets and AI discoverability.",
+      "effort": "Low",
+      "status": "Open"
+    }
+  ],
+  "accessLevelMatrix": [
+    {
+      "surface": "Public Website & DOM",
+      "accessRequired": "None (Public URL)",
+      "status": "Audited Live",
+      "coverage": "Frontend performance, mobile layout shifts, click-to-call, SEO crawlability, public DNS/SSL, security headers, tracking scripts."
+    },
+    {
+      "surface": "CMS Admin & Plugins",
+      "accessRequired": "WordPress / Shopify / Webflow Login",
+      "status": "Requires Manual Playbook",
+      "coverage": "Plugin vulnerabilities, theme bloat, database overhead, auto-update health, user privilege audit."
+    },
+    {
+      "surface": "CRM & GoHighLevel Automations",
+      "accessRequired": "GHL / ActiveCampaign Account Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "Workflow triggers, SMS/Email autoresponders, webhook delivery, pipeline tag integrity, UTM attribution."
+    },
+    {
+      "surface": "Physical Mobile Devices & Carriers",
+      "accessRequired": "Real iPhone / Android Hardware",
+      "status": "Requires Manual Playbook",
+      "coverage": "Real carrier click-to-call dialers, Safari iOS keyboard viewport clipping, WhatsApp native handoff, mobile touch gesture conflicts."
+    },
+    {
+      "surface": "Server, Hosting & PHP Logs",
+      "accessRequired": "Hosting / cPanel / Cloud Console Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "PHP error logs, slow database queries, disk I/O bottlenecks, off-site backup restoration drills."
+    }
+  ],
+  "details": {
+    "dns": {
+      "records": {
+        "a": [
+          "209.216.230.207"
+        ],
+        "aaaa": [
+          "2606:7100:1:67::26"
+        ],
+        "mx": [],
+        "txt": []
+      },
+      "spf": {
+        "present": false,
+        "record": null,
+        "valid": false
+      },
+      "dmarc": {
+        "present": false,
+        "record": null,
+        "policy": null
+      },
+      "issues": []
+    },
+    "ssl": {
+      "valid": true,
+      "daysRemaining": 34,
+      "issuer": "Let's Encrypt",
+      "validTo": "2026-10-17T08:09:10.000Z",
+      "tlsVersion": "TLSv1.3",
+      "issues": []
+    },
+    "redirects": {
+      "hops": [
+        {
+          "url": "https://news.ycombinator.com/",
+          "status": 200,
+          "location": null
+        }
+      ],
+      "finalUrl": "https://news.ycombinator.com/",
+      "loopDetected": false,
+      "issues": []
+    },
+    "accuracy404": {
+      "status": 404,
+      "isAccurate": true,
+      "issues": []
+    },
+    "robotsAndSitemap": {
+      "robots": {
+        "present": true,
+        "status": 200
+      },
+      "sitemap": {
+        "present": false,
+        "status": 404
+      },
+      "issues": [
+        {
+          "category": "SEO",
+          "severity": "Warning",
+          "title": "Missing or inaccessible XML Sitemap",
+          "evidence": "/sitemap.xml returned status 404",
+          "recommendation": "Generate an XML sitemap and reference it in robots.txt to assist discovery."
+        }
+      ]
+    },
+    "structuredData": {
+      "schemasCount": 0,
+      "schemas": [],
+      "napConsistency": {
+        "schemaFound": false,
+        "schemaName": null,
+        "schemaPhone": null,
+        "schemaAddress": null,
+        "footerMatched": true
+      },
+      "issues": [
+        {
+          "category": "SEO / Structured Data",
+          "severity": "Warning",
+          "title": "Missing structured data (Schema.org)",
+          "evidence": "No JSON-LD schema found on page",
+          "recommendation": "Add Organization or LocalBusiness Schema.org JSON-LD to enhance rich snippets and AI discoverability."
+        }
+      ]
+    },
+    "socialGraph": {
+      "ogTitle": null,
+      "ogImage": null,
+      "ogDescription": null,
+      "twitterCard": null
+    },
+    "thirdPartyScripts": [],
+    "cookieConsent": false,
+    "mixedContentCount": 0,
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": []
+  },
+  "remediationPriorities": [
+    {
+      "rank": 1,
+      "title": "Form missing dedicated submit button",
+      "action": "Add an explicit <button type=\"submit\"> to all enquiry and lead capture forms.",
+      "effort": "Low",
+      "priority": "Priority 1 (Fix immediately)"
+    },
+    {
+      "rank": 2,
+      "title": "Missing Privacy Policy link",
+      "action": "Add a dedicated Privacy Policy page linked in the global footer.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 3,
+      "title": "Server version exposed",
+      "action": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 4,
+      "title": "Missing or inaccessible XML Sitemap",
+      "action": "Generate an XML sitemap and reference it in robots.txt to assist discovery.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 5,
+      "title": "Missing meta description",
+      "action": "Add an intent-focused meta description between 120–160 characters.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 6,
+      "title": "Missing <h1> heading",
+      "action": "Add a single primary <h1> element representing the main topic.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webarg — Website Audit Report Generator</title>
+<meta name="description" content="Webarg generates clear, evidence-based website audit reports for technical inspections.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
+
+:root{
+  --ink:#14181F; --ink-2:#1A2028; --ink-3:#202731; --line:#303842;
+  --text:#E7EBEE; --muted:#9DA7B0; --faint:#6F7983;
+  --teal:#3E6E8E; --critical:#C1432B; --warning:#B8863D; --pass:#4C7A5E;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Manrope,system-ui,sans-serif;line-height:1.5}
+button,input{font:inherit}
+button{cursor:pointer}
+.page{max-width:1180px;margin:auto;padding:0 34px}
+header{height:82px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.brand{font:700 30px/1 "Barlow Condensed",sans-serif;letter-spacing:-.02em}
+.brand span{color:#93A6B3}
+.header-note{font:500 12px "IBM Plex Mono",monospace;color:var(--muted)}
+.hero{min-height:610px;display:flex;flex-direction:column;justify-content:center;max-width:940px}
+.hero h1{font:600 clamp(58px,8.2vw,112px)/.86 "Barlow Condensed",sans-serif;letter-spacing:-.035em;margin:0 0 30px;max-width:850px}
+.hero p{font-size:17px;color:var(--muted);max-width:650px;margin:0 0 42px}
+.scan-form{display:flex;border:1px solid #49535D;background:#171D24;min-height:78px;max-width:900px}
+.scan-form:focus-within{border-color:var(--teal)}
+.scan-form input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font:500 18px "IBM Plex Mono",monospace;padding:0 25px;min-width:0}
+.scan-form input::placeholder{color:#69737D}
+.scan-form button{border:0;background:var(--teal);color:white;padding:0 34px;font-weight:700;min-width:180px}
+.scan-form button:hover{filter:brightness(1.08)}
+.helper{margin-top:13px;font:12px "IBM Plex Mono",monospace;color:var(--faint)}
+#scanStage{display:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line);height:300px;position:relative;overflow:hidden;background:#11161C}
+#scanCanvas{position:absolute;inset:0;width:100%;height:100%}
+.scan-copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.scan-copy strong{font:600 32px "Barlow Condensed",sans-serif;letter-spacing:.01em}
+.scan-copy span{font:12px "IBM Plex Mono",monospace;color:var(--muted);margin-top:8px}
+#results{display:none}
+.results-head{padding:54px 0 24px;display:flex;justify-content:space-between;gap:30px;align-items:end}
+.results-head h2{font:600 42px/1 "Barlow Condensed",sans-serif;margin:0}
+.results-head p{font:12px "IBM Plex Mono",monospace;color:var(--muted);margin:7px 0 0}
+.status{font:12px "IBM Plex Mono",monospace;color:var(--pass)}
+.score-strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:38px}
+.score{padding:25px 22px;border-right:1px solid var(--line)}
+.score:last-child{border-right:0}
+.score-label{font:500 12px "IBM Plex Mono",monospace;color:var(--muted)}
+.score-value{font:500 clamp(42px,5vw,65px)/1 "IBM Plex Mono",monospace;margin:9px 0 5px}
+.score-note{font-size:12px;color:var(--muted)}
+.good{color:var(--pass)} .warn{color:var(--warning)} .bad{color:var(--critical)}
+.audit{border-top:1px solid var(--line)}
+.audit-row{border-bottom:1px solid var(--line)}
+.audit-summary{min-height:76px;display:grid;grid-template-columns:210px 1fr auto;align-items:center;gap:20px;padding:0 4px;list-style:none}
+.audit-summary::-webkit-details-marker{display:none}
+.audit-row[open] .audit-summary{border-bottom:1px solid #29313A}
+.audit-name{font:600 22px "Barlow Condensed",sans-serif}
+.audit-meta{font:12px "IBM Plex Mono",monospace;color:var(--muted)}
+.severity{font:12px "IBM Plex Mono",monospace;display:flex;align-items:center;gap:9px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.critical{background:var(--critical)} .dot.warning{background:var(--warning)} .dot.pass{background:var(--pass)}
+.audit-body{padding:25px 4px 32px}
+.detail-intro{font-size:14px;color:#B7C0C8;max-width:760px;margin:0 0 21px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--faint);font:500 11px "IBM Plex Mono",monospace;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:14px 12px;border-bottom:1px solid #262E37;vertical-align:top}
+td.code,td.time{font:12px "IBM Plex Mono",monospace;color:#C9D0D5}
+td.issue{font-weight:600}
+td.detail{color:var(--muted)}
+footer{border-top:1px solid var(--line);margin-top:72px;padding:26px 0 42px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.footer-copy{font:11px "IBM Plex Mono",monospace;color:var(--faint)}
+.actions{display:flex;gap:10px}
+.action{border:1px solid #4A535D;background:transparent;color:var(--text);padding:11px 17px;font-weight:600;font-size:13px}
+.action:hover{border-color:var(--teal);color:#BFD2DF}
+@media(max-width:700px){
+ .page{padding:0 18px} header{height:70px}.header-note{display:none}
+ .hero{min-height:560px}.hero h1{font-size:64px}.hero p{font-size:15px}
+ .scan-form{display:block;border:0;background:transparent}.scan-form input{width:100%;height:68px;border:1px solid #49535D;background:#171D24;padding:0 17px}.scan-form button{width:100%;height:62px;margin-top:8px}
+ .score-strip{grid-template-columns:1fr 1fr}.score{border-bottom:1px solid var(--line)}.score:nth-child(2){border-right:0}
+ .results-head{display:block}.status{margin-top:16px}
+ .audit-summary{grid-template-columns:1fr auto;gap:7px;padding:14px 0}.audit-meta{grid-column:1}.severity{grid-column:2;grid-row:1/3}
+ table{display:block;overflow-x:auto;white-space:nowrap}
+ footer{display:block}.actions{margin-top:18px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div class="brand">webarg</div>
+  <div class="header-note">WEBSITE AUDIT REPORT GENERATOR</div>
+</header>
+
+<main>
+<section class="hero">
+  <h1>Know what’s wrong<br>with the site.</h1>
+  <p>Webarg turns a technical website inspection into a report a business owner can actually understand — with evidence, severity, and clear findings.</p>
+  <form class="scan-form" id="scanForm">
+    <input id="urlInput" type="url" placeholder="https://yourwebsite.com" aria-label="Website URL" required>
+    <button type="submit">Scan your website</button>
+  </form>
+  <div class="helper">No account required · Read-only inspection · Sample results shown after scan</div>
+</section>
+
+<section id="scanStage" aria-live="polite">
+  <canvas id="scanCanvas"></canvas>
+  <div class="scan-copy">
+    <strong>Inspecting website</strong>
+    <span id="scanUrl">https://yourwebsite.com</span>
+  </div>
+</section>
+
+<section id="results">
+  <div class="results-head">
+    <div>
+      <h2>Audit report</h2>
+      <p id="reportUrl">https://yourwebsite.com · scanned just now</p>
+    </div>
+    <div class="status">● SCAN COMPLETE</div>
+  </div>
+
+  <div class="score-strip">
+    <div class="score"><div class="score-label">PERFORMANCE</div><div class="score-value good">91</div><div class="score-note">Fast enough for most users</div></div>
+    <div class="score"><div class="score-label">SEO</div><div class="score-value warn">76</div><div class="score-note">Several discoverability issues</div></div>
+    <div class="score"><div class="score-label">ACCESSIBILITY</div><div class="score-value warn">68</div><div class="score-note">Needs remediation</div></div>
+    <div class="score"><div class="score-label">SECURITY</div><div class="score-value bad">52</div><div class="score-note">Important findings detected</div></div>
+  </div>
+
+  <div class="audit">
+    <details class="audit-row" open>
+      <summary class="audit-summary">
+        <span class="audit-name">Console errors</span><span class="audit-meta">2 findings · browser runtime</span>
+        <span class="severity"><i class="dot critical"></i><span class="bad">2 critical</span></span>
+      </summary>
+      <div class="audit-body">
+        <p class="detail-intro">JavaScript errors were detected during page execution. These can break interactive features and create inconsistent behavior for visitors.</p>
+        <table><thead><tr><th>Severity</th><th>Error</th><th>Location</th><th>Time</th></tr></thead>
+        <tbody>
+          <tr><td class="bad">Critical</td><td class="issue">Uncaught TypeError</td><td class="code">/assets/app.js:184</td><td class="time">00:01.842</td></tr>
+          <tr><td class="bad">Critical</td><td class="issue">Failed to load resource</td><td class="code">/api/products</td><td class="time">00:02.104</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+
+    <details class="audit-row">
+      <summary class="audit-summary">
+        <span class="audit-name">SEO</span><span class="audit-meta">4 findings · crawl & metadata</span>
+        <span class="severity"><i class="dot warning"></i><span class="warn">4 warnings</span></span>
+      </summary>
+      <div class="audit-body">
+        <p class="detail-intro">The page is indexable, but several metadata and semantic signals are weaker than they should be.</p>
+        <table><thead><tr><th>Severity</th><th>Finding</th><th>Evidence</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="warn">Warning</td><td class="issue">Missing meta description</td><td class="detail">Homepage has no description tag</td><td class="code">MISSING</td></tr>
+          <tr><td class="warn">Warning</td><td class="issue">Duplicate H1</td><td class="detail">2 H1 elements found</td><td class="code">2 FOUND</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+
+    <details class="audit-row">
+      <summary class="audit-summary">
+        <span class="audit-name">Accessibility</span><span class="audit-meta">3 findings · WCAG checks</span>
+        <span class="severity"><i class="dot warning"></i><span class="warn">3 warnings</span></span>
+      </summary>
+      <div class="audit-body">
+        <p class="detail-intro">Several interface elements need stronger semantic or assistive-technology support.</p>
+        <table><thead><tr><th>Severity</th><th>Finding</th><th>Element</th><th>Count</th></tr></thead>
+        <tbody>
+          <tr><td class="warn">Warning</td><td class="issue">Images missing alt text</td><td class="code">img.product</td><td class="code">7</td></tr>
+          <tr><td class="warn">Warning</td><td class="issue">Low contrast text</td><td class="code">.footer-note</td><td class="code">2</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+
+    <details class="audit-row">
+      <summary class="audit-summary">
+        <span class="audit-name">Performance</span><span class="audit-meta">1 finding · Core Web Vitals</span>
+        <span class="severity"><i class="dot pass"></i><span class="good">1 pass</span></span>
+      </summary>
+      <div class="audit-body">
+        <p class="detail-intro">Core loading behavior is healthy overall. The main opportunity is reducing the amount of JavaScript shipped on the initial route.</p>
+        <table><thead><tr><th>Metric</th><th>Value</th><th>Target</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="issue">Largest Contentful Paint</td><td class="code">1.8s</td><td class="code">&lt; 2.5s</td><td class="good">PASS</td></tr>
+          <tr><td class="issue">Total Blocking Time</td><td class="code">214ms</td><td class="code">&lt; 200ms</td><td class="warn">NEAR LIMIT</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+
+    <details class="audit-row">
+      <summary class="audit-summary">
+        <span class="audit-name">Security</span><span class="audit-meta">3 findings · headers & transport</span>
+        <span class="severity"><i class="dot critical"></i><span class="bad">2 critical · 1 warning</span></span>
+      </summary>
+      <div class="audit-body">
+        <p class="detail-intro">Security checks found missing defensive headers and an exposed server signature that should be addressed.</p>
+        <table><thead><tr><th>Severity</th><th>Finding</th><th>Evidence</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="bad">Critical</td><td class="issue">Content-Security-Policy absent</td><td class="code">response header</td><td class="bad">MISSING</td></tr>
+          <tr><td class="bad">Critical</td><td class="issue">Outdated TLS configuration</td><td class="code">TLS 1.0 accepted</td><td class="bad">FAIL</td></tr>
+          <tr><td class="warn">Warning</td><td class="issue">Server version exposed</td><td class="code">Apache/2.4.57</td><td class="warn">EXPOSED</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-copy">WEBARG · TECHNICAL INSPECTION REPORT · <span id="footerDomain">YOUR WEBSITE</span></div>
+  <div class="actions">
+    <button class="action" id="pdfBtn">Export PDF</button>
+    <button class="action" id="shareBtn">Share report</button>
+  </div>
+</footer>
+</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js';
+
+const form=document.getElementById('scanForm');
+const stage=document.getElementById('scanStage');
+const results=document.getElementById('results');
+const input=document.getElementById('urlInput');
+const scanUrl=document.getElementById('scanUrl');
+const reportUrl=document.getElementById('reportUrl');
+const footerDomain=document.getElementById('footerDomain');
+const canvas=document.getElementById('scanCanvas');
+
+function runScan(url){
+  scanUrl.textContent=url;
+  reportUrl.textContent=url+" · scanned just now";
+  try{footerDomain.textContent=new URL(url).hostname.toUpperCase()}catch{footerDomain.textContent=url.toUpperCase()}
+  stage.style.display='block';
+  results.style.display='none';
+  stage.scrollIntoView({behavior:'smooth',block:'center'});
+  startThreeScan();
+}
+
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  let url=input.value.trim();
+  if(!/^https?:\/\//i.test(url)) url='https://'+url;
+  input.value=url;
+  runScan(url);
+});
+
+document.getElementById('shareBtn').addEventListener('click',async()=>{
+  const shareData={title:'Webarg Audit Report',text:'Website audit report for '+reportUrl.textContent,url:location.href};
+  if(navigator.share){try{await navigator.share(shareData)}catch{}}
+  else{await navigator.clipboard.writeText(location.href);alert('Report link copied.')}
+});
+document.getElementById('pdfBtn').addEventListener('click',()=>window.print());
+
+let running=false;
+function startThreeScan(){
+  if(running)return;
+  running=true;
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x11161c);
+  const camera=new THREE.OrthographicCamera(-10,10,4.1,-4.1,.1,100);
+  camera.position.z=20;
+
+  const group=new THREE.Group();
+  scene.add(group);
+
+  const mat=new THREE.LineBasicMaterial({color:0x50606d,transparent:true,opacity:.62});
+  const bright=new THREE.LineBasicMaterial({color:0x7f9aaa,transparent:true,opacity:.95});
+  for(let y=-3;y<=3;y+=1){
+    const pts=[];
+    for(let x=-9;x<=9;x+=1){ pts.push(new THREE.Vector3(x,y+(Math.sin(x*1.4+y)*.12),0)); }
+    group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),mat));
+  }
+  for(let x=-9;x<=9;x+=1){
+    const pts=[];
+    for(let y=-3;y<=3;y+=1){ pts.push(new THREE.Vector3(x,y,0)); }
+    group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),mat));
+  }
+
+  const beamMat=new THREE.MeshBasicMaterial({color:0x3e6e8e,transparent:true,opacity:.5});
+  const beam=new THREE.Mesh(new THREE.PlaneGeometry(.18,8.2),beamMat);
+  beam.rotation.z=0.03;
+  group.add(beam);
+
+  const start=performance.now(), duration=2800;
+  function animate(now){
+    const t=Math.min((now-start)/duration,1);
+    beam.position.x=-9+18*t;
+    group.rotation.z=Math.sin(t*Math.PI)*.006;
+    renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);
+    camera.left=-10; camera.right=10;
+    camera.top=10*(canvas.clientHeight/canvas.clientWidth);
+    camera.bottom=-camera.top;
+    camera.updateProjectionMatrix();
+    renderer.render(scene,camera);
+    if(t<1) requestAnimationFrame(animate);
+    else{
+      stage.style.display='none';
+      results.style.display='block';
+      results.scrollIntoView({behavior:'smooth',block:'start'});
+      renderer.dispose();
+      running=false;
+    }
+  }
+  requestAnimationFrame(animate);
+}
+</script>
+</body>
+</html>
