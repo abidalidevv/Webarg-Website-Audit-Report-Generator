@@ -1,0 +1,583 @@
+{
+  "id": "txK2uS9Qwsaz",
+  "targetUrl": "https://google.com/",
+  "businessName": "Google",
+  "mode": "quick",
+  "timestamp": "2026-09-13T11:41:15.582Z",
+  "overallScore": 85,
+  "overallStatus": "HEALTHY",
+  "scores": {
+    "overall": 85,
+    "performance": 99,
+    "seo": 70,
+    "accessibility": 95,
+    "conversion": 20,
+    "security": 75
+  },
+  "scoreTypes": {
+    "overall": "aggregate",
+    "performance": "measured",
+    "seo": "measured",
+    "accessibility": "measured",
+    "security": "measured",
+    "conversion": "derived_heuristic"
+  },
+  "summary": {
+    "total": 15,
+    "critical": 3,
+    "warning": 12,
+    "pass": 0,
+    "narrative": "Inspection identified 15 verified checks. 3 require immediate remediation to prevent lead leakage, 12 affect conversion consistency or search visibility, and 0 passed technical standards."
+  },
+  "metrics": {
+    "ttfb": null,
+    "lcp": null,
+    "cls": null,
+    "tbt": null,
+    "pageSize": null
+  },
+  "revenueImpact": {
+    "title": "LEAD & REVENUE LEAKAGE DETECTED",
+    "description": "Phone number is unclickable plain text: High bounce rate on mobile; direct commercial lead loss."
+  },
+  "techStack": [
+    {
+      "category": "CMS",
+      "name": "Webflow",
+      "confidence": "High"
+    },
+    {
+      "category": "Analytics",
+      "name": "Google Analytics 4",
+      "confidence": "High"
+    }
+  ],
+  "conversionJourney": {
+    "phone": {
+      "count": 0,
+      "items": [],
+      "unlinkedInBody": true
+    },
+    "whatsapp": {
+      "count": 0,
+      "items": []
+    },
+    "email": {
+      "count": 0,
+      "items": []
+    },
+    "maps": {
+      "present": false
+    },
+    "forms": {
+      "count": 1,
+      "details": [
+        {
+          "action": "/search",
+          "method": "GET",
+          "inputs": 12,
+          "hasSubmit": true,
+          "hasSpamProtection": false
+        }
+      ]
+    },
+    "socials": {
+      "count": 0,
+      "genericCount": 0
+    }
+  },
+  "customerJourneys": [
+    {
+      "id": "journey-a",
+      "name": "Journey A — New Visitor",
+      "flow": "Search → Homepage → 5-Second Clarity → Primary CTA",
+      "status": "pass",
+      "confidence": "inferred",
+      "notes": "Indirect proxy: Evaluates value proposition clarity and whether visitor finds primary CTA without friction."
+    },
+    {
+      "id": "journey-b",
+      "name": "Journey B — Inquiring Lead",
+      "flow": "Homepage → Contact Form / Phone → Submission → Notification",
+      "status": "critical",
+      "confidence": "inferred",
+      "notes": "Indirect proxy: Tests whether contact channel elements exist in the DOM (actual message receipt requires manual audit)."
+    },
+    {
+      "id": "journey-c",
+      "name": "Journey C — Mobile Customer",
+      "flow": "320px Mobile Screen → Touch CTA → Dial / Chat Conversion",
+      "status": "critical",
+      "confidence": "measured",
+      "notes": "Directly measured: Verifies tap-to-call tel: links and mobile viewport layout at compact 320px."
+    },
+    {
+      "id": "journey-d",
+      "name": "Journey D — Returning User",
+      "flow": "Direct URL → Cached State → Fast Navigation",
+      "status": "pass",
+      "confidence": "measured",
+      "notes": "Directly measured: Validates browser caching headers, compression, and Lighthouse performance scores."
+    },
+    {
+      "id": "journey-e",
+      "name": "Journey E — Failure Recovery",
+      "flow": "Input Error / Non-existent Route → Helpful Guidance → Retry",
+      "status": "pass",
+      "confidence": "measured",
+      "notes": "Directly measured: Checks authentic HTTP 404 status response on non-existent test routes."
+    }
+  ],
+  "trustSignals": {
+    "privacyPolicy": true,
+    "termsOfService": true,
+    "deadCtasCount": 0
+  },
+  "assetPipeline": {
+    "semantics": {
+      "hasDoctype": true,
+      "htmlLang": "en-PK",
+      "hasCharset": true
+    },
+    "images": {
+      "total": 6,
+      "nonModernFormatCount": 0,
+      "missingLazyCount": 3
+    },
+    "fonts": {
+      "count": 0,
+      "hasPreconnect": false,
+      "hasDisplaySwap": false
+    },
+    "compression": {
+      "enabled": true,
+      "encoding": "br"
+    },
+    "caching": {
+      "cacheControl": "private, max-age=0",
+      "hasEtag": false
+    },
+    "issues": []
+  },
+  "findings": [
+    {
+      "id": "hc7N-D",
+      "category": "Conversion Journey",
+      "severity": "critical",
+      "headline": "Phone number is unclickable plain text",
+      "evidence": "Detected phone 1184720131 in page text, but 0 <a href=\"tel:\"> links exist.",
+      "userImpact": "Mobile visitors tapping the phone number cannot initiate a call.",
+      "businessImpact": "High bounce rate on mobile; direct commercial lead loss.",
+      "recommendation": "Wrap visible phone numbers in <a href=\"tel:+1...\"> with clean international dialer formatting.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "HKNUqA",
+      "category": "Security",
+      "severity": "critical",
+      "headline": "Content-Security-Policy absent",
+      "evidence": "Content-Security-Policy response header is missing",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Implement a Content-Security-Policy to protect against cross-site scripting (XSS) and data injection.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "LlXwnk",
+      "category": "Security",
+      "severity": "warning",
+      "headline": "Missing X-Content-Type-Options",
+      "evidence": "X-Content-Type-Options: nosniff header missing",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "Cegcvu",
+      "category": "Security",
+      "severity": "warning",
+      "headline": "Server version exposed",
+      "evidence": "Server header revealed: \"gws\"",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "XEoDln",
+      "category": "DNS / Email",
+      "severity": "warning",
+      "headline": "Missing SPF record",
+      "evidence": "No TXT record starting with v=spf1 found",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Configure an SPF record to protect domain against email spoofing.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "5pHof2",
+      "category": "SEO",
+      "severity": "warning",
+      "headline": "Missing meta description",
+      "evidence": "<meta name=\"description\"> tag is absent",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add an intent-focused meta description between 120–160 characters.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "CeVcMH",
+      "category": "SEO / Structure",
+      "severity": "warning",
+      "headline": "Missing <h1> heading",
+      "evidence": "Page does not contain an <h1> tag",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add a single primary <h1> element representing the main topic.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "-j2dZ_",
+      "category": "SEO",
+      "severity": "warning",
+      "headline": "Missing canonical URL",
+      "evidence": "<link rel=\"canonical\"> tag is absent",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Specify a self-referencing canonical tag to prevent duplicate content indexing.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "r-Fxtm",
+      "category": "Mobile / Responsive",
+      "severity": "critical",
+      "headline": "Missing <meta name=\"viewport\"> tag",
+      "evidence": "No viewport meta tag declared in document head",
+      "userImpact": "Mobile browsers render the desktop site zoomed out at 980px width, causing tiny text and broken touch targets.",
+      "businessImpact": "Severe mobile user drop-off and mobile ranking penalties from Google.",
+      "recommendation": "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> to document <head>.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "xK8szL",
+      "category": "SEO / Social",
+      "severity": "warning",
+      "headline": "Incomplete Open Graph tags",
+      "evidence": "og:title=false, og:image=false",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add og:title, og:description, and og:image to ensure rich previews when shared on WhatsApp/social media.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "o2Sqqs",
+      "category": "Performance",
+      "severity": "warning",
+      "headline": "Images without explicit width/height",
+      "evidence": "6 images lack width and height attributes (CLS risk)",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Include explicit width and height dimensions to prevent cumulative layout shifts.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "xQwghC",
+      "category": "Conversion / Mobile",
+      "severity": "warning",
+      "headline": "Phone number found as plain unclickable text",
+      "evidence": "Phone detected in body text (1184720131) but no tel: links exist in DOM",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Wrap visible phone numbers in <a href=\"tel:...\"> so mobile visitors can tap to call.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "DN4OIx",
+      "category": "SEO / AI Readiness",
+      "severity": "warning",
+      "headline": "Missing structured data (JSON-LD) for AI search engines",
+      "evidence": "No application/ld+json structured schema found in document",
+      "userImpact": "AI search bots (Perplexity, ChatGPT, Google Search Generative) struggle to parse business entities.",
+      "businessImpact": "Reduced visibility in generative AI search summaries and rich SERP snippets.",
+      "recommendation": "Add Schema.org JSON-LD structured data (Organization, LocalBusiness, or Product).",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "27ua5o",
+      "category": "Mobile / PWA",
+      "severity": "warning",
+      "headline": "Missing mobile touch icon / web manifest",
+      "evidence": "No <link rel=\"apple-touch-icon\"> or manifest.json declared in <head>",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add apple-touch-icon and web app manifest for crisp home-screen bookmarks on iOS and Android.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "h0SvrW",
+      "category": "SEO / Structured Data",
+      "severity": "warning",
+      "headline": "Missing structured data (Schema.org)",
+      "evidence": "No JSON-LD schema found on page",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add Organization or LocalBusiness Schema.org JSON-LD to enhance rich snippets and AI discoverability.",
+      "effort": "Low",
+      "status": "Open"
+    }
+  ],
+  "accessLevelMatrix": [
+    {
+      "surface": "Public Website & DOM",
+      "accessRequired": "None (Public URL)",
+      "status": "Audited Live",
+      "coverage": "Frontend performance, mobile layout shifts, click-to-call, SEO crawlability, public DNS/SSL, security headers, tracking scripts."
+    },
+    {
+      "surface": "CMS Admin & Plugins",
+      "accessRequired": "WordPress / Shopify / Webflow Login",
+      "status": "Requires Manual Playbook",
+      "coverage": "Plugin vulnerabilities, theme bloat, database overhead, auto-update health, user privilege audit."
+    },
+    {
+      "surface": "CRM & GoHighLevel Automations",
+      "accessRequired": "GHL / ActiveCampaign Account Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "Workflow triggers, SMS/Email autoresponders, webhook delivery, pipeline tag integrity, UTM attribution."
+    },
+    {
+      "surface": "Physical Mobile Devices & Carriers",
+      "accessRequired": "Real iPhone / Android Hardware",
+      "status": "Requires Manual Playbook",
+      "coverage": "Real carrier click-to-call dialers, Safari iOS keyboard viewport clipping, WhatsApp native handoff, mobile touch gesture conflicts."
+    },
+    {
+      "surface": "Payment Gateways & Checkout Sandboxes",
+      "accessRequired": "Stripe / PayPal / E-commerce Admin",
+      "status": "Requires Manual Playbook",
+      "coverage": "End-to-end sandbox purchase, webhook reconciliation, 3D Secure triggers, cart abandonment sequences."
+    },
+    {
+      "surface": "Screen Readers & Assistive Accessibility",
+      "accessRequired": "NVDA / VoiceOver Assistive Software",
+      "status": "Requires Manual Playbook",
+      "coverage": "Full manual keyboard focus traps, screen reader audio fidelity, cognitive readability, aria-live dynamic region announcements."
+    },
+    {
+      "surface": "Server, Hosting & PHP Logs",
+      "accessRequired": "Hosting / cPanel / Cloud Console Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "PHP error logs, slow database queries, disk I/O bottlenecks, off-site backup restoration drills."
+    }
+  ],
+  "details": {
+    "dns": {
+      "records": {
+        "a": [
+          "142.250.202.142"
+        ],
+        "aaaa": [
+          "2a00:1450:4019:812::200e"
+        ],
+        "mx": [
+          {
+            "exchange": "smtp.google.com",
+            "priority": 10,
+            "type": "MX"
+          }
+        ],
+        "txt": []
+      },
+      "spf": {
+        "present": false,
+        "record": null,
+        "valid": false
+      },
+      "dmarc": {
+        "present": true,
+        "record": "v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com",
+        "policy": "reject"
+      },
+      "issues": [
+        {
+          "category": "DNS / Email",
+          "severity": "Warning",
+          "title": "Missing SPF record",
+          "evidence": "No TXT record starting with v=spf1 found",
+          "recommendation": "Configure an SPF record to protect domain against email spoofing."
+        }
+      ]
+    },
+    "ssl": {
+      "valid": true,
+      "daysRemaining": 49,
+      "issuer": "Google Trust Services",
+      "validTo": "2026-11-02T08:37:34.000Z",
+      "tlsVersion": "TLSv1.3",
+      "issues": []
+    },
+    "redirects": {
+      "hops": [
+        {
+          "url": "https://google.com/",
+          "status": 301,
+          "location": "https://www.google.com/"
+        },
+        {
+          "url": "https://www.google.com/",
+          "status": 200,
+          "location": null
+        }
+      ],
+      "finalUrl": "https://www.google.com/",
+      "loopDetected": false,
+      "issues": []
+    },
+    "accuracy404": {
+      "status": 404,
+      "isAccurate": true,
+      "issues": []
+    },
+    "robotsAndSitemap": {
+      "robots": {
+        "present": true,
+        "status": 200
+      },
+      "sitemap": {
+        "present": true,
+        "status": 200
+      },
+      "issues": []
+    },
+    "structuredData": {
+      "schemasCount": 0,
+      "schemas": [],
+      "napConsistency": {
+        "schemaFound": false,
+        "schemaName": null,
+        "schemaPhone": null,
+        "schemaAddress": null,
+        "footerMatched": true
+      },
+      "issues": [
+        {
+          "category": "SEO / Structured Data",
+          "severity": "Warning",
+          "title": "Missing structured data (Schema.org)",
+          "evidence": "No JSON-LD schema found on page",
+          "recommendation": "Add Organization or LocalBusiness Schema.org JSON-LD to enhance rich snippets and AI discoverability."
+        }
+      ]
+    },
+    "socialGraph": {
+      "ogTitle": null,
+      "ogImage": null,
+      "ogDescription": null,
+      "twitterCard": null
+    },
+    "thirdPartyScripts": [
+      "www.gstatic.com"
+    ],
+    "cookieConsent": false,
+    "mixedContentCount": 0,
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": []
+  },
+  "remediationPriorities": [
+    {
+      "rank": 1,
+      "title": "Phone number is unclickable plain text",
+      "action": "Wrap visible phone numbers in <a href=\"tel:+1...\"> with clean international dialer formatting.",
+      "effort": "Low",
+      "priority": "Priority 1 (Fix immediately)"
+    },
+    {
+      "rank": 2,
+      "title": "Content-Security-Policy absent",
+      "action": "Implement a Content-Security-Policy to protect against cross-site scripting (XSS) and data injection.",
+      "effort": "Low",
+      "priority": "Priority 1 (Fix immediately)"
+    },
+    {
+      "rank": 3,
+      "title": "Missing X-Content-Type-Options",
+      "action": "Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 4,
+      "title": "Server version exposed",
+      "action": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 5,
+      "title": "Missing SPF record",
+      "action": "Configure an SPF record to protect domain against email spoofing.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 6,
+      "title": "Missing meta description",
+      "action": "Add an intent-focused meta description between 120–160 characters.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    }
+  ],
+  "consultation": {
+    "executivePitch": "Google's website currently has 3 high-severity technical barrier(s) directly impeding prospect inquiries and commercial conversion. Addressing these priority items will prevent bounce and secure lead flow across mobile and desktop traffic.",
+    "priorityExplanations": [
+      {
+        "rank": 1,
+        "title": "Phone number is unclickable plain text",
+        "clientTalkingPoint": "Remediation action: Wrap visible phone numbers in <a href=\"tel:+1...\"> with clean international dialer formatting."
+      },
+      {
+        "rank": 2,
+        "title": "Content-Security-Policy absent",
+        "clientTalkingPoint": "Remediation action: Implement a Content-Security-Policy to protect against cross-site scripting (XSS) and data injection."
+      },
+      {
+        "rank": 3,
+        "title": "Missing X-Content-Type-Options",
+        "clientTalkingPoint": "Remediation action: Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks."
+      },
+      {
+        "rank": 4,
+        "title": "Server version exposed",
+        "clientTalkingPoint": "Remediation action: Disable or mask the Server header to prevent fingerprinting by automated scanners."
+      },
+      {
+        "rank": 5,
+        "title": "Missing SPF record",
+        "clientTalkingPoint": "Remediation action: Configure an SPF record to protect domain against email spoofing."
+      },
+      {
+        "rank": 6,
+        "title": "Missing meta description",
+        "clientTalkingPoint": "Remediation action: Add an intent-focused meta description between 120–160 characters."
+      }
+    ],
+    "aiProvider": "Deterministic Diagnostic Engine (Fallback)",
+    "isAiGenerated": false
+  }
+}

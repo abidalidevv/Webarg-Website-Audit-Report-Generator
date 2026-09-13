@@ -90,6 +90,10 @@ export default function App() {
     setIsScanning(true);
     setProgress(12);
 
+    setTimeout(() => {
+      document.getElementById('scanStage')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 60);
+
     const startTime = Date.now();
     const expectedDuration = mode === 'deep' ? 35000 : 12000;
 

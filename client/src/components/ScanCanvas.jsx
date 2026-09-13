@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export default function ScanCanvas({ isScanning, scanUrl, progress }) {
+export default function ScanCanvas({ isScanning, scanUrl, progress = 0 }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -11,108 +11,105 @@ export default function ScanCanvas({ isScanning, scanUrl, progress }) {
 
     let animId;
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
-    renderer.setClearColor(0x10151B, 1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x11161C, 1);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-11, 11, 6.2, -6.2, 0.1, 50);
+    scene.background = new THREE.Color(0x11161C);
+
+    const camera = new THREE.OrthographicCamera(-10, 10, 4.1, -4.1, 0.1, 100);
     camera.position.z = 20;
 
-    const site = new THREE.Group();
-    scene.add(site);
+    const group = new THREE.Group();
+    scene.add(group);
 
-    const wireMat = new THREE.LineBasicMaterial({
-      color: 0x586672,
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0x50606D,
       transparent: true,
-      opacity: 0.72
+      opacity: 0.65
     });
 
-    const innerMat = new THREE.LineBasicMaterial({
-      color: 0x3C4852,
+    // 1. Horizontal undulating wavy grid lines matching prototype exactly
+    const horizontalLines = [];
+    for (let y = -3.5; y <= 3.5; y += 1) {
+      const positions = [];
+      for (let x = -11; x <= 11; x += 0.5) {
+        positions.push(x, y + Math.sin(x * 1.4 + y) * 0.12, 0);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      const lineMesh = new THREE.Line(geo, lineMat);
+      group.add(lineMesh);
+      horizontalLines.push({ geo, baseY: y });
+    }
+
+    // 2. Vertical grid lines
+    for (let x = -11; x <= 11; x += 1) {
+      const pts = [
+        new THREE.Vector3(x, -4.2, 0),
+        new THREE.Vector3(x, 4.2, 0)
+      ];
+      const geo = new THREE.BufferGeometry().setFromPoints(pts);
+      group.add(new THREE.Line(geo, lineMat));
+    }
+
+    // 3. Laser scanning beam (core + subtle glow halo)
+    const beamMat = new THREE.MeshBasicMaterial({
+      color: 0x3E6E8E,
       transparent: true,
-      opacity: 0.52
+      opacity: 0.75
     });
+    const beam = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 9.2), beamMat);
+    beam.rotation.z = 0.03;
+    group.add(beam);
 
-    // Wireframe layout matching prototype
-    function line(points, material) {
-      const geometry = new THREE.BufferGeometry().setFromPoints(
-        points.map(([x, y]) => new THREE.Vector3(x, y, 0))
-      );
-      site.add(new THREE.Line(geometry, material));
-    }
-
-    const rects = [
-      [-8.8, -4.3, 17.6, 1.0],
-      [-8.8, -2.65, 11.4, 0.72],
-      [3.35, -2.65, 5.45, 0.72],
-      [-8.8, -1.18, 5.45, 2.35],
-      [-2.92, -1.18, 5.45, 2.35],
-      [2.96, -1.18, 5.45, 2.35],
-      [-8.8, 2.05, 17.6, 0.66]
-    ];
-
-    rects.forEach(([x, y, w, h]) => {
-      line([[x, y], [x + w, y], [x + w, y + h], [x, y + h], [x, y]], wireMat);
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: 0x5689AA,
+      transparent: true,
+      opacity: 0.25
     });
+    const glow = new THREE.Mesh(new THREE.PlaneGeometry(0.85, 9.2), glowMat);
+    glow.rotation.z = 0.03;
+    group.add(glow);
 
-    for (let i = 0; i < 7; i++) {
-      const y = -3.78 + i * 0.31;
-      line([[-7.9, y], [7.9, y]], innerMat);
-    }
-
-    for (let i = 0; i < 3; i++) {
-      line([[-7.8 + i * 5.8, -0.65], [-7.8 + i * 5.8, 0.82]], innerMat);
-    }
-
-    // Single scanning beam
-    const beam = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.12, 12.2),
-      new THREE.MeshBasicMaterial({ color: 0x3E6E8E, transparent: true, opacity: 0.8 })
-    );
-    beam.position.x = -11.2;
-    site.add(beam);
-
-    // Dynamic inspection line hits
-    const hits = [];
-    for (let i = 0; i < 14; i++) {
-      const x = -8.2 + (i % 7) * 2.6;
-      const y = -2.2 + Math.floor(i / 7) * 3.2;
-      const mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.35, 0.035),
-        new THREE.MeshBasicMaterial({ color: 0x91A0AB, transparent: true, opacity: 0 })
-      );
-      mesh.position.set(x, y + 0.02, 0.2);
-      site.add(mesh);
-      hits.push({ mesh, x });
-    }
-
-    let start = performance.now();
-    const cycleDuration = 1600;
+    const start = performance.now();
 
     function resize() {
       const w = Math.max(canvas.clientWidth, 1);
       const h = Math.max(canvas.clientHeight, 1);
       renderer.setSize(w, h, false);
       const aspect = w / h;
-      camera.left = -11;
-      camera.right = 11;
-      camera.top = 11 / aspect;
-      camera.bottom = -11 / aspect;
+      camera.left = -10;
+      camera.right = 10;
+      camera.top = 10 / aspect;
+      camera.bottom = -10 / aspect;
       camera.updateProjectionMatrix();
     }
 
     function frame(now) {
       resize();
-      const elapsed = (now - start) % cycleDuration;
-      const t = elapsed / cycleDuration;
-      const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      beam.position.x = -11.2 + 22.4 * e;
+      const elapsed = now - start;
+      const tSec = elapsed * 0.0018;
 
-      hits.forEach((hit) => {
-        const distance = Math.abs(hit.x - beam.position.x);
-        const opacity = Math.max(0, 1 - distance / 2.2) * 0.8;
-        hit.mesh.material.opacity = opacity;
+      // Animate wavy grid oscillation
+      horizontalLines.forEach(({ geo, baseY }) => {
+        const pos = geo.attributes.position;
+        let idx = 0;
+        for (let x = -11; x <= 11; x += 0.5) {
+          pos.array[idx * 3 + 1] = baseY + Math.sin(x * 1.4 + baseY + tSec) * 0.13;
+          idx++;
+        }
+        pos.needsUpdate = true;
       });
+
+      // Sweep scanning beam continuously across grid
+      const sweep = Math.sin(elapsed * 0.0018);
+      const posX = sweep * 10.2;
+      beam.position.x = posX;
+      glow.position.x = posX;
+
+      // Subtle group tilt for dynamic spatial perception
+      group.rotation.z = Math.sin(elapsed * 0.0008) * 0.006;
 
       renderer.render(scene, camera);
       animId = requestAnimationFrame(frame);
@@ -128,18 +125,40 @@ export default function ScanCanvas({ isScanning, scanUrl, progress }) {
 
   if (!isScanning) return null;
 
+  const currentProgress = Math.min(Math.max(Math.round(progress), 0), 100);
+
+  const getStageMessage = (pct) => {
+    if (pct < 20) return 'Connecting & validating DNS, SSL & security headers…';
+    if (pct < 45) return 'Spinning up headless browser & executing DOM audit…';
+    if (pct < 70) return 'Benchmarking Core Web Vitals & 320px mobile viewport…';
+    if (pct < 88) return 'Auditing conversion paths, form funnels & revenue friction…';
+    if (pct < 100) return 'Synthesizing evidence, finding priorities & executive summary…';
+    return 'Inspection finalized. Preparing report presentation…';
+  };
+
   return (
-    <section className="scan-stage" id="scanStage">
+    <section className="scan-stage" id="scanStage" aria-live="polite">
       <canvas ref={canvasRef} className="scan-canvas" id="scanCanvas" />
-      <div className="scan-overlay">
-        <div className="scan-panel">
-          <div className="scan-panel-title">INSPECTING TARGET…</div>
-          <div className="scan-panel-url">{scanUrl}</div>
+      <div className="scan-copy">
+        <strong className="scan-title">Inspecting website</strong>
+        <span className="scan-url mono">{scanUrl}</span>
+
+        {/* Live Percentage & Diagnostic Status */}
+        <div className="scan-progress-wrap">
+          <div className="scan-progress-meta">
+            <span className="scan-pct-val mono">{currentProgress}%</span>
+            <span className="scan-pct-sub mono">COMPLETED</span>
+          </div>
+
           <div className="scan-progress-track">
             <div
-              className="scan-progress-bar"
-              style={{ width: `${Math.min(Math.max(progress, 8), 98)}%` }}
+              className="scan-progress-fill"
+              style={{ width: `${currentProgress}%` }}
             />
+          </div>
+
+          <div className="scan-stage-message mono">
+            {getStageMessage(currentProgress)}
           </div>
         </div>
       </div>
