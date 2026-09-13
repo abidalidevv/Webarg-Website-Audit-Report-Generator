@@ -262,3 +262,55 @@ export function checkSecurityHeaders(headers) {
     issues
   };
 }
+
+/**
+ * Passive, non-destructive probe for exposed administrative or sensitive endpoints
+ * (XML-RPC, .env exposure).
+ *
+ * @param {string} origin
+ * @returns {Promise<{ issues: Array }>}
+ */
+export async function checkExposedEndpoints(origin) {
+  const issues = [];
+  const probes = [
+    {
+      path: '/xmlrpc.php',
+      title: 'WordPress XML-RPC API publicly accessible',
+      category: 'Security',
+      severity: 'Warning',
+      check: (status, body) => status === 200 || status === 405 || /XML-RPC server accepts POST requests only/i.test(body),
+      recommendation: 'Disable XML-RPC via web server rules or security plugin to prevent brute-force amplification attacks.'
+    },
+    {
+      path: '/.env',
+      title: 'Environment configuration file (.env) publicly exposed',
+      category: 'Security',
+      severity: 'Critical',
+      check: (status, body) => status === 200 && (/DB_PASSWORD|APP_KEY|API_KEY|SECRET/i.test(body) || (body.includes('=') && body.length < 2000)),
+      recommendation: 'Block public access to dotfiles (.env, .git) immediately at the web server level.'
+    }
+  ];
+
+  for (const p of probes) {
+    try {
+      const url = new URL(p.path, origin).href;
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: { 'User-Agent': 'WebargBot/1.0' },
+        signal: AbortSignal.timeout(3500)
+      });
+      const text = await res.text();
+      if (p.check(res.status, text)) {
+        issues.push({
+          category: p.category,
+          severity: p.severity,
+          title: p.title,
+          evidence: `GET ${p.path} returned HTTP ${res.status}`,
+          recommendation: p.recommendation
+        });
+      }
+    } catch {}
+  }
+
+  return { issues };
+}

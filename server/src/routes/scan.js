@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { ssrfGuard } from '../middleware/ssrfGuard.js';
 import { scanRateLimiter } from '../middleware/rateLimiter.js';
 import { checkDns, checkSsl } from '../services/dnsSslChecker.js';
-import { traceRedirects, check404Accuracy, checkRobotsAndSitemap, checkSecurityHeaders } from '../services/urlChecks.js';
+import { traceRedirects, check404Accuracy, checkRobotsAndSitemap, checkSecurityHeaders, checkExposedEndpoints } from '../services/urlChecks.js';
 import { analyzeHtml } from '../services/cheerioAnalyzer.js';
 import { analyzeSchemaAndIdentity } from '../services/schemaChecker.js';
 import { detectPlatform } from '../services/platformDetector.js';
@@ -32,9 +32,10 @@ scanRouter.post('/', scanRateLimiter, ssrfGuard, async (req, res) => {
     // 1. Initial Page Fetch & Response Headers
     let initialHtml = '';
     let responseHeaders = new Headers();
+    let response = null;
 
     try {
-      const response = await fetch(targetUrl, {
+      response = await fetch(targetUrl, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Webarg/1.0',
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
@@ -76,13 +77,15 @@ scanRouter.post('/', scanRateLimiter, ssrfGuard, async (req, res) => {
       sslData,
       redirectData,
       check404Data,
-      robotsSitemapData
+      robotsSitemapData,
+      exposedEndpointsData
     ] = await Promise.all([
       checkDns(hostname),
       parsedUrl.protocol === 'https:' ? checkSsl(hostname) : Promise.resolve({ valid: false, issues: [{ category: 'Security', severity: 'Critical', title: 'Site not using HTTPS', evidence: 'Protocol is http://', recommendation: 'Enforce HTTPS sitewide.' }] }),
       traceRedirects(targetUrl),
       check404Accuracy(origin),
-      checkRobotsAndSitemap(origin)
+      checkRobotsAndSitemap(origin),
+      checkExposedEndpoints(origin)
     ]);
 
     // 3. Security Headers Analysis
@@ -164,6 +167,7 @@ scanRouter.post('/', scanRateLimiter, ssrfGuard, async (req, res) => {
       ...schemaData.issues,
       ...browserlessData.issues,
       ...perfAudit.issues,
+      ...exposedEndpointsData.issues,
       ...botProtectionIssue
     ];
 

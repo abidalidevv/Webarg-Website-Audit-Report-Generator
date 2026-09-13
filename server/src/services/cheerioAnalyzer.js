@@ -91,6 +91,42 @@ export function analyzeHtml(html, baseUrl) {
     });
   }
 
+  // 4c. Mobile Viewport Meta Tag (Mobile / Responsive Audit)
+  const viewport = $('meta[name="viewport" i]').attr('content') || null;
+  if (!viewport) {
+    issues.push({
+      category: 'Mobile / Responsive',
+      severity: 'Critical',
+      title: 'Missing <meta name="viewport"> tag',
+      evidence: 'No viewport meta tag declared in document head',
+      userImpact: 'Mobile browsers render the desktop site zoomed out at 980px width, causing tiny text and broken touch targets.',
+      businessImpact: 'Severe mobile user drop-off and mobile ranking penalties from Google.',
+      recommendation: 'Add <meta name="viewport" content="width=device-width, initial-scale=1.0"> to document <head>.'
+    });
+  } else if (!viewport.includes('width=device-width')) {
+    issues.push({
+      category: 'Mobile / Responsive',
+      severity: 'Warning',
+      title: 'Improper viewport configuration',
+      evidence: `Viewport tag content="${viewport}" does not specify width=device-width`,
+      recommendation: 'Configure viewport with width=device-width and initial-scale=1.0.'
+    });
+  }
+
+  // 4d. Robots Meta Tag (Accidental noindex detection)
+  const robotsMeta = ($('meta[name="robots" i]').attr('content') || '').toLowerCase();
+  if (robotsMeta.includes('noindex')) {
+    issues.push({
+      category: 'SEO / Crawling',
+      severity: 'Critical',
+      title: 'Accidental "noindex" robots tag detected',
+      evidence: `<meta name="robots" content="${robotsMeta}"> is blocking search engines from indexing the homepage`,
+      userImpact: 'Site cannot be found by organic searchers looking for this business.',
+      businessImpact: 'Total loss of organic search traffic and search engine rankings.',
+      recommendation: 'Remove "noindex" directive from production HTML to allow Google indexing.'
+    });
+  }
+
   // 5. Open Graph & Social Cards
   const ogTitle = $('meta[property="og:title" i]').attr('content') || null;
   const ogImage = $('meta[property="og:image" i]').attr('content') || null;
