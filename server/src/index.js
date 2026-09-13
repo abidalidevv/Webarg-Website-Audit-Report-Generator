@@ -6,6 +6,14 @@ import { scanRouter } from './routes/scan.js';
 import { reportRouter } from './routes/report.js';
 import { adminRouter } from './routes/admin.js';
 
+// Prevent process crashes on target site socket resets or aborts
+process.on('uncaughtException', (err) => {
+  console.warn('[Webarg Process Warning] Caught unhandled exception:', err.message || err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.warn('[Webarg Process Warning] Caught unhandled rejection:', reason?.message || reason);
+});
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 

@@ -1,0 +1,727 @@
+{
+  "id": "gEY0tH939WAE",
+  "targetUrl": "https://efix.ae/",
+  "businessName": "Mobile Phone Repair in Sharjah",
+  "mode": "quick",
+  "timestamp": "2026-09-13T09:18:09.501Z",
+  "overallScore": 88,
+  "overallStatus": "HEALTHY",
+  "scores": {
+    "overall": 88,
+    "performance": 99,
+    "seo": 90,
+    "accessibility": 87,
+    "conversion": 25,
+    "security": 75
+  },
+  "summary": {
+    "total": 16,
+    "critical": 1,
+    "warning": 12,
+    "pass": 0,
+    "narrative": "Inspection identified 16 verified checks. 1 require immediate remediation to prevent lead leakage, 12 affect conversion consistency or search visibility, and 0 passed technical standards."
+  },
+  "metrics": {
+    "ttfbMs": 648,
+    "totalTimeMs": 721,
+    "pageSizeKb": 310,
+    "coreWebVitals": {
+      "lcp": "1.12s",
+      "tbt": "210ms",
+      "cls": 0.02
+    }
+  },
+  "revenueImpact": {
+    "title": "LEAD & REVENUE LEAKAGE DETECTED",
+    "description": "Dead CTA buttons (action keywords with # anchor): Frustrated prospects bounce immediately; zero lead capture."
+  },
+  "techStack": [
+    {
+      "category": "CMS",
+      "name": "WordPress",
+      "confidence": "High"
+    },
+    {
+      "category": "E-Commerce",
+      "name": "WooCommerce",
+      "confidence": "High"
+    },
+    {
+      "category": "Library",
+      "name": "jQuery",
+      "confidence": "High"
+    },
+    {
+      "category": "Analytics",
+      "name": "Google Analytics 4",
+      "confidence": "High"
+    },
+    {
+      "category": "Backend Runtime",
+      "name": "PHP",
+      "confidence": "High"
+    }
+  ],
+  "conversionJourney": {
+    "phone": {
+      "count": 4,
+      "items": [
+        {
+          "href": "tel:+971503545750",
+          "text": "050 354 5750",
+          "rawNumber": "+971503545750",
+          "isInternational": true
+        },
+        {
+          "href": "tel:+971503545750",
+          "text": "Call Now",
+          "rawNumber": "+971503545750",
+          "isInternational": true
+        },
+        {
+          "href": "tel:+971503545750",
+          "text": "Call Now",
+          "rawNumber": "+971503545750",
+          "isInternational": true
+        },
+        {
+          "href": "tel:+971503545750",
+          "text": "+971 50 354 5750",
+          "rawNumber": "+971503545750",
+          "isInternational": true
+        }
+      ],
+      "unlinkedInBody": true
+    },
+    "whatsapp": {
+      "count": 1,
+      "items": [
+        {
+          "href": "https://api.whatsapp.com/send?phone=971503545750&text=Hey%20eFix%20%F0%9F%91%8B%20%20I%20saw%20your%20services%20%E2%80%94%20I%E2%80%99d%20like%20to%20book%20a%20repair.%20%20%F0%9F%93%B1%20Device%3A%20%5Be.g.%2C%20iPhone%2012%2C%20MacBook%20Pro%5D%20%20%F0%9F%9B%A0%20Issue%3A%20%5Be.g.%2C%20screen%20cracked%2C%20not%20turning%20on%5D%20%20%F0%9F%9A%9A%20Preferred%3A%20Home%20service%20%2F%20Courier%20%2F%20In-store%20%20Let%20me%20know%20the%20next%20steps.%20Thanks!",
+          "text": "Contact Us",
+          "hasNumber": true
+        }
+      ]
+    },
+    "email": {
+      "count": 1,
+      "items": [
+        {
+          "href": "mailto:support@efix.ae",
+          "address": "support@efix.ae",
+          "isValid": true
+        }
+      ]
+    },
+    "maps": {
+      "present": true
+    },
+    "forms": {
+      "count": 3,
+      "details": [
+        {
+          "action": "",
+          "method": "POST",
+          "inputs": 10,
+          "hasSubmit": true,
+          "hasSpamProtection": false
+        },
+        {
+          "action": "https://efix.ae/",
+          "method": "GET",
+          "inputs": 2,
+          "hasSubmit": true,
+          "hasSpamProtection": false
+        },
+        {
+          "action": "https://efix.ae/",
+          "method": "GET",
+          "inputs": 2,
+          "hasSubmit": true,
+          "hasSpamProtection": false
+        }
+      ]
+    },
+    "socials": {
+      "count": 3,
+      "genericCount": 0
+    }
+  },
+  "customerJourneys": [
+    {
+      "id": "journey-a",
+      "name": "Journey A — New Visitor",
+      "flow": "Search → Homepage → 5-Second Clarity → Primary CTA",
+      "status": "pass",
+      "notes": "Evaluates value proposition clarity and whether visitor finds primary CTA without friction."
+    },
+    {
+      "id": "journey-b",
+      "name": "Journey B — Inquiring Lead",
+      "flow": "Homepage → Contact Form / Phone → Submission → Notification",
+      "status": "critical",
+      "notes": "Tests whether prospect can reach the business via form, click-to-call, or email."
+    },
+    {
+      "id": "journey-c",
+      "name": "Journey C — Mobile Customer",
+      "flow": "320px Mobile Screen → Touch CTA → Dial / Chat Conversion",
+      "status": "critical",
+      "notes": "Verifies tap-to-call dialers and mobile layouts at compact 320px viewport."
+    },
+    {
+      "id": "journey-d",
+      "name": "Journey D — Returning User",
+      "flow": "Direct URL → Cached State → Fast Navigation",
+      "status": "pass",
+      "notes": "Validates browser caching, compression, and rapid page reloads for returning customers."
+    },
+    {
+      "id": "journey-e",
+      "name": "Journey E — Failure Recovery",
+      "flow": "Input Error / Non-existent Route → Helpful Guidance → Retry",
+      "status": "pass",
+      "notes": "Checks authentic 404 status handling and recovery options when errors occur."
+    }
+  ],
+  "trustSignals": {
+    "privacyPolicy": false,
+    "termsOfService": false,
+    "deadCtasCount": 2
+  },
+  "assetPipeline": {
+    "semantics": {
+      "hasDoctype": true,
+      "htmlLang": "en-US",
+      "hasCharset": true
+    },
+    "images": {
+      "total": 34,
+      "nonModernFormatCount": 15,
+      "missingLazyCount": 5
+    },
+    "fonts": {
+      "count": 2,
+      "hasPreconnect": true,
+      "hasDisplaySwap": true
+    },
+    "compression": {
+      "enabled": true,
+      "encoding": "br"
+    },
+    "caching": {
+      "cacheControl": "none",
+      "hasEtag": false
+    },
+    "issues": [
+      {
+        "category": "Asset Pipeline",
+        "severity": "Warning",
+        "title": "Legacy image formats used instead of WebP/AVIF",
+        "evidence": "15 images served as uncompressed PNG/JPEG assets.",
+        "userImpact": "High mobile data consumption; sluggish page load times on cell connections.",
+        "businessImpact": "Slower TTFB/LCP scores lead to higher visitor abandonment.",
+        "recommendation": "Convert static imagery to WebP or AVIF for 30–50% payload reduction.",
+        "effort": "Medium"
+      },
+      {
+        "category": "Asset Pipeline",
+        "severity": "Low",
+        "title": "Below-the-fold images missing loading=\"lazy\"",
+        "evidence": "5 images load eagerly during initial page load.",
+        "userImpact": "Bandwidth competition delays rendering of primary hero content.",
+        "businessImpact": "Degrades mobile Core Web Vitals (LCP/Speed Index).",
+        "recommendation": "Add loading=\"lazy\" and decoding=\"async\" to all non-critical images.",
+        "effort": "Low"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "mWLkYF",
+      "category": "Conversion Journey",
+      "severity": "Critical",
+      "headline": "Dead CTA buttons (action keywords with # anchor)",
+      "evidence": "2 buttons found with dummy href=\"#\": \"Buy / Sell\", \"Buy / Sell\"",
+      "userImpact": "Visitors click primary conversion buttons and nothing happens (page jumps to top).",
+      "businessImpact": "Frustrated prospects bounce immediately; zero lead capture.",
+      "recommendation": "Attach valid destination routes or working modal event listeners to all CTA buttons.",
+      "effort": "Medium",
+      "status": "Open"
+    },
+    {
+      "id": "MrVY28",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "External links vulnerable to reverse tabnabbing",
+      "evidence": "4 external target=\"_blank\" links lack rel=\"noopener noreferrer\".",
+      "userImpact": "Opened external pages can execute window.opener.location redirection attacks.",
+      "businessImpact": "Reputational damage and security warning flags from enterprise browsers.",
+      "recommendation": "Add rel=\"noopener noreferrer\" to all outgoing target=\"_blank\" hyperlinks.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "1r77-7",
+      "category": "Conversion / Forms",
+      "severity": "Low",
+      "headline": "Form fields lack standard autocomplete attributes",
+      "evidence": "4 input fields have no autocomplete attribute defined",
+      "userImpact": "Mobile and desktop users must manually type details; browser autofill cannot assist seamlessly.",
+      "businessImpact": "Increases form friction and abandonment rates on mobile devices.",
+      "recommendation": "Add standard autocomplete attributes (e.g. autocomplete=\"name\", autocomplete=\"email\", autocomplete=\"tel\").",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "7PzPaR",
+      "category": "Legal & Trust",
+      "severity": "Warning",
+      "headline": "Missing Privacy Policy link",
+      "evidence": "No link containing \"privacy\" was detected in footer or navigation.",
+      "userImpact": "No disclosure on how visitor contact data is processed or stored.",
+      "businessImpact": "GDPR / CCPA compliance exposure; required for Google Ads approval.",
+      "recommendation": "Add a dedicated Privacy Policy page linked in the global footer.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "YiSLJU",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Missing HSTS header",
+      "evidence": "Strict-Transport-Security header is not set",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add Strict-Transport-Security with max-age=31536000 to enforce HTTPS.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "QB1I_n",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Missing X-Frame-Options",
+      "evidence": "X-Frame-Options header missing (clickjacking protection)",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Set X-Frame-Options to DENY or SAMEORIGIN.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "TUHOBG",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Missing X-Content-Type-Options",
+      "evidence": "X-Content-Type-Options: nosniff header missing",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "5MjCCB",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Server version exposed",
+      "evidence": "Server header revealed: \"hcdn\"",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "w0XO-y",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Framework banner exposed",
+      "evidence": "X-Powered-By header revealed: \"PHP/8.3.33\"",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Disable X-Powered-By in framework configuration.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "1SMM3E",
+      "category": "Asset Pipeline",
+      "severity": "Warning",
+      "headline": "Legacy image formats used instead of WebP/AVIF",
+      "evidence": "15 images served as uncompressed PNG/JPEG assets.",
+      "userImpact": "High mobile data consumption; sluggish page load times on cell connections.",
+      "businessImpact": "Slower TTFB/LCP scores lead to higher visitor abandonment.",
+      "recommendation": "Convert static imagery to WebP or AVIF for 30–50% payload reduction.",
+      "effort": "Medium",
+      "status": "Open"
+    },
+    {
+      "id": "CoGWGx",
+      "category": "Asset Pipeline",
+      "severity": "Low",
+      "headline": "Below-the-fold images missing loading=\"lazy\"",
+      "evidence": "5 images load eagerly during initial page load.",
+      "userImpact": "Bandwidth competition delays rendering of primary hero content.",
+      "businessImpact": "Degrades mobile Core Web Vitals (LCP/Speed Index).",
+      "recommendation": "Add loading=\"lazy\" and decoding=\"async\" to all non-critical images.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "Boi3xQ",
+      "category": "SEO / Structure",
+      "severity": "Warning",
+      "headline": "Duplicate <h1> headings",
+      "evidence": "6 separate <h1> tags found",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Consolidate to one primary <h1> and use <h2>/<h3> for sub-sections.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "BTSluX",
+      "category": "Accessibility",
+      "severity": "Warning",
+      "headline": "Images missing alt text",
+      "evidence": "2 of 34 images have no alt attribute",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add descriptive alt text for informative images or alt=\"\" for decorative graphics.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "_cSoBk",
+      "category": "Performance",
+      "severity": "Low",
+      "headline": "Images without explicit width/height",
+      "evidence": "5 images lack width and height attributes (CLS risk)",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Include explicit width and height dimensions to prevent cumulative layout shifts.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "MsnClI",
+      "category": "Performance",
+      "severity": "Warning",
+      "headline": "Total Blocking Time (TBT) near limit",
+      "evidence": "Estimated TBT: 210ms (target: < 200ms)",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Reduce non-critical JavaScript execution on initial route.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "MV4-Xo",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "WordPress XML-RPC API publicly accessible",
+      "evidence": "GET /xmlrpc.php returned HTTP 405",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Disable XML-RPC via web server rules or security plugin to prevent brute-force amplification attacks.",
+      "effort": "Low",
+      "status": "Open"
+    }
+  ],
+  "accessLevelMatrix": [
+    {
+      "surface": "Public Website & DOM",
+      "accessRequired": "None (Public URL)",
+      "status": "Audited Live",
+      "coverage": "Frontend performance, mobile layout shifts, click-to-call, SEO crawlability, public DNS/SSL, security headers, tracking scripts."
+    },
+    {
+      "surface": "CMS Admin & Plugins",
+      "accessRequired": "WordPress / Shopify / Webflow Login",
+      "status": "Requires Manual Playbook",
+      "coverage": "Plugin vulnerabilities, theme bloat, database overhead, auto-update health, user privilege audit."
+    },
+    {
+      "surface": "CRM & GoHighLevel Automations",
+      "accessRequired": "GHL / ActiveCampaign Account Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "Workflow triggers, SMS/Email autoresponders, webhook delivery, pipeline tag integrity, UTM attribution."
+    },
+    {
+      "surface": "Physical Mobile Devices & Carriers",
+      "accessRequired": "Real iPhone / Android Hardware",
+      "status": "Requires Manual Playbook",
+      "coverage": "Real carrier click-to-call dialers, Safari iOS keyboard viewport clipping, WhatsApp native handoff, mobile touch gesture conflicts."
+    },
+    {
+      "surface": "Payment Gateways & Checkout Sandboxes",
+      "accessRequired": "Stripe / PayPal / E-commerce Admin",
+      "status": "Requires Manual Playbook",
+      "coverage": "End-to-end sandbox purchase, webhook reconciliation, 3D Secure triggers, cart abandonment sequences."
+    },
+    {
+      "surface": "Screen Readers & Assistive Accessibility",
+      "accessRequired": "NVDA / VoiceOver Assistive Software",
+      "status": "Requires Manual Playbook",
+      "coverage": "Full manual keyboard focus traps, screen reader audio fidelity, cognitive readability, aria-live dynamic region announcements."
+    },
+    {
+      "surface": "Server, Hosting & PHP Logs",
+      "accessRequired": "Hosting / cPanel / Cloud Console Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "PHP error logs, slow database queries, disk I/O bottlenecks, off-site backup restoration drills."
+    }
+  ],
+  "details": {
+    "dns": {
+      "records": {
+        "a": [
+          "179.61.189.210",
+          "77.37.48.231"
+        ],
+        "aaaa": [
+          "2a02:4780:15:5524:d768:aa46:d7de:a5e5",
+          "2a02:4780:38:35d7:12d6:b429:3be3:78b2"
+        ],
+        "mx": [
+          {
+            "exchange": "mx2.hostinger.com",
+            "priority": 10,
+            "type": "MX"
+          },
+          {
+            "exchange": "mx1.hostinger.com",
+            "priority": 5,
+            "type": "MX"
+          }
+        ],
+        "txt": [
+          "v=spf1 include:_spf.mail.hostinger.com ~all"
+        ]
+      },
+      "spf": {
+        "present": true,
+        "record": "v=spf1 include:_spf.mail.hostinger.com ~all",
+        "valid": true
+      },
+      "dmarc": {
+        "present": true,
+        "record": "v=DMARC1; p=none",
+        "policy": "none"
+      },
+      "issues": []
+    },
+    "ssl": {
+      "valid": true,
+      "daysRemaining": 68,
+      "issuer": "Let's Encrypt",
+      "validTo": "2026-11-21T03:09:40.000Z",
+      "tlsVersion": "TLSv1.3",
+      "issues": []
+    },
+    "redirects": {
+      "hops": [
+        {
+          "url": "https://efix.ae/",
+          "status": 200,
+          "location": null
+        }
+      ],
+      "finalUrl": "https://efix.ae/",
+      "loopDetected": false,
+      "issues": []
+    },
+    "accuracy404": {
+      "status": 404,
+      "isAccurate": true,
+      "issues": []
+    },
+    "robotsAndSitemap": {
+      "robots": {
+        "present": true,
+        "status": 200
+      },
+      "sitemap": {
+        "present": true,
+        "status": 200
+      },
+      "issues": []
+    },
+    "structuredData": {
+      "schemasCount": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://efix.ae/#breadcrumblist",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "@id": "https://efix.ae#listItem",
+                  "position": 1,
+                  "name": "Home"
+                }
+              ]
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://efix.ae/#organization",
+              "name": "eFix Electronics Repair | Mobile Phone & Electronics Repair in Muwaileh Sharjah",
+              "description": "Fast. Reliable. Trusted Electronics Repair in Muwaileh, Sharjah and Dubai",
+              "url": "https://efix.ae/",
+              "telephone": "+971503545750",
+              "foundingDate": "2010-02-01",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://efix.ae/wp-content/uploads/2025/09/Generated-Image-September-05-2025-2_18AM-Photoroom.png",
+                "@id": "https://efix.ae/#organizationLogo",
+                "width": 1280,
+                "height": 501,
+                "caption": "Generated Image September 05 2025 2 18AM Photoroom"
+              },
+              "image": {
+                "@id": "https://efix.ae/#organizationLogo"
+              },
+              "sameAs": [
+                "https://www.facebook.com/profile.php?id=100086059313952",
+                "https://www.instagram.com/efix.uae"
+              ]
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://efix.ae/#webpage",
+              "url": "https://efix.ae/",
+              "name": "Mobile Phone Repair in Sharjah | eFix Electronics Repair",
+              "description": "Mobile phone and electronics repair in Sharjah. iPhone, Samsung, iPad, MacBook, laptop, PS5, TV and more. Same-day pickup & delivery by eFix.",
+              "inLanguage": "en-US",
+              "isPartOf": {
+                "@id": "https://efix.ae/#website"
+              },
+              "breadcrumb": {
+                "@id": "https://efix.ae/#breadcrumblist"
+              },
+              "datePublished": "2024-07-17T04:38:04+00:00",
+              "dateModified": "2026-08-31T11:14:29+00:00"
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://efix.ae/#website",
+              "url": "https://efix.ae/",
+              "name": "eFix Electronics Repair | Mobile Phone & Electronics Repair in Muwaileh Sharjah",
+              "description": "Fast. Reliable. Trusted Electronics Repair in Muwaileh, Sharjah and Dubai",
+              "inLanguage": "en-US",
+              "publisher": {
+                "@id": "https://efix.ae/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "napConsistency": {
+        "schemaFound": false,
+        "schemaName": null,
+        "schemaPhone": null,
+        "schemaAddress": null,
+        "footerMatched": true
+      },
+      "issues": []
+    },
+    "socialGraph": {
+      "ogTitle": "Mobile Phone Repair Sharjah",
+      "ogImage": "https://efix.ae/wp-content/uploads/2025/09/Generated-Image-September-05-2025-2_18AM-Photoroom.png",
+      "ogDescription": "Mobile phone and electronics repair in Sharjah. iPhone, Samsung, iPad, MacBook, laptop, PS5, TV and more. Same-day pickup & delivery by eFix.",
+      "twitterCard": "summary_large_image"
+    },
+    "thirdPartyScripts": [],
+    "cookieConsent": false,
+    "mixedContentCount": 0,
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": []
+  },
+  "remediationPriorities": [
+    {
+      "rank": 1,
+      "title": "Dead CTA buttons (action keywords with # anchor)",
+      "action": "Attach valid destination routes or working modal event listeners to all CTA buttons.",
+      "effort": "Medium",
+      "priority": "Priority 1 (Fix immediately)"
+    },
+    {
+      "rank": 2,
+      "title": "External links vulnerable to reverse tabnabbing",
+      "action": "Add rel=\"noopener noreferrer\" to all outgoing target=\"_blank\" hyperlinks.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 3,
+      "title": "Missing Privacy Policy link",
+      "action": "Add a dedicated Privacy Policy page linked in the global footer.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 4,
+      "title": "Missing HSTS header",
+      "action": "Add Strict-Transport-Security with max-age=31536000 to enforce HTTPS.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 5,
+      "title": "Missing X-Frame-Options",
+      "action": "Set X-Frame-Options to DENY or SAMEORIGIN.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 6,
+      "title": "Missing X-Content-Type-Options",
+      "action": "Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    }
+  ],
+  "consultation": {
+    "executivePitch": "Mobile Phone Repair in Sharjah's website currently has 1 high-severity technical barrier(s) directly impeding prospect inquiries and commercial conversion. Addressing these priority items will prevent bounce and secure lead flow across mobile and desktop traffic.",
+    "priorityExplanations": [
+      {
+        "rank": 1,
+        "title": "Dead CTA buttons (action keywords with # anchor)",
+        "clientTalkingPoint": "Remediation action: Attach valid destination routes or working modal event listeners to all CTA buttons."
+      },
+      {
+        "rank": 2,
+        "title": "External links vulnerable to reverse tabnabbing",
+        "clientTalkingPoint": "Remediation action: Add rel=\"noopener noreferrer\" to all outgoing target=\"_blank\" hyperlinks."
+      },
+      {
+        "rank": 3,
+        "title": "Missing Privacy Policy link",
+        "clientTalkingPoint": "Remediation action: Add a dedicated Privacy Policy page linked in the global footer."
+      },
+      {
+        "rank": 4,
+        "title": "Missing HSTS header",
+        "clientTalkingPoint": "Remediation action: Add Strict-Transport-Security with max-age=31536000 to enforce HTTPS."
+      },
+      {
+        "rank": 5,
+        "title": "Missing X-Frame-Options",
+        "clientTalkingPoint": "Remediation action: Set X-Frame-Options to DENY or SAMEORIGIN."
+      },
+      {
+        "rank": 6,
+        "title": "Missing X-Content-Type-Options",
+        "clientTalkingPoint": "Remediation action: Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks."
+      }
+    ],
+    "aiProvider": "Deterministic Diagnostic Engine (Fallback)",
+    "isAiGenerated": false
+  }
+}
