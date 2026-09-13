@@ -2,10 +2,21 @@ import puppeteer from 'puppeteer-core';
 import fs from 'fs';
 
 const LOCAL_CHROME_PATHS = [
+  // Windows
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
+  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+  // Linux
+  '/usr/bin/google-chrome',
+  '/usr/bin/google-chrome-stable',
+  '/usr/bin/chromium',
+  '/usr/bin/chromium-browser',
+  '/snap/bin/chromium',
+  // macOS
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  '/Applications/Chromium.app/Contents/MacOS/Chromium',
+  '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge'
 ];
 
 function getLocalBrowserExecutable() {
@@ -35,16 +46,16 @@ export async function generateReportPdf(reportId, options = {}) {
 
   try {
     if (browserlessToken) {
-      // Connect to hosted Browserless instance
+      // Connect to hosted Browserless instance (clean endpoint without unnecessary disable-web-security flag)
       browser = await puppeteer.connect({
-        browserWSEndpoint: `${browserlessWs}?token=${browserlessToken}&--disable-web-security=true`,
+        browserWSEndpoint: `${browserlessWs}?token=${browserlessToken}`,
         defaultViewport: { width: 1200, height: 1600 }
       });
     } else {
-      // Launch local installed Chrome or Edge
+      // Launch local installed Chrome or Edge (Windows, Linux, macOS)
       const executablePath = getLocalBrowserExecutable();
       if (!executablePath) {
-        throw new Error('No local Chrome or Edge installation found and no BROWSERLESS_API_KEY provided.');
+        throw new Error('No local Chrome or Edge installation found (checked Windows, Linux, and macOS standard paths). In production environments without a GUI browser, please set BROWSERLESS_API_KEY in server/.env.');
       }
 
       browser = await puppeteer.launch({

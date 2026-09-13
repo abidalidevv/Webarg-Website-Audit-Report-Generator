@@ -85,19 +85,25 @@ export default function ConversionJourneyGrid({ journey = {}, trust = {}, custom
 
           <div className="customer-journeys-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {customerJourneys.map((cj) => {
+              const isMeasured = cj.confidence === 'measured';
               const badgeClass = cj.status === 'pass' ? 'badge-live' : 'badge-playbook';
-              const dotSymbol = cj.status === 'pass' ? 'INFERRED: PASS' : cj.status === 'warning' ? 'INFERRED: FRICTION' : 'INFERRED: RISK';
+              const statusText = cj.status === 'pass' ? 'PASS' : cj.status === 'warning' ? 'FRICTION' : 'RISK';
+              const badgeLabel = isMeasured ? `MEASURED: ${statusText}` : `INFERRED: ${statusText}`;
+
               return (
                 <div key={cj.id} className={`cj-row row-${cj.status}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '4px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                       <strong style={{ fontSize: '13px', color: 'var(--paper)' }}>{cj.name}</strong>
+                      <span className="mono" style={{ fontSize: '9px', color: isMeasured ? 'var(--signal-pass)' : 'var(--accent)', background: 'rgba(255,255,255,0.05)', padding: '1px 5px', borderRadius: '2px', textTransform: 'uppercase' }}>
+                        {isMeasured ? 'Direct Signal' : 'Indirect Proxy'}
+                      </span>
                       <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'rgba(237,238,231,0.6)' }}>{cj.flow}</span>
                     </div>
                     <span style={{ fontSize: '11px', color: 'rgba(237,238,231,0.5)' }}>{cj.notes}</span>
                   </div>
                   <span className={`matrix-badge ${badgeClass}`} style={{ textTransform: 'uppercase', fontSize: '10px', padding: '3px 8px', whiteSpace: 'nowrap' }}>
-                    {dotSymbol}
+                    {badgeLabel}
                   </span>
                 </div>
               );

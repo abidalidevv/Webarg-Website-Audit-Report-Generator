@@ -108,7 +108,9 @@ scanRouter.post('/', scanRateLimiter, ssrfGuard, async (req, res) => {
 
     // 9. Headless Browser Live Execution (Browserless.io)
     const browserlessData = await runBrowserlessScan(targetUrl, {
-      runAxe: scanMode === 'deep'
+      runAxe: scanMode === 'deep',
+      pinnedIp: req.pinnedIp,
+      hostname: parsedUrl.hostname
     });
 
     // 10. JS-Disabled Content Degradation Comparison

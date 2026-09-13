@@ -30,5 +30,6 @@ export async function ssrfGuard(req, res, next) {
   req.targetUrl = result.parsedUrl.href;
   req.parsedTargetUrl = result.parsedUrl;
   req.resolvedIps = result.resolvedIps;
+  req.pinnedIp = result.pinnedIp;
   next();
 }

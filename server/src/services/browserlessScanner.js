@@ -42,7 +42,13 @@ export async function runBrowserlessScan(targetUrl, options = {}) {
     };
   }
 
-  const browserWSEndpoint = `${baseWs}?token=${token}&--disable-web-security=true`;
+  // Build WebSocket endpoint, optionally pinning the validated IP to prevent DNS rebinding (TOCTOU)
+  let endpointUrl = `${baseWs}?token=${token}`;
+  if (options.pinnedIp && options.hostname) {
+    endpointUrl += `&--host-resolver-rules=MAP ${options.hostname} ${options.pinnedIp}`;
+  }
+
+  const browserWSEndpoint = endpointUrl;
   let browser = null;
 
   try {

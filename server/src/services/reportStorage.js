@@ -143,8 +143,18 @@ export function calculateScoreDelta(currentReport, previousReport) {
   const currScores = currentReport.scores || {};
   const prevScores = previousReport.scores || {};
 
-  const currOverall = currentReport.overallScore ?? currScores.overall ?? 70;
-  const prevOverall = previousReport.overallScore ?? prevScores.overall ?? 70;
+  const makeDelta = (curr, prev) => {
+    const c = typeof curr === 'number' ? curr : null;
+    const p = typeof prev === 'number' ? prev : null;
+    return {
+      previous: p,
+      current: c,
+      diff: (c !== null && p !== null) ? c - p : null
+    };
+  };
+
+  const currOverall = typeof currentReport.overallScore === 'number' ? currentReport.overallScore : (typeof currScores.overall === 'number' ? currScores.overall : null);
+  const prevOverall = typeof previousReport.overallScore === 'number' ? previousReport.overallScore : (typeof prevScores.overall === 'number' ? prevScores.overall : null);
 
   const currFindings = currentReport.findings || [];
   const prevFindings = previousReport.findings || [];
@@ -157,31 +167,11 @@ export function calculateScoreDelta(currentReport, previousReport) {
     previousReportId: previousReport.id,
     previousTimestamp: previousReport.timestamp,
     previousMode: previousReport.mode || 'quick',
-    overall: {
-      previous: prevOverall,
-      current: currOverall,
-      diff: currOverall - prevOverall
-    },
-    performance: {
-      previous: prevScores.performance ?? 0,
-      current: currScores.performance ?? 0,
-      diff: (currScores.performance ?? 0) - (prevScores.performance ?? 0)
-    },
-    seo: {
-      previous: prevScores.seo ?? 0,
-      current: currScores.seo ?? 0,
-      diff: (currScores.seo ?? 0) - (prevScores.seo ?? 0)
-    },
-    accessibility: {
-      previous: prevScores.accessibility ?? 0,
-      current: currScores.accessibility ?? 0,
-      diff: (currScores.accessibility ?? 0) - (prevScores.accessibility ?? 0)
-    },
-    security: {
-      previous: prevScores.security ?? 0,
-      current: currScores.security ?? 0,
-      diff: (currScores.security ?? 0) - (prevScores.security ?? 0)
-    },
+    overall: makeDelta(currOverall, prevOverall),
+    performance: makeDelta(currScores.performance, prevScores.performance),
+    seo: makeDelta(currScores.seo, prevScores.seo),
+    accessibility: makeDelta(currScores.accessibility, prevScores.accessibility),
+    security: makeDelta(currScores.security, prevScores.security),
     resolvedFindingsCount: resolvedFindings.length,
     resolvedFindings: resolvedFindings.map((f) => ({
       headline: f.headline || f.title,

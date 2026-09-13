@@ -106,6 +106,7 @@ export async function validateSsrf(inputUrl) {
   return {
     isSafe: true,
     parsedUrl,
-    resolvedIps
+    resolvedIps,
+    pinnedIp: resolvedIps[0]
   };
 }

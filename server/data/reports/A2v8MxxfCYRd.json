@@ -1,0 +1,607 @@
+{
+  "id": "A2v8MxxfCYRd",
+  "targetUrl": "https://example.com/",
+  "businessName": "Example Domain",
+  "mode": "quick",
+  "timestamp": "2026-09-13T09:35:40.792Z",
+  "overallScore": 78,
+  "overallStatus": "NEEDS ATTENTION",
+  "scores": {
+    "overall": 78,
+    "performance": 99,
+    "seo": 69,
+    "accessibility": 95,
+    "conversion": 40,
+    "security": 50
+  },
+  "summary": {
+    "total": 15,
+    "critical": 1,
+    "warning": 9,
+    "pass": 0,
+    "narrative": "Inspection identified 15 verified checks. 1 require immediate remediation to prevent lead leakage, 9 affect conversion consistency or search visibility, and 0 passed technical standards."
+  },
+  "metrics": {
+    "ttfbMs": 71,
+    "totalTimeMs": 73,
+    "pageSizeKb": 1,
+    "coreWebVitals": {
+      "lcp": "0.6s",
+      "tbt": "80ms",
+      "cls": 0.02
+    }
+  },
+  "revenueImpact": {
+    "title": "LEAD & REVENUE LEAKAGE DETECTED",
+    "description": "Content-Security-Policy absent: Causes customer friction and potential bounce."
+  },
+  "techStack": [
+    {
+      "category": "CDN / Security",
+      "name": "Cloudflare",
+      "confidence": "High"
+    }
+  ],
+  "conversionJourney": {
+    "phone": {
+      "count": 0,
+      "items": [],
+      "unlinkedInBody": false
+    },
+    "whatsapp": {
+      "count": 0,
+      "items": []
+    },
+    "email": {
+      "count": 0,
+      "items": []
+    },
+    "maps": {
+      "present": false
+    },
+    "forms": {
+      "count": 0,
+      "details": []
+    },
+    "socials": {
+      "count": 0,
+      "genericCount": 0
+    }
+  },
+  "customerJourneys": [
+    {
+      "id": "journey-a",
+      "name": "Journey A — New Visitor",
+      "flow": "Search → Homepage → 5-Second Clarity → Primary CTA",
+      "status": "pass",
+      "notes": "Evaluates value proposition clarity and whether visitor finds primary CTA without friction."
+    },
+    {
+      "id": "journey-b",
+      "name": "Journey B — Inquiring Lead",
+      "flow": "Homepage → Contact Form / Phone → Submission → Notification",
+      "status": "critical",
+      "notes": "Tests whether prospect can reach the business via form, click-to-call, or email."
+    },
+    {
+      "id": "journey-c",
+      "name": "Journey C — Mobile Customer",
+      "flow": "320px Mobile Screen → Touch CTA → Dial / Chat Conversion",
+      "status": "pass",
+      "notes": "Verifies tap-to-call dialers and mobile layouts at compact 320px viewport."
+    },
+    {
+      "id": "journey-d",
+      "name": "Journey D — Returning User",
+      "flow": "Direct URL → Cached State → Fast Navigation",
+      "status": "pass",
+      "notes": "Validates browser caching, compression, and rapid page reloads for returning customers."
+    },
+    {
+      "id": "journey-e",
+      "name": "Journey E — Failure Recovery",
+      "flow": "Input Error / Non-existent Route → Helpful Guidance → Retry",
+      "status": "pass",
+      "notes": "Checks authentic 404 status handling and recovery options when errors occur."
+    }
+  ],
+  "trustSignals": {
+    "privacyPolicy": false,
+    "termsOfService": false,
+    "deadCtasCount": 0
+  },
+  "assetPipeline": {
+    "semantics": {
+      "hasDoctype": true,
+      "htmlLang": "en",
+      "hasCharset": false
+    },
+    "images": {
+      "total": 0,
+      "nonModernFormatCount": 0,
+      "missingLazyCount": 0
+    },
+    "fonts": {
+      "count": 0,
+      "hasPreconnect": false,
+      "hasDisplaySwap": false
+    },
+    "compression": {
+      "enabled": true,
+      "encoding": "br"
+    },
+    "caching": {
+      "cacheControl": "none",
+      "hasEtag": false
+    },
+    "issues": [
+      {
+        "category": "Accessibility & Semantics",
+        "severity": "Low",
+        "title": "Missing UTF-8 character encoding declaration",
+        "evidence": "<meta charset=\"utf-8\"> was not found in document <head>.",
+        "userImpact": "Special characters, currency symbols or accents can display as broken glyphs.",
+        "businessImpact": "Unprofessional appearance on certain browser locales.",
+        "recommendation": "Add <meta charset=\"utf-8\"> within the first 1024 bytes of the <head>.",
+        "effort": "Low"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "IP6GBT",
+      "category": "Legal & Trust",
+      "severity": "Warning",
+      "headline": "Missing Privacy Policy link",
+      "evidence": "No link containing \"privacy\" was detected in footer or navigation.",
+      "userImpact": "No disclosure on how visitor contact data is processed or stored.",
+      "businessImpact": "GDPR / CCPA compliance exposure; required for Google Ads approval.",
+      "recommendation": "Add a dedicated Privacy Policy page linked in the global footer.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "_mPfMM",
+      "category": "Security",
+      "severity": "Critical",
+      "headline": "Content-Security-Policy absent",
+      "evidence": "Content-Security-Policy response header is missing",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Implement a Content-Security-Policy to protect against cross-site scripting (XSS) and data injection.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "Ror12p",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Missing HSTS header",
+      "evidence": "Strict-Transport-Security header is not set",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add Strict-Transport-Security with max-age=31536000 to enforce HTTPS.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "PSXDDy",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Missing X-Frame-Options",
+      "evidence": "X-Frame-Options header missing (clickjacking protection)",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Set X-Frame-Options to DENY or SAMEORIGIN.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "JQOcYu",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Missing X-Content-Type-Options",
+      "evidence": "X-Content-Type-Options: nosniff header missing",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "uRuxgf",
+      "category": "Security",
+      "severity": "Warning",
+      "headline": "Server version exposed",
+      "evidence": "Server header revealed: \"cloudflare\"",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "eCvTDU",
+      "category": "SEO",
+      "severity": "Warning",
+      "headline": "Missing or invalid robots.txt",
+      "evidence": "/robots.txt returned status 404",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add a valid robots.txt file to guide search engine crawlers.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "EEzK_k",
+      "category": "SEO",
+      "severity": "Warning",
+      "headline": "Missing or inaccessible XML Sitemap",
+      "evidence": "/sitemap.xml returned status 404",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Generate an XML sitemap and reference it in robots.txt to assist discovery.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "bY_GUK",
+      "category": "Accessibility & Semantics",
+      "severity": "Low",
+      "headline": "Missing UTF-8 character encoding declaration",
+      "evidence": "<meta charset=\"utf-8\"> was not found in document <head>.",
+      "userImpact": "Special characters, currency symbols or accents can display as broken glyphs.",
+      "businessImpact": "Unprofessional appearance on certain browser locales.",
+      "recommendation": "Add <meta charset=\"utf-8\"> within the first 1024 bytes of the <head>.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "0cFPGM",
+      "category": "SEO",
+      "severity": "Warning",
+      "headline": "Missing meta description",
+      "evidence": "<meta name=\"description\"> tag is absent",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add an intent-focused meta description between 120–160 characters.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "sBZM8k",
+      "category": "SEO",
+      "severity": "Low",
+      "headline": "Missing canonical URL",
+      "evidence": "<link rel=\"canonical\"> tag is absent",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Specify a self-referencing canonical tag to prevent duplicate content indexing.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "tODuqJ",
+      "category": "SEO / Social",
+      "severity": "Low",
+      "headline": "Incomplete Open Graph tags",
+      "evidence": "og:title=false, og:image=false",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add og:title, og:description, and og:image to ensure rich previews when shared on WhatsApp/social media.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "-POUzC",
+      "category": "SEO / AI Readiness",
+      "severity": "Low",
+      "headline": "Missing structured data (JSON-LD) for AI search engines",
+      "evidence": "No application/ld+json structured schema found in document",
+      "userImpact": "AI search bots (Perplexity, ChatGPT, Google Search Generative) struggle to parse business entities.",
+      "businessImpact": "Reduced visibility in generative AI search summaries and rich SERP snippets.",
+      "recommendation": "Add Schema.org JSON-LD structured data (Organization, LocalBusiness, or Product).",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "Fwd5fU",
+      "category": "Mobile / PWA",
+      "severity": "Low",
+      "headline": "Missing mobile touch icon / web manifest",
+      "evidence": "No <link rel=\"apple-touch-icon\"> or manifest.json declared in <head>",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add apple-touch-icon and web app manifest for crisp home-screen bookmarks on iOS and Android.",
+      "effort": "Low",
+      "status": "Open"
+    },
+    {
+      "id": "i_e9h2",
+      "category": "SEO / Structured Data",
+      "severity": "Warning",
+      "headline": "Missing structured data (Schema.org)",
+      "evidence": "No JSON-LD schema found on page",
+      "userImpact": "Impacts user experience and interaction reliability.",
+      "businessImpact": "Causes customer friction and potential bounce.",
+      "recommendation": "Add Organization or LocalBusiness Schema.org JSON-LD to enhance rich snippets and AI discoverability.",
+      "effort": "Low",
+      "status": "Open"
+    }
+  ],
+  "accessLevelMatrix": [
+    {
+      "surface": "Public Website & DOM",
+      "accessRequired": "None (Public URL)",
+      "status": "Audited Live",
+      "coverage": "Frontend performance, mobile layout shifts, click-to-call, SEO crawlability, public DNS/SSL, security headers, tracking scripts."
+    },
+    {
+      "surface": "CMS Admin & Plugins",
+      "accessRequired": "WordPress / Shopify / Webflow Login",
+      "status": "Requires Manual Playbook",
+      "coverage": "Plugin vulnerabilities, theme bloat, database overhead, auto-update health, user privilege audit."
+    },
+    {
+      "surface": "CRM & GoHighLevel Automations",
+      "accessRequired": "GHL / ActiveCampaign Account Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "Workflow triggers, SMS/Email autoresponders, webhook delivery, pipeline tag integrity, UTM attribution."
+    },
+    {
+      "surface": "Physical Mobile Devices & Carriers",
+      "accessRequired": "Real iPhone / Android Hardware",
+      "status": "Requires Manual Playbook",
+      "coverage": "Real carrier click-to-call dialers, Safari iOS keyboard viewport clipping, WhatsApp native handoff, mobile touch gesture conflicts."
+    },
+    {
+      "surface": "Payment Gateways & Checkout Sandboxes",
+      "accessRequired": "Stripe / PayPal / E-commerce Admin",
+      "status": "Requires Manual Playbook",
+      "coverage": "End-to-end sandbox purchase, webhook reconciliation, 3D Secure triggers, cart abandonment sequences."
+    },
+    {
+      "surface": "Screen Readers & Assistive Accessibility",
+      "accessRequired": "NVDA / VoiceOver Assistive Software",
+      "status": "Requires Manual Playbook",
+      "coverage": "Full manual keyboard focus traps, screen reader audio fidelity, cognitive readability, aria-live dynamic region announcements."
+    },
+    {
+      "surface": "Server, Hosting & PHP Logs",
+      "accessRequired": "Hosting / cPanel / Cloud Console Access",
+      "status": "Requires Manual Playbook",
+      "coverage": "PHP error logs, slow database queries, disk I/O bottlenecks, off-site backup restoration drills."
+    }
+  ],
+  "details": {
+    "dns": {
+      "records": {
+        "a": [
+          "172.66.147.243"
+        ],
+        "aaaa": [
+          "2606:4700:10::6814:179a",
+          "2606:4700:10::ac42:93f3"
+        ],
+        "mx": [
+          {
+            "exchange": "",
+            "priority": 0,
+            "type": "MX"
+          }
+        ],
+        "txt": [
+          "_k2n1y4vw3qtb4skdx9e7dxt97qrmmq9",
+          "v=spf1 -all"
+        ]
+      },
+      "spf": {
+        "present": true,
+        "record": "v=spf1 -all",
+        "valid": true
+      },
+      "dmarc": {
+        "present": true,
+        "record": "v=DMARC1;p=reject;sp=reject;adkim=s;aspf=s",
+        "policy": "reject"
+      },
+      "issues": []
+    },
+    "ssl": {
+      "valid": true,
+      "daysRemaining": 44,
+      "issuer": "SSL Corporation",
+      "validTo": "2026-10-27T22:17:21.000Z",
+      "tlsVersion": "TLSv1.3",
+      "issues": []
+    },
+    "redirects": {
+      "hops": [
+        {
+          "url": "https://example.com/",
+          "status": 200,
+          "location": null
+        }
+      ],
+      "finalUrl": "https://example.com/",
+      "loopDetected": false,
+      "issues": []
+    },
+    "accuracy404": {
+      "status": 404,
+      "isAccurate": true,
+      "issues": []
+    },
+    "robotsAndSitemap": {
+      "robots": {
+        "present": false,
+        "status": 404
+      },
+      "sitemap": {
+        "present": false,
+        "status": 404
+      },
+      "issues": [
+        {
+          "category": "SEO",
+          "severity": "Warning",
+          "title": "Missing or invalid robots.txt",
+          "evidence": "/robots.txt returned status 404",
+          "recommendation": "Add a valid robots.txt file to guide search engine crawlers."
+        },
+        {
+          "category": "SEO",
+          "severity": "Warning",
+          "title": "Missing or inaccessible XML Sitemap",
+          "evidence": "/sitemap.xml returned status 404",
+          "recommendation": "Generate an XML sitemap and reference it in robots.txt to assist discovery."
+        }
+      ]
+    },
+    "structuredData": {
+      "schemasCount": 0,
+      "schemas": [],
+      "napConsistency": {
+        "schemaFound": false,
+        "schemaName": null,
+        "schemaPhone": null,
+        "schemaAddress": null,
+        "footerMatched": true
+      },
+      "issues": [
+        {
+          "category": "SEO / Structured Data",
+          "severity": "Warning",
+          "title": "Missing structured data (Schema.org)",
+          "evidence": "No JSON-LD schema found on page",
+          "recommendation": "Add Organization or LocalBusiness Schema.org JSON-LD to enhance rich snippets and AI discoverability."
+        }
+      ]
+    },
+    "socialGraph": {
+      "ogTitle": null,
+      "ogImage": null,
+      "ogDescription": null,
+      "twitterCard": null
+    },
+    "thirdPartyScripts": [],
+    "cookieConsent": false,
+    "mixedContentCount": 0,
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": []
+  },
+  "remediationPriorities": [
+    {
+      "rank": 1,
+      "title": "Missing Privacy Policy link",
+      "action": "Add a dedicated Privacy Policy page linked in the global footer.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 2,
+      "title": "Content-Security-Policy absent",
+      "action": "Implement a Content-Security-Policy to protect against cross-site scripting (XSS) and data injection.",
+      "effort": "Low",
+      "priority": "Priority 1 (Fix immediately)"
+    },
+    {
+      "rank": 3,
+      "title": "Missing HSTS header",
+      "action": "Add Strict-Transport-Security with max-age=31536000 to enforce HTTPS.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 4,
+      "title": "Missing X-Frame-Options",
+      "action": "Set X-Frame-Options to DENY or SAMEORIGIN.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 5,
+      "title": "Missing X-Content-Type-Options",
+      "action": "Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    },
+    {
+      "rank": 6,
+      "title": "Server version exposed",
+      "action": "Disable or mask the Server header to prevent fingerprinting by automated scanners.",
+      "effort": "Low",
+      "priority": "Priority 2 (Scheduled sprint)"
+    }
+  ],
+  "comparison": {
+    "previousReportId": "d34AxFm5rT08",
+    "previousTimestamp": "2026-09-13T08:59:43.641Z",
+    "previousMode": "quick",
+    "overall": {
+      "previous": 78,
+      "current": 78,
+      "diff": 0
+    },
+    "performance": {
+      "previous": 99,
+      "current": 99,
+      "diff": 0
+    },
+    "seo": {
+      "previous": 69,
+      "current": 69,
+      "diff": 0
+    },
+    "accessibility": {
+      "previous": 95,
+      "current": 95,
+      "diff": 0
+    },
+    "security": {
+      "previous": 50,
+      "current": 50,
+      "diff": 0
+    },
+    "resolvedFindingsCount": 0,
+    "resolvedFindings": []
+  },
+  "consultation": {
+    "executivePitch": "Example Domain's website currently has 1 high-severity technical barrier(s) directly impeding prospect inquiries and commercial conversion. Addressing these priority items will prevent bounce and secure lead flow across mobile and desktop traffic.",
+    "priorityExplanations": [
+      {
+        "rank": 1,
+        "title": "Missing Privacy Policy link",
+        "clientTalkingPoint": "Remediation action: Add a dedicated Privacy Policy page linked in the global footer."
+      },
+      {
+        "rank": 2,
+        "title": "Content-Security-Policy absent",
+        "clientTalkingPoint": "Remediation action: Implement a Content-Security-Policy to protect against cross-site scripting (XSS) and data injection."
+      },
+      {
+        "rank": 3,
+        "title": "Missing HSTS header",
+        "clientTalkingPoint": "Remediation action: Add Strict-Transport-Security with max-age=31536000 to enforce HTTPS."
+      },
+      {
+        "rank": 4,
+        "title": "Missing X-Frame-Options",
+        "clientTalkingPoint": "Remediation action: Set X-Frame-Options to DENY or SAMEORIGIN."
+      },
+      {
+        "rank": 5,
+        "title": "Missing X-Content-Type-Options",
+        "clientTalkingPoint": "Remediation action: Set X-Content-Type-Options to \"nosniff\" to prevent MIME-confusion attacks."
+      },
+      {
+        "rank": 6,
+        "title": "Server version exposed",
+        "clientTalkingPoint": "Remediation action: Disable or mask the Server header to prevent fingerprinting by automated scanners."
+      }
+    ],
+    "aiProvider": "Deterministic Diagnostic Engine (Fallback)",
+    "isAiGenerated": false
+  }
+}

@@ -37,10 +37,12 @@ export function normalizeReport({
     const key = `${issue.category}:${issue.title}:${issue.evidence}`;
     if (!seen.has(key)) {
       seen.add(key);
+      const rawSev = String(issue.severity || 'warning').toLowerCase();
+      const canonicalSeverity = rawSev === 'critical' ? 'critical' : (rawSev === 'pass' || rawSev === 'healthy') ? 'pass' : 'warning';
       uniqueFindings.push({
         id: nanoid(6),
         category: issue.category || 'General Quality',
-        severity: issue.severity || 'Warning',
+        severity: canonicalSeverity,
         headline: issue.title || 'Audit Finding',
         evidence: String(issue.evidence || ''),
         userImpact: issue.userImpact || 'Impacts user experience and interaction reliability.',
@@ -52,21 +54,30 @@ export function normalizeReport({
     }
   }
 
-  // Count severities
-  const criticalFindings = uniqueFindings.filter((i) => i.severity.toLowerCase() === 'critical');
-  const warningFindings = uniqueFindings.filter((i) => i.severity.toLowerCase() === 'warning');
-  const passFindings = uniqueFindings.filter((i) => i.severity.toLowerCase() === 'pass');
+  // Count severities (using canonical lowercase)
+  const criticalFindings = uniqueFindings.filter((i) => i.severity === 'critical');
+  const warningFindings = uniqueFindings.filter((i) => i.severity === 'warning');
+  const passFindings = uniqueFindings.filter((i) => i.severity === 'pass');
 
-  // Overall health score: weighted average of 4 core scores
-  // Performance (30%) + Security (25%) + SEO (25%) + Accessibility/Conversion (20%)
-  const overallScore = Math.round(
-    (scores?.performance ?? 75) * 0.3 +
-    (scores?.security ?? 70) * 0.25 +
-    (scores?.seo ?? 70) * 0.25 +
-    (scores?.accessibility ?? 75) * 0.2
-  );
+  // Overall health score: weighted average of actually measured scores
+  // If scores are missing, calculate only across available measured scores, or null if none available.
+  const measuredScoreEntries = [
+    { val: scores?.performance, weight: 0.3 },
+    { val: scores?.security, weight: 0.25 },
+    { val: scores?.seo, weight: 0.25 },
+    { val: scores?.accessibility, weight: 0.2 }
+  ].filter((e) => typeof e.val === 'number' && !isNaN(e.val));
 
-  const statusText = overallScore >= 80 ? 'HEALTHY' : overallScore >= 55 ? 'NEEDS ATTENTION' : 'AT RISK';
+  let overallScore = null;
+  if (measuredScoreEntries.length > 0) {
+    const totalWeight = measuredScoreEntries.reduce((acc, e) => acc + e.weight, 0);
+    const weightedSum = measuredScoreEntries.reduce((acc, e) => acc + (e.val * e.weight), 0);
+    overallScore = Math.round(weightedSum / totalWeight);
+  }
+
+  const statusText = overallScore !== null
+    ? (overallScore >= 80 ? 'HEALTHY' : overallScore >= 55 ? 'NEEDS ATTENTION' : 'AT RISK')
+    : 'NOT MEASURED';
 
   // Section 82: The Most Important Principle
   // "We found X issues. Y require immediate attention, Z can affect leads/search visibility, and W are optimization opportunities."
@@ -163,42 +174,49 @@ export function normalizeReport({
     }
   }
 
-  // 5 Real Customer Journeys (Section 71 of Webarg Playbook)
+  // 5 Customer Journeys (Section 71 of Webarg Playbook)
+  // Reconciled: Journeys A & B rely on indirect heuristics (confidence: 'inferred'),
+  // while C, D, & E reflect directly verified technical/DOM signals (confidence: 'measured').
   const customerJourneys = [
     {
       id: 'journey-a',
       name: 'Journey A — New Visitor',
       flow: 'Search → Homepage → 5-Second Clarity → Primary CTA',
       status: criticalFindings.some(f => f.category.includes('SEO') || f.headline.includes('Hero')) ? 'warning' : 'pass',
-      notes: 'Evaluates value proposition clarity and whether visitor finds primary CTA without friction.'
+      confidence: 'inferred',
+      notes: 'Indirect proxy: Evaluates value proposition clarity and whether visitor finds primary CTA without friction.'
     },
     {
       id: 'journey-b',
       name: 'Journey B — Inquiring Lead',
       flow: 'Homepage → Contact Form / Phone → Submission → Notification',
       status: (conversionData?.contactChannels?.forms?.count === 0 && !conversionData?.contactChannels?.phone?.count) ? 'critical' : (criticalFindings.some(f => f.category.includes('Conversion')) ? 'critical' : (warningFindings.some(f => f.category.includes('Conversion')) ? 'warning' : 'pass')),
-      notes: 'Tests whether prospect can reach the business via form, click-to-call, or email.'
+      confidence: 'inferred',
+      notes: 'Indirect proxy: Tests whether contact channel elements exist in the DOM (actual message receipt requires manual audit).'
     },
     {
       id: 'journey-c',
       name: 'Journey C — Mobile Customer',
       flow: '320px Mobile Screen → Touch CTA → Dial / Chat Conversion',
       status: (conversionData?.contactChannels?.phone?.unlinkedInBody || criticalFindings.some(f => f.category.includes('Mobile'))) ? 'critical' : 'pass',
-      notes: 'Verifies tap-to-call dialers and mobile layouts at compact 320px viewport.'
+      confidence: 'measured',
+      notes: 'Directly measured: Verifies tap-to-call tel: links and mobile viewport layout at compact 320px.'
     },
     {
       id: 'journey-d',
       name: 'Journey D — Returning User',
       flow: 'Direct URL → Cached State → Fast Navigation',
-      status: (scores?.performance < 60) ? 'warning' : 'pass',
-      notes: 'Validates browser caching, compression, and rapid page reloads for returning customers.'
+      status: (scores?.performance !== null && scores?.performance < 60) ? 'warning' : 'pass',
+      confidence: 'measured',
+      notes: 'Directly measured: Validates browser caching headers, compression, and Lighthouse performance scores.'
     },
     {
       id: 'journey-e',
       name: 'Journey E — Failure Recovery',
       flow: 'Input Error / Non-existent Route → Helpful Guidance → Retry',
       status: check404Data?.isReal404 === false ? 'warning' : 'pass',
-      notes: 'Checks authentic 404 status handling and recovery options when errors occur.'
+      confidence: 'measured',
+      notes: 'Directly measured: Checks authentic HTTP 404 status response on non-existent test routes.'
     }
   ];
 
@@ -212,11 +230,19 @@ export function normalizeReport({
     overallStatus: statusText,
     scores: {
       overall: overallScore,
-      performance: scores?.performance ?? 75,
-      seo: scores?.seo ?? 70,
-      accessibility: scores?.accessibility ?? 75,
+      performance: typeof scores?.performance === 'number' ? scores.performance : null,
+      seo: typeof scores?.seo === 'number' ? scores.seo : null,
+      accessibility: typeof scores?.accessibility === 'number' ? scores.accessibility : null,
       conversion: Math.max(20, Math.round(100 - (criticalFindings.length * 15 + warningFindings.length * 5))),
-      security: scores?.security ?? 70
+      security: typeof scores?.security === 'number' ? scores.security : null
+    },
+    scoreTypes: {
+      overall: 'aggregate',
+      performance: 'measured',
+      seo: 'measured',
+      accessibility: 'measured',
+      security: 'measured',
+      conversion: 'derived_heuristic'
     },
     summary: {
       total: uniqueFindings.length,
@@ -225,7 +251,14 @@ export function normalizeReport({
       pass: passFindings.length,
       narrative: summaryNarrative
     },
-    metrics: metrics || { ttfb: 120, lcp: 1.4, cls: 0.03, tbt: 90, pageSize: '420 KB' },
+    // Only return metrics if actually measured from Lighthouse; never substitute plausible invented numbers
+    metrics: metrics ? {
+      ttfb: metrics.ttfb ?? null,
+      lcp: metrics.lcp ?? null,
+      cls: metrics.cls ?? null,
+      tbt: metrics.tbt ?? null,
+      pageSize: metrics.pageSize ?? null
+    } : null,
     revenueImpact,
     techStack: techStack || [],
     conversionJourney: conversionData?.contactChannels || {},
@@ -250,14 +283,14 @@ export function normalizeReport({
       failedRequests: browserlessData?.failedRequests || []
     },
     remediationPriorities: uniqueFindings
-      .filter((f) => f.severity.toLowerCase() === 'critical' || f.severity.toLowerCase() === 'warning')
+      .filter((f) => f.severity === 'critical' || f.severity === 'warning')
       .slice(0, 6)
       .map((f, idx) => ({
         rank: idx + 1,
         title: f.headline,
         action: f.recommendation,
         effort: f.effort,
-        priority: f.severity === 'Critical' ? 'Priority 1 (Fix immediately)' : 'Priority 2 (Scheduled sprint)'
+        priority: f.severity === 'critical' ? 'Priority 1 (Fix immediately)' : 'Priority 2 (Scheduled sprint)'
       }))
   };
 }

@@ -20,10 +20,10 @@ function getScoreLabel(score) {
  */
 export function ScoreBreakdownChart({ scores = {} }) {
   const items = [
-    { label: 'Performance', val: scores.performance ?? 75 },
-    { label: 'SEO & Crawl', val: scores.seo ?? 70 },
-    { label: 'Accessibility', val: scores.accessibility ?? 75 },
-    { label: 'Security & TLS', val: scores.security ?? 70 },
+    { label: 'Performance', val: typeof scores?.performance === 'number' ? scores.performance : null },
+    { label: 'SEO & Crawl', val: typeof scores?.seo === 'number' ? scores.seo : null },
+    { label: 'Accessibility', val: typeof scores?.accessibility === 'number' ? scores.accessibility : null },
+    { label: 'Security & TLS', val: typeof scores?.security === 'number' ? scores.security : null },
   ];
 
   return (
@@ -35,26 +35,33 @@ export function ScoreBreakdownChart({ scores = {} }) {
 
       <div className="graph-bars-wrap">
         {items.map((item) => {
-          const color = getScoreColor(item.val);
-          const pct = Math.max(4, Math.min(100, item.val));
+          const hasVal = typeof item.val === 'number';
+          const color = hasVal ? getScoreColor(item.val) : 'var(--muted)';
+          const pct = hasVal ? Math.max(4, Math.min(100, item.val)) : 0;
           return (
             <div key={item.label} className="graph-bar-row">
               <div className="graph-bar-label-wrap">
                 <span className="graph-bar-label">{item.label}</span>
                 <span className="graph-bar-val mono" style={{ color }}>
-                  {item.val}<sub className="graph-bar-sub">/100</sub>
+                  {hasVal ? (
+                    <>
+                      {item.val}<sub className="graph-bar-sub">/100</sub>
+                    </>
+                  ) : (
+                    '— (Not Measured)'
+                  )}
                 </span>
               </div>
               <svg
                 viewBox="0 0 100 8"
                 className="graph-bar-svg"
                 preserveAspectRatio="none"
-                aria-label={`${item.label} score: ${item.val}`}
+                aria-label={`${item.label} score: ${hasVal ? item.val : 'Not Measured'}`}
               >
                 {/* Background Track */}
                 <rect x="0" y="0" width="100" height="8" rx="2" fill="#181E27" />
                 {/* Value Bar */}
-                <rect x="0" y="0" width={pct} height="8" rx="2" fill={color} />
+                {hasVal && <rect x="0" y="0" width={pct} height="8" rx="2" fill={color} />}
               </svg>
             </div>
           );
@@ -214,23 +221,37 @@ export function SeverityDistributionChart({ findings = [], summary = {} }) {
  * 3. Core Web Vitals Thresholds Spectrum Chart (SVG)
  */
 export function CwvThresholdChart({ metrics = {} }) {
-  // Numeric extraction
+  if (!metrics || (metrics.lcp == null && metrics.cls == null && metrics.tbt == null)) {
+    return (
+      <div className="graph-card">
+        <div className="graph-card-header">
+          <h4 className="graph-card-title">Core Web Vitals Threshold Spectrum</h4>
+          <span className="graph-card-meta mono">Google PSI Benchmarks</span>
+        </div>
+        <div style={{ padding: '28px 12px', textAlign: 'center', color: 'var(--text-soft)', fontSize: '13px', fontFamily: 'var(--font-mono)' }}>
+          * Field Core Web Vitals data not returned by diagnostic engine for this URL. No synthetic numbers substituted.
+        </div>
+      </div>
+    );
+  }
+
+  // Numeric extraction without inventing values
   const parseLcp = (v) => {
-    if (!v) return 1.4;
+    if (v == null) return null;
     const num = parseFloat(String(v).replace('s', ''));
-    return isNaN(num) ? 1.4 : num;
+    return isNaN(num) ? null : num;
   };
 
   const parseCls = (v) => {
-    if (v === undefined || v === null) return 0.03;
+    if (v == null) return null;
     const num = parseFloat(String(v));
-    return isNaN(num) ? 0.03 : num;
+    return isNaN(num) ? null : num;
   };
 
   const parseTbt = (v) => {
-    if (!v) return 90;
+    if (v == null) return null;
     const num = parseFloat(String(v).replace('ms', ''));
-    return isNaN(num) ? 90 : num;
+    return isNaN(num) ? null : num;
   };
 
   const lcpVal = parseLcp(metrics.lcp);
@@ -240,39 +261,39 @@ export function CwvThresholdChart({ metrics = {} }) {
   const cwvSpecs = [
     {
       metric: 'LCP (Largest Contentful Paint)',
-      valStr: `${lcpVal}s`,
+      valStr: lcpVal !== null ? `${lcpVal}s` : 'Not Measured',
       val: lcpVal,
       goodMax: 2.5,
       warnMax: 4.0,
       scaleMax: 6.0,
       unit: 's',
-      status: lcpVal <= 2.5 ? 'GOOD' : lcpVal <= 4.0 ? 'NEEDS WORK' : 'POOR',
-      color: lcpVal <= 2.5 ? '#4C7A5E' : lcpVal <= 4.0 ? '#B8863D' : '#C1432B',
-      posPct: Math.min(96, Math.max(4, (lcpVal / 6.0) * 100))
+      status: lcpVal !== null ? (lcpVal <= 2.5 ? 'GOOD' : lcpVal <= 4.0 ? 'NEEDS WORK' : 'POOR') : 'NOT MEASURED',
+      color: lcpVal !== null ? (lcpVal <= 2.5 ? '#4C7A5E' : lcpVal <= 4.0 ? '#B8863D' : '#C1432B') : 'var(--muted)',
+      posPct: lcpVal !== null ? Math.min(96, Math.max(4, (lcpVal / 6.0) * 100)) : null
     },
     {
       metric: 'CLS (Cumulative Layout Shift)',
-      valStr: `${clsVal}`,
+      valStr: clsVal !== null ? `${clsVal}` : 'Not Measured',
       val: clsVal,
       goodMax: 0.1,
       warnMax: 0.25,
       scaleMax: 0.4,
       unit: '',
-      status: clsVal <= 0.1 ? 'GOOD' : clsVal <= 0.25 ? 'NEEDS WORK' : 'POOR',
-      color: clsVal <= 0.1 ? '#4C7A5E' : clsVal <= 0.25 ? '#B8863D' : '#C1432B',
-      posPct: Math.min(96, Math.max(4, (clsVal / 0.4) * 100))
+      status: clsVal !== null ? (clsVal <= 0.1 ? 'GOOD' : clsVal <= 0.25 ? 'NEEDS WORK' : 'POOR') : 'NOT MEASURED',
+      color: clsVal !== null ? (clsVal <= 0.1 ? '#4C7A5E' : clsVal <= 0.25 ? '#B8863D' : '#C1432B') : 'var(--muted)',
+      posPct: clsVal !== null ? Math.min(96, Math.max(4, (clsVal / 0.4) * 100)) : null
     },
     {
       metric: 'TBT / INP (Total Blocking Time)',
-      valStr: `${tbtVal}ms`,
+      valStr: tbtVal !== null ? `${tbtVal}ms` : 'Not Measured',
       val: tbtVal,
       goodMax: 200,
       warnMax: 500,
       scaleMax: 800,
       unit: 'ms',
-      status: tbtVal <= 200 ? 'GOOD' : tbtVal <= 500 ? 'NEEDS WORK' : 'POOR',
-      color: tbtVal <= 200 ? '#4C7A5E' : tbtVal <= 500 ? '#B8863D' : '#C1432B',
-      posPct: Math.min(96, Math.max(4, (tbtVal / 800) * 100))
+      status: tbtVal !== null ? (tbtVal <= 200 ? 'GOOD' : tbtVal <= 500 ? 'NEEDS WORK' : 'POOR') : 'NOT MEASURED',
+      color: tbtVal !== null ? (tbtVal <= 200 ? '#4C7A5E' : tbtVal <= 500 ? '#B8863D' : '#C1432B') : 'var(--muted)',
+      posPct: tbtVal !== null ? Math.min(96, Math.max(4, (tbtVal / 800) * 100)) : null
     }
   ];
 

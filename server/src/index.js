@@ -17,6 +17,11 @@ process.on('unhandledRejection', (reason) => {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Trust proxy configuration for reverse proxy (e.g. 1 hop behind Nginx/Cloudflare)
+// Defaults to loopback only if not explicitly set to prevent X-Forwarded-For IP spoofing
+const trustProxyConfig = process.env.TRUST_PROXY || 'loopback';
+app.set('trust proxy', trustProxyConfig === 'false' ? false : (isNaN(Number(trustProxyConfig)) ? trustProxyConfig : Number(trustProxyConfig)));
+
 // Security & utility middleware
 app.use(helmet({
   contentSecurityPolicy: false // Allow API consumers

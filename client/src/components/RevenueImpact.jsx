@@ -4,8 +4,8 @@ export default function RevenueImpact({ revenueImpact, findings }) {
   if (!revenueImpact && (!findings || findings.length === 0)) return null;
 
   // Derive highest-impact finding if revenueImpact isn't explicitly supplied
-  const criticalIssues = findings?.filter(f => f.severity === 'critical') || [];
-  const warningIssues = findings?.filter(f => f.severity === 'warning') || [];
+  const criticalIssues = findings?.filter(f => f.severity?.toLowerCase() === 'critical') || [];
+  const warningIssues = findings?.filter(f => f.severity?.toLowerCase() === 'warning') || [];
 
   const title = revenueImpact?.title || (
     criticalIssues.length > 0
@@ -17,9 +17,9 @@ export default function RevenueImpact({ revenueImpact, findings }) {
 
   const description = revenueImpact?.description || (
     criticalIssues.length > 0
-      ? `${criticalIssues[0].headline}: ${criticalIssues[0].businessConsequence}`
+      ? `${criticalIssues[0].headline}: ${criticalIssues[0].businessImpact || criticalIssues[0].businessConsequence || 'Impedes lead capture and causes bounce.'}`
       : warningIssues.length > 0
-      ? `${warningIssues[0].headline}: ${warningIssues[0].businessConsequence}`
+      ? `${warningIssues[0].headline}: ${warningIssues[0].businessImpact || warningIssues[0].businessConsequence || 'Causes conversion friction.'}`
       : 'The public surface shows healthy signals. Review the 84-point manual inspection playbook to audit access-gated funnels, GHL forms, and actual mobile device experiences.'
   );
 

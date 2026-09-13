@@ -40,48 +40,58 @@ export default function BeforeAfterComparison({ comparison }) {
 
       <div className="delta-grid">
         {/* Overall Score Jump Card */}
-        <div className="delta-card delta-card-main">
-          <span className="delta-card-label">Overall Health Score</span>
-          <div className="delta-main-val-wrap">
-            <span className="delta-prev mono">{overall.previous}</span>
-            <span className="delta-arrow">→</span>
-            <span className="delta-curr mono">{overall.current}</span>
-            {renderDiff(overall.diff)}
+        {overall && (
+          <div className="delta-card delta-card-main">
+            <span className="delta-card-label">Overall Health Score</span>
+            <div className="delta-main-val-wrap">
+              <span className="delta-prev mono">{overall.previous ?? '—'}</span>
+              <span className="delta-arrow">→</span>
+              <span className="delta-curr mono">{overall.current ?? '—'}</span>
+              {renderDiff(overall.diff)}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Category Breakdown Pills */}
-        <div className="delta-card">
-          <span className="delta-card-label">Performance</span>
-          <div className="delta-sub-val-wrap mono">
-            <span>{performance.previous} → {performance.current}</span>
-            {renderDiff(performance.diff)}
+        {/* Category Breakdown Pills with individual null-safety */}
+        {performance && (typeof performance.previous === 'number' || typeof performance.current === 'number') && (
+          <div className="delta-card">
+            <span className="delta-card-label">Performance</span>
+            <div className="delta-sub-val-wrap mono">
+              <span>{performance.previous ?? '—'} → {performance.current ?? '—'}</span>
+              {renderDiff(performance.diff)}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="delta-card">
-          <span className="delta-card-label">SEO & Crawl</span>
-          <div className="delta-sub-val-wrap mono">
-            <span>{seo.previous} → {seo.current}</span>
-            {renderDiff(seo.diff)}
+        {seo && (typeof seo.previous === 'number' || typeof seo.current === 'number') && (
+          <div className="delta-card">
+            <span className="delta-card-label">SEO &amp; Crawl</span>
+            <div className="delta-sub-val-wrap mono">
+              <span>{seo.previous ?? '—'} → {seo.current ?? '—'}</span>
+              {renderDiff(seo.diff)}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="delta-card">
-          <span className="delta-card-label">Accessibility</span>
-          <div className="delta-sub-val-wrap mono">
-            <span>{accessibility.previous} → {accessibility.current}</span>
-            {renderDiff(accessibility.diff)}
+        {accessibility && (typeof accessibility.previous === 'number' || typeof accessibility.current === 'number') && (
+          <div className="delta-card">
+            <span className="delta-card-label">Accessibility</span>
+            <div className="delta-sub-val-wrap mono">
+              <span>{accessibility.previous ?? '—'} → {accessibility.current ?? '—'}</span>
+              {renderDiff(accessibility.diff)}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="delta-card">
-          <span className="delta-card-label">Security & TLS</span>
-          <div className="delta-sub-val-wrap mono">
-            <span>{security.previous} → {security.current}</span>
-            {renderDiff(security.diff)}
+        {security && (typeof security.previous === 'number' || typeof security.current === 'number') && (
+          <div className="delta-card">
+            <span className="delta-card-label">Security &amp; TLS</span>
+            <div className="delta-sub-val-wrap mono">
+              <span>{security.previous ?? '—'} → {security.current ?? '—'}</span>
+              {renderDiff(security.diff)}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="before-after-disclosure mono" style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '10px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '6px' }}>

@@ -11,11 +11,8 @@ export const scanRateLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) => {
-    const forwarded = req.headers['x-forwarded-for'];
-    if (forwarded) {
-      return typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : forwarded[0];
-    }
-    return req.ip || req.socket.remoteAddress;
+    // req.ip respects app.set('trust proxy', ...) configuration, preventing client header spoofing
+    return req.ip || req.socket.remoteAddress || 'unknown';
   },
   message: {
     error: 'Too many scan requests from this IP. Limit is 5 scans per hour.',

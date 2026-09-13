@@ -96,7 +96,12 @@ export default function ExecutiveSummary({ report }) {
             <span className="score-card-num" ref={convRef}>0</span>
             <sub className="score-unit">/100</sub>
           </div>
-          <div className="score-card-label">Conversion Health</div>
+          <div className="score-card-label">
+            Conversion Health
+            <span className="mono" style={{ fontSize: '9px', color: 'var(--accent)', display: 'block', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '2px' }}>
+              [Derived Heuristic]
+            </span>
+          </div>
           <div className={`score-badge ${getStatusClass(report.scores?.conversion)}`}>
             {getStatusWord(report.scores?.conversion)}
           </div>
@@ -107,7 +112,12 @@ export default function ExecutiveSummary({ report }) {
             <span className="score-card-num" ref={perfRef}>0</span>
             <sub className="score-unit">/100</sub>
           </div>
-          <div className="score-card-label">Performance &amp; CWV</div>
+          <div className="score-card-label">
+            Performance &amp; CWV
+            <span className="mono" style={{ fontSize: '9px', color: 'var(--muted)', display: 'block', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '2px' }}>
+              [Measured CWV]
+            </span>
+          </div>
           <div className={`score-badge ${getStatusClass(report.scores?.performance)}`}>
             {getStatusWord(report.scores?.performance)}
           </div>
@@ -118,7 +128,12 @@ export default function ExecutiveSummary({ report }) {
             <span className="score-card-num" ref={seoRef}>0</span>
             <sub className="score-unit">/100</sub>
           </div>
-          <div className="score-card-label">SEO &amp; Identity</div>
+          <div className="score-card-label">
+            SEO &amp; Identity
+            <span className="mono" style={{ fontSize: '9px', color: 'var(--muted)', display: 'block', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '2px' }}>
+              [Measured Spec]
+            </span>
+          </div>
           <div className={`score-badge ${getStatusClass(report.scores?.seo)}`}>
             {getStatusWord(report.scores?.seo)}
           </div>
@@ -129,7 +144,12 @@ export default function ExecutiveSummary({ report }) {
             <span className="score-card-num" ref={secRef}>0</span>
             <sub className="score-unit">/100</sub>
           </div>
-          <div className="score-card-label">Security &amp; Headers</div>
+          <div className="score-card-label">
+            Security &amp; Headers
+            <span className="mono" style={{ fontSize: '9px', color: 'var(--muted)', display: 'block', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '2px' }}>
+              [Measured SSL/TLS]
+            </span>
+          </div>
           <div className={`score-badge ${getStatusClass(report.scores?.security)}`}>
             {getStatusWord(report.scores?.security)}
           </div>
