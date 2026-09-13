@@ -1,5 +1,5 @@
 # Website Audit Master Checklist — 2026
-*The Definitive Technical, Conversion & Deep Manual Audit Playbook (Sections 1 to 69)*
+*The Definitive Technical, Conversion & Deep Manual Audit Playbook (Sections 1 to 84)*
 
 ---
 
@@ -27,274 +27,404 @@ Har finding ko is structure mein document karein:
 - **⚪ LOW:** Technical debt, minor code cleanup, deprecation warnings.
 - **🟢 PASS:** Technical standard successfully verified.
 
----
-
-## 1-Day Professional Audit Schedule
-
-| Time Allocation | Inspection Surface & Scope |
-| :--- | :--- |
-| **30 min** | **Full site walkthrough:** Navigation, menus, CTAs, cross-page consistency |
-| **60 min** | **DevTools + Console + Network:** JS errors, uncaught exceptions, failed 4xx/5xx requests, slow API calls |
-| **60 min** | **Performance & Core Web Vitals:** LCP, CLS, TBT, TTFB, heavy assets, DOM size |
-| **60 min** | **SEO & Crawlability:** Meta tags, canonicals, robots.txt, sitemap, headings, schema.org JSON-LD |
-| **45 min** | **Mobile / Responsive QA:** 320px screen check, viewport scaling, touch targets, horizontal overflow |
-| **45 min** | **Accessibility (a11y):** Keyboard navigation, visible focus states, form labels, color contrast, ARIA |
-| **45 min** | **Security & Infrastructure:** SSL cert, security headers (CSP, HSTS), DNS (SPF/DMARC), exposed endpoints |
-| **30 min** | **Forms & Conversion Funnels:** Validation rules, required fields, autofill UX, spam prevention |
-| **30 min** | **Analytics & Tracking Tags:** GA4, GTM, Meta Pixel, Hotjar, event firing triggers |
-| **45 min** | **Full Crawl & Broken Links:** 404 links, redirect loops, dead `#` anchors, reverse tabnabbing |
-| **45 min** | **Final QA, Evidence Gathering & Report Formulation:** Screenshots, remediation roadmap, client pitch |
-| *Extra / Parallel* | *CMS (WordPress/Elementor), GHL Funnels, Shopify, React runtime, or Database audits* |
+### Access Level Matrix (Anti-Hallucination Boundary)
+- **Level 1 (Automated Public URL):** Webarg's automated engine scans everything publicly reachable without authentication (Cheerio, Browserless, Lighthouse, axe-core, DNS, SSL).
+- **Level 2 (Credentialed CMS / CRM / Sandbox):** WordPress admin, GHL workflows, Shopify admin, payment test modes, email inboxes. (Audited in manual sprint).
+- **Level 3 (Server / Infrastructure / Physical):** cPanel/SSH, database queries, physical iOS/Android dialers, cellular network tests. (Audited in high-tier manual sprint).
 
 ---
 
-# Part 1: Core Technical & Quality Baseline (Sections 1 to 40)
+# Part 1: Foundational Audit & Frontend Architecture (Sections 1 to 40)
 
-### 1. Basic Website / Functional Audit
-- [ ] Homepage properly loads without broken assets.
-- [ ] Logo links back to `/`.
-- [ ] Navigation links, dropdowns, and mobile hamburger work flawlessly.
-- [ ] Internal links return 200 OK (no 404s).
-- [ ] Contact details match across header, footer, and contact page.
+### 1. One-Day Audit Schedule & Methodology
+- [ ] 30 min: Full site walkthrough (navigation, CTAs, layout integrity, cross-page consistency).
+- [ ] 60 min: DevTools, Console & Network (JS errors, failed requests, slow API endpoints).
+- [ ] 60 min: Performance & Core Web Vitals (LCP, CLS, INP, TTFB, heavy assets, DOM size).
+- [ ] 60 min: Technical SEO & Indexability (metadata, canonicals, robots.txt, sitemap, headings, JSON-LD).
+- [ ] 45 min: Mobile / Responsive QA (320px iPhone SE baseline, touch targets, horizontal overflow).
+- [ ] 45 min: Accessibility / a11y (keyboard navigation, focus rings, form labels, color contrast).
+- [ ] 45 min: Security & Infrastructure (SSL cert, security headers, DNS SPF/DMARC, exposed files).
+- [ ] 30 min: Forms & Conversion Funnels (validation matrix, required fields, autofill, delivery).
+- [ ] 30 min: Analytics & Tracking Tags (GA4, GTM, Meta Pixel, Hotjar, event firing).
+- [ ] 45 min: Full Crawl & Broken Links (404 status, redirect chains, dead `#` anchors, reverse tabnabbing).
+- [ ] 45 min: Final QA, Evidence Gathering & Client Pitch Formulation.
+- [ ] *For 100+ page sites:* Sample homepage, top landing pages, key service/product pages, contact/conversion pages, and error/edge-state templates.
 
-### 2. Browser Console / Technical Errors
-- [ ] Zero `Uncaught TypeError`, `ReferenceError`, or `SyntaxError`.
-- [ ] Failed AJAX/fetch requests captured and logged.
-- [ ] Deprecated API usage warnings noted.
-- [ ] Third-party script errors (Maps, Pixels, GTM, Chat) isolated.
+### 2. Full Site Walkthrough & Real-World Actions
+- [ ] Logo clicks navigate directly back to homepage (`/`).
+- [ ] Primary navigation, dropdown menus, mega menus, and sticky headers work smoothly.
+- [ ] Mobile hamburger menu opens, traps focus, and closes via backdrop click or `ESC` key.
+- [ ] Real-world phone number opens native dialer on mobile (not plain non-clickable text).
+- [ ] WhatsApp CTA launches correct international phone format (`wa.me/<number>`).
+- [ ] Email link opens default mail client with pre-populated recipient and subject.
+- [ ] Google Maps pin opens accurate business location and directions.
+- [ ] Social profile icons point to verified, active business accounts.
+- [ ] Zero dead CTA buttons that point to `#` or empty triggers.
 
-### 3. Network / Server Audit
-- [ ] HTTP responses verified (clean 200s, minimal 301s, zero 500s/502s).
-- [ ] TTFB under 400ms globally.
-- [ ] Asset compression verified (Brotli `br` or Gzip).
-- [ ] Caching headers active (`Cache-Control: max-age=...`, `ETag`).
+### 3. Business Conversion & Above-The-Fold Audit
+- [ ] **5-Second Test:** Value proposition, business offering, and target audience clearly understood within 5 seconds.
+- [ ] Primary CTA is prominently placed above the fold with superior visual weight.
+- [ ] Secondary CTA does not compete with or dilute the primary action.
+- [ ] Trust signals (customer ratings, client logos, industry certifications) visible above the fold.
+- [ ] Immediate contact option (phone, chat, booking link) clearly visible without scrolling.
+- [ ] Conversion flow consistency verified: `Visible → Clickable → Destination → Next Step → Completion`.
+- [ ] Popups, modal overlays, or sticky cookies do not block main CTAs on mobile viewports.
 
-### 4. Performance Audit
-- [ ] Largest Contentful Paint (LCP) under 2.5s.
-- [ ] Interaction to Next Paint (INP) under 200ms.
-- [ ] Cumulative Layout Shift (CLS) under 0.1.
-- [ ] Total Blocking Time (TBT) under 200ms.
+### 4. Forms — Deep Functional, Validation & Autofill Test
+- [ ] **Validation Matrix:** Tested with empty submission, valid submission, invalid email format, invalid phone, spaces only, special characters (`<script>`, `'`, `&`), and very long strings.
+- [ ] **Browser Autofill & Password Managers:** Form fields declared with standard `autocomplete` attributes (`name`, `email`, `tel`, `address-line1`, `current-password`).
+- [ ] Chrome autofill text remains visible and legible (no white text on white background styling bugs).
+- [ ] **Keyboard & Interactivity:** `Enter` key triggers submission; `Tab` moves focus in logical sequence.
+- [ ] **Spam & Security:** Turnstile / reCAPTCHA / honeypot active and verified.
+- [ ] **Submission UX:** Submit button shows loading spinner and disables during request (preventing duplicate clicks).
+- [ ] Inline validation errors appear next to invalid fields and clear immediately when corrected.
+- [ ] Success message displays cleanly; form fields clear after successful submission.
+- [ ] Refreshing or pressing back button after submission does not cause duplicate submissions.
+- [ ] Form inquiries deliver successfully to admin email and CRM/GHL pipeline without delay.
 
-### 5. Mobile & Responsive Audit
-- [ ] `<meta name="viewport" content="width=device-width, initial-scale=1.0">` present.
-- [ ] Zero horizontal overflow at 320px width (iPhone SE baseline).
-- [ ] Touch targets minimum 44x44px.
+### 5. Click-to-Call, Contact & Channel Verification
+- [ ] Phone numbers use valid `tel:` protocol format (`tel:+1...`).
+- [ ] Phone numbers are NOT embedded inside raster images or flattened graphics.
+- [ ] Mobile sticky call button stays visible and clickable throughout long page scrolls.
+- [ ] Email addresses use clean `mailto:` links with correct business domain email.
+- [ ] WhatsApp links resolve properly on both mobile WhatsApp app and desktop WhatsApp Web.
+- [ ] Address in footer matches Google Business Profile address and contact page NAP exactly.
 
-### 6. Technical SEO Audit
-- [ ] Unique `<title>` (50–60 chars) and meta description (120–160 chars).
-- [ ] Single primary `<h1>` element.
-- [ ] Valid `<link rel="canonical">` matching protocol and trailing slash.
-- [ ] Zero accidental `<meta name="robots" content="noindex">` on live pages.
+### 6. Browser DevTools — Console & Runtime Errors
+- [ ] Zero unhandled JavaScript exceptions (`Uncaught TypeError`, `ReferenceError`, `SyntaxError`).
+- [ ] Zero unhandled promise rejections (`UnhandledPromiseRejection`).
+- [ ] Failed AJAX/fetch network calls (4xx/5xx) captured and flagged.
+- [ ] CORS (Cross-Origin Resource Sharing) configuration errors identified.
+- [ ] CSP (Content Security Policy) violation warnings reviewed.
+- [ ] Third-party script errors (Maps, Pixels, GTM, Chat widgets) isolated and noted.
+- [ ] Captured console outputs sanitized (redacting leaked tokens, passwords, or PII).
 
-### 7. Accessibility Audit (WCAG 2.1 AA)
-- [ ] All informational images have descriptive `alt` text.
-- [ ] Form controls have associated `<label>` tags.
-- [ ] Full keyboard navigation (`TAB`, `SHIFT+TAB`, `ENTER`, `ESC`).
-- [ ] Visible focus indicators on all interactive elements.
+### 7. Network & Server Infrastructure
+- [ ] HTTP response status codes verified (clean 200s, minimal 301s, zero 500/502/503/504 errors).
+- [ ] Time to First Byte (TTFB) under 400ms globally on cold requests.
+- [ ] Modern asset compression enabled across all text resources (Brotli `br` or Gzip).
+- [ ] Explicit caching headers configured (`Cache-Control: max-age=...`, `ETag`).
+- [ ] Zero excessive redirect hops (>2) or redirect loops.
+- [ ] API latency inspected; all primary endpoints respond under 800ms.
 
-### 8. Security Audit
-- [ ] HTTPS enforced with automatic 301 from HTTP.
-- [ ] Modern TLS 1.2 / 1.3 only; certificate valid with >30 days remaining.
-- [ ] Security headers: HSTS, X-Frame-Options, X-Content-Type-Options, CSP, Referrer-Policy.
-- [ ] No server or technology banners leaked (`Server`, `X-Powered-By`).
+### 8. Performance & Core Web Vitals (Beyond Lighthouse)
+- [ ] **Largest Contentful Paint (LCP):** Under 2.5 seconds on mobile 4G network emulation.
+- [ ] **Cumulative Layout Shift (CLS):** Under 0.1 throughout entire page lifecycle.
+- [ ] **Interaction to Next Paint (INP):** Under 200 milliseconds during user interactions.
+- [ ] **Total Blocking Time (TBT):** Under 200ms on simulated mobile CPU.
+- [ ] DOM size maintained under 1,200 total nodes; maximum DOM depth under 32 levels.
+- [ ] Zero layout thrashing, forced synchronous layouts, or long main-thread tasks (>50ms).
+- [ ] Performance tested across simulated slow 4G, 3G, and high-latency conditions.
 
-### 9. UI / UX Audit
-- [ ] 5-second test passed (clarity of offer and target audience).
-- [ ] Clear primary CTA above the fold with proper visual hierarchy.
-- [ ] Trust signals (reviews, client logos, certifications) prominently placed.
+### 9. Image Audit & Optimization Pipeline
+- [ ] Modern next-gen image formats utilized (WebP or AVIF).
+- [ ] Explicit `width` and `height` attributes declared on all `<img>` tags (eliminates CLS).
+- [ ] Off-screen images lazy-loaded (`loading="lazy"`).
+- [ ] Above-the-fold hero image preloaded with `fetchpriority="high"` (never lazy loaded).
+- [ ] Responsive images supply appropriate `srcset` and `sizes` attributes for mobile screens.
+- [ ] Zero oversized images (e.g. 5 MB uncompressed PNGs scaled down to 300px thumbnail).
 
-### 10. Visual / Design QA
-- [ ] Typography consistency (font families, weights, line heights).
-- [ ] Spacing system and grid alignment consistent.
-- [ ] No clipped text, awkward whitespace, or overlapping elements.
+### 10. Font Audit & Web Typography
+- [ ] Web fonts loaded with `font-display: swap` to prevent Flash of Invisible Text (FOIT).
+- [ ] Font files delivered in lightweight WOFF2 format.
+- [ ] Preconnect hints declared for external font CDNs (`<link rel="preconnect" href="...">`).
+- [ ] Total web font families and weights limited to avoid bandwidth drag (max 2-3 families).
+- [ ] System fallback fonts configured with matching metrics to minimize layout shift (FOUT).
 
-### 11. Forms / Lead Generation Audit
-- [ ] Dedicated submit button present on every form.
-- [ ] Required fields, email format, and phone format validated.
-- [ ] Standard `autocomplete` attributes declared (`autocomplete="name"`, `autocomplete="email"`).
-- [ ] Spam protection active (Turnstile, reCAPTCHA, honeypot).
+### 11. CSS Audit & Layout Integrity
+- [ ] Zero excessive `!important` declarations causing specificity wars.
+- [ ] Dead and unused CSS extracted or pruned.
+- [ ] No fixed-width container elements causing horizontal overflow on mobile viewports.
+- [ ] Proper `z-index` hierarchy; no stacking context bugs where dropdowns hide behind banners.
+- [ ] Sticky headers and floating CTA buttons do not overlap or obscure interactive content.
+- [ ] Responsive media queries structured consistently without arbitrary breakpoint bugs.
 
-### 12. Analytics / Tracking Audit
-- [ ] Google Analytics 4 (GA4) and Google Tag Manager (GTM) present.
-- [ ] Meta Pixel, Microsoft Clarity, or Hotjar scripts verified.
-- [ ] Custom conversion events (CTA click, Form submit, Phone tap) firing without duplicates.
+### 12. JavaScript Architecture & Runtime Stability
+- [ ] Event listeners cleanly removed on unmount; no memory leaks during long browsing sessions.
+- [ ] Timers (`setInterval`, `setTimeout`) properly cleared when no longer needed.
+- [ ] Zero race conditions in asynchronous data fetches.
+- [ ] React/Vue error boundaries wrap major UI sections to prevent full page blanking.
+- [ ] Critical business copy rendered without hard dependency on complex client-side JS.
+- [ ] Global namespace free of uncontrolled variable pollution.
 
-### 13. E-commerce Baseline Audit
-- [ ] Product Schema JSON-LD present.
-- [ ] Cart drawer / page opens smoothly.
-- [ ] Checkout page loads securely over HTTPS with zero mixed content.
+### 13. HTML & DOM Architecture Quality
+- [ ] Valid HTML5 doctype (`<!DOCTYPE html>`) and UTF-8 charset declared.
+- [ ] `<html lang="...">` attribute defined with valid language code.
+- [ ] Zero duplicate `id` attributes on the same page.
+- [ ] Semantic HTML tags utilized (`<header>`, `<nav>`, `<main>`, `<article>`, `<footer>`).
+- [ ] Correct heading hierarchy maintained (single `<h1>`, logical `<h2>` to `<h6>` progression).
+- [ ] No interactive elements nested inside interactive elements (e.g. `<a>` inside `<button>`).
 
-### 14. Content / Copy Audit
-- [ ] Plain HTML contains full content (not an empty shell without JS).
-- [ ] Free of spelling, grammar, and outdated business info.
-- [ ] Clear service benefits and value propositions.
+### 14. Technical SEO — Advanced Crawlability & Indexation
+- [ ] Unique, descriptive `<title>` tag (50–60 characters) and meta description (120–160 characters).
+- [ ] Canonical tag (`<link rel="canonical">`) present, absolute, and matches domain/slash protocol.
+- [ ] Robots.txt file accessible at `/robots.txt` and free of accidental blocking rules.
+- [ ] XML Sitemap accessible at `/sitemap.xml` and referenced in robots.txt.
+- [ ] Zero unintended `<meta name="robots" content="noindex">` on production pages.
+- [ ] No orphan pages or dead ends; all key pages reachable within 3 clicks from homepage.
 
-### 15. Cross-Browser Testing
-- [ ] Verified across Chromium (Chrome/Edge), Firefox, and WebKit (Safari).
+### 15. Search Engine & SERP Verification
+- [ ] Brand name, brand + location, and core service queries inspected in Google SERPs.
+- [ ] Organic snippets display clean titles and descriptions without truncated garbled text.
+- [ ] Google sitelinks point to active, high-value pages.
+- [ ] Staging, dev, or preview URLs (`staging.`, `dev.`, `test.`) confirmed blocked from indexation.
 
-### 16. Broken Link & Site Crawl
-- [ ] Zero 404 links on scanned pages.
-- [ ] Zero redirect chains (>2 hops) or redirect loops.
-- [ ] External links protected against reverse tabnabbing (`rel="noopener noreferrer"`).
+### 16. Structured Data (Schema.org JSON-LD)
+- [ ] Schema.org JSON-LD declared (`Organization`, `LocalBusiness`, `Product`, `Article`, `FAQPage`).
+- [ ] Valid schema syntax without missing required properties.
+- [ ] Structured data values match visible on-page copy exactly (price, address, telephone).
+- [ ] BreadcrumbList schema implemented for complex site taxonomies.
 
-### 17. Website Architecture
-- [ ] Logical URL structure (`/services/service-name`).
-- [ ] Clean canonicalization without orphan pages.
+### 17. Business Identity Consistency (NAP Verification)
+- [ ] Business Name (N), Physical Address (A), and Phone Number (P) match across all pages.
+- [ ] Footer NAP matches header contact information, Contact Us page, and JSON-LD schema.
+- [ ] Operating hours, email addresses, and location details match Google Business Profile.
 
-### 18. Legal / Trust Checks
-- [ ] Privacy Policy link in global footer.
-- [ ] Terms & Conditions link in global footer.
-- [ ] Copyright year is current (not outdated, e.g. "© 2021").
+### 18. Accessibility Audit (Manual & WCAG 2.1 AA)
+- [ ] Complete keyboard navigability: `Tab`, `Shift+Tab`, `Enter`, `Space`, and `Escape`.
+- [ ] High-contrast visible focus rings present on all interactive elements.
+- [ ] Informational images have meaningful `alt` descriptions; decorative images use `alt=""`.
+- [ ] Text-to-background color contrast meets minimum 4.5:1 ratio (3:1 for large text).
+- [ ] Form inputs have explicitly linked `<label for="...">` tags.
+- [ ] Full functionality preserved at 200% browser zoom without horizontal scrolling.
+- [ ] `prefers-reduced-motion` media query respected for users with vestibular disorders.
 
-### 19. Real User Journey Testing
-- [ ] Walked through Google Search $\rightarrow$ Homepage $\rightarrow$ Contact $\rightarrow$ Submit.
+### 19. Error Handling & Graceful Recovery UX
+- [ ] System handles network disconnects, server timeouts, and invalid user inputs gracefully.
+- [ ] Inline error messages explain what went wrong and provide immediate instructions to fix.
+- [ ] Form input state preserved after validation failure (user never forced to re-type everything).
+- [ ] Clear retry buttons provided on failed data requests or payment submissions.
 
-### 20. Severity Classification
-- [ ] Strictly categorized into Critical 🔴, Warning 🟠, and Pass 🟢.
+### 20. Empty States UX
+- [ ] Helpful empty state rendered when site search returns zero matching results.
+- [ ] Empty shopping cart displays clear product recommendations and "Continue Shopping" CTA.
+- [ ] Product catalog filters that yield 0 items show clear "Reset All Filters" button.
+- [ ] User account dashboard shows welcoming onboarding guidance when no prior orders exist.
 
-### 21. HTML Quality & Semantics
-- [ ] Valid doctype, `<html lang="...">`, charset UTF-8.
-- [ ] No interactive elements nested inside interactive elements.
+### 21. 404 / 500 / Error Page Handling
+- [ ] Deliberately invalid URLs return an authentic HTTP `404 Not Found` status (not fake 200 OK).
+- [ ] Branded custom 404 error page provides clear search bar, popular links, and home navigation.
+- [ ] No aggressive redirect-to-homepage rules that confuse users landing on expired links.
+- [ ] Server 500 error pages display clean, apologetic messages without leaking internal stack traces.
 
-### 22. DOM Architecture
-- [ ] Total DOM nodes under 1,200.
-- [ ] No duplicate script libraries or CSS bundles loaded.
+### 22. URL Behaviour, Canonicalization & Redirects
+- [ ] Canonical domain enforced with permanent 301 redirect between `http://` and `https://`.
+- [ ] Domain consistency enforced between `www.` and non-www versions.
+- [ ] Trailing slash consistency enforced (site does not serve duplicate content on `/page` vs `/page/`).
+- [ ] Uppercase URLs automatically redirect to lowercase counterparts.
+- [ ] Query parameters preserved cleanly during redirects.
+- [ ] URL encoding and hash fragments handle special characters without routing failure.
 
-### 23. JavaScript Behaviour
-- [ ] Zero memory leaks, unhandled promises, or un-cleared intervals.
+### 23. Security — Expanded Transport & Exposure Audit
+- [ ] Modern TLS 1.2 / 1.3 enforced; SSL certificate valid with >30 days remaining.
+- [ ] Strict-Transport-Security (HSTS) header configured with `max-age` and `includeSubDomains`.
+- [ ] X-Content-Type-Options set to `nosniff`.
+- [ ] X-Frame-Options set to `DENY` or `SAMEORIGIN` (mitigates clickjacking).
+- [ ] Content-Security-Policy (CSP) configured to prevent unauthorized inline script injection.
+- [ ] Passive probes confirm sensitive paths are blocked (`/.env`, `/.git`, `/wp-config.php`, `/xmlrpc.php`).
+- [ ] Client-side JS bundles free of private API keys, backend secrets, or staging IP addresses.
 
-### 24. CSS Problems
-- [ ] Zero layout-thrashing animations; no `!important` overuse.
+### 24. Cookies & Privacy Governance
+- [ ] Functional cookie consent banner present in GDPR/CCPA jurisdictions.
+- [ ] Tracking and analytics scripts blocked from executing prior to user consent.
+- [ ] Cookies set with `Secure`, `HttpOnly`, and `SameSite` (Lax/Strict) flags.
+- [ ] Cookie consent preferences can be reopened, adjusted, or revoked at any time.
 
-### 25. Image Pipeline
-- [ ] Explicit `width` and `height` on images (eliminating CLS).
-- [ ] Modern WebP / AVIF formats; responsive `srcset` where appropriate.
+### 25. Local Storage / Browser Storage Audit
+- [ ] LocalStorage, SessionStorage, and IndexedDB inspected in DevTools Application tab.
+- [ ] Zero unencrypted sensitive auth tokens, passwords, or PII stored client-side.
+- [ ] No stale, obsolete data accumulating across sessions causing client app crashes.
+- [ ] Storage quota usage kept minimal; clean garbage collection implemented.
 
-### 26. Font Audit
-- [ ] `font-display: swap` on web fonts to prevent FOIT.
-- [ ] Preconnect hints for external font CDNs.
+### 26. Analytics, Pixels & Conversion Tracking
+- [ ] Google Analytics 4 (GA4) and Google Tag Manager (GTM) installed and sending clean hits.
+- [ ] Meta Pixel, Microsoft Clarity, or Hotjar tracking scripts verified.
+- [ ] Custom conversion events fire reliably on CTA clicks, phone taps, form submissions, and purchases.
+- [ ] Zero double-firing or duplicate transaction reporting on conversion events.
+- [ ] UTM parameters (`utm_source`, `utm_medium`, `utm_campaign`) persist across multi-page journeys.
 
-### 27. Caching Architecture
-- [ ] Explicit `Cache-Control` max-age headers for static files.
+### 27. Third-Party Dependency & CDN Audit
+- [ ] Complete inventory of external third-party script domains (CDNs, analytics, chat, fonts).
+- [ ] Zero render-blocking synchronous external scripts loaded in `<head>` without `defer` or `async`.
+- [ ] Third-party failure resilience verified: site continues rendering if an external analytics server lags.
+- [ ] Redundant, duplicate, or outdated external libraries identified for consolidation.
 
-### 28. Compression / Transfer
-- [ ] Brotli / Gzip active on all text-based assets.
+### 28. Cross-Browser Compatibility (Chromium, Firefox, Safari)
+- [ ] Verified on Chromium engines (Google Chrome, Microsoft Edge, Brave).
+- [ ] Verified on Mozilla Firefox (inspect CSS flexbox, grid, and scrollbar behavior).
+- [ ] Verified on Apple WebKit (macOS Safari & iOS Safari): date pickers, form buttons, sticky position.
 
-### 29. DNS / Domain Layer
-- [ ] Root domain 301 redirects to `www` (or vice versa).
-- [ ] A, AAAA, and MX records resolve without errors.
+### 29. Device / Responsive Audit (320px to 4K)
+- [ ] `<meta name="viewport" content="width=device-width, initial-scale=1.0">` declared.
+- [ ] Zero horizontal overflow or scrollbar at 320px screen width (iPhone SE baseline).
+- [ ] Responsive testing across 320px, 375px, 390px, 414px, 768px tablet, 1440px laptop, and 4K desktop.
+- [ ] Touch targets on mobile measure at least 44x44 CSS pixels with generous spacing.
+- [ ] Mobile sticky call/chat buttons do not cover important footer links or form submit buttons.
 
-### 30. Email Infrastructure
-- [ ] SPF record configured (`v=spf1 ... -all`).
-- [ ] DMARC record configured (`v=DMARC1`).
+### 30. Device & Network State UX (Slow 4G, Offline)
+- [ ] Graceful degradation on slow 4G and 3G connections; skeleton loaders indicate loading progress.
+- [ ] Offline notification displays when internet connection drops; cached pages remain readable.
+- [ ] Automatic re-sync and recovery once network connection is restored.
+- [ ] Form submissions queued or clearly alerted if connection is lost mid-submission.
 
-### 31 & 32. API & Third-Party Audit
-- [ ] Third-party domains inventoried; zero render-blocking synchronous scripts in `<head>`.
+### 31. Search, Filter & Sort Functionality
+- [ ] Search input clearly visible and accessible (`<input type="search">`).
+- [ ] Handles spelling typos and partial queries gracefully with smart fallback suggestions.
+- [ ] Multi-filter attribute combinations update URL query parameters cleanly.
+- [ ] "Reset All Filters" button immediately restores original catalog view.
+- [ ] Sorting options (Price Low-to-High, Highest Rated, Newest) function accurately without breaking pagination.
 
-### 33. Cookie Audit
-- [ ] Cookie consent banner detected; cookies set with Secure and SameSite flags.
+### 32. Pagination & Infinite Scroll Handling
+- [ ] Numbered pagination (Page 1, 2, 3, Next, Last) functions cleanly without jumping to top unexpectedly.
+- [ ] Proper SEO canonical and indexation handling on paginated series.
+- [ ] Infinite scroll / "Load More" dynamically updates URL or maintains scroll position on back button navigation.
+- [ ] Footer remains accessible and is not pushed indefinitely away by auto-triggering infinite scroll.
 
-### 34 & 35. Privacy & Source Code Leakage
-- [ ] Passive probes verify `/.env`, `/.git`, `/xmlrpc.php` are blocked.
-- [ ] No internal API keys or credentials exposed in client-side bundles.
+### 33. Browser History & State Preservation
+- [ ] Single Page Application (SPA) routes respond accurately to browser Back and Forward buttons.
+- [ ] Opening and closing modals updates or respects browser history without trapping the user.
+- [ ] Filtering, search parameters, and tab selections preserve state across page reloads.
 
-### 36. Error Handling / UX Recovery
-- [ ] Soft 404 test: Non-existent URL returns real HTTP 404 status.
-- [ ] 404 page provides branded navigation back to homepage.
+### 34. Deep Links & Route Integrity
+- [ ] Direct URLs to sub-services, catalog items, and dashboard tabs load directly with 200 OK.
+- [ ] Deep links do not unexpectedly redirect users to the homepage on initial load.
+- [ ] Direct links to authenticated pages redirect cleanly to login and redirect back after authentication.
 
-### 37 to 40. Interactive States, Search & Filters
-- [ ] Loading spinners / disabled buttons on submit.
-- [ ] Empty search queries return helpful fallback UX.
+### 35. Share & Social Preview Audit (Open Graph / Twitter Cards)
+- [ ] Open Graph title (`og:title`), description (`og:description`), and canonical URL (`og:url`) defined.
+- [ ] Open Graph image (`og:image`) configured with optimal dimensions (1200x630px) and loads over HTTPS.
+- [ ] Twitter Card markup declared (`twitter:card` set to `summary_large_image`).
+- [ ] Social share previews verified on WhatsApp, LinkedIn, Facebook, and X/Twitter.
+- [ ] Favicon, Apple Touch Icon, and Web App Manifest icons present and sharp.
+
+### 36. Print Audit (Ctrl + P Optimization)
+- [ ] Page printable with clean `@media print` CSS stylesheet.
+- [ ] Unnecessary web chrome (header navigation, mobile menus, sticky chat widgets, footer social links) hidden.
+- [ ] Background colors and text contrast adjusted for crisp, readable black-and-white printing.
+- [ ] Images scale cleanly; data tables do not break awkwardly across page breaks (`page-break-inside: avoid`).
+- [ ] Essential business details, audit report data, and contact information prominently preserved on printed sheets.
+
+### 37. Media, Video & Audio Embeds
+- [ ] Video embeds (YouTube, Vimeo, native MP4) are fully responsive and preserve 16:9 aspect ratio.
+- [ ] Autoplay videos are muted by default (`autoplay muted playsinline`).
+- [ ] Video elements provide high-res poster images to eliminate layout shift during video load.
+- [ ] Heavy video iframes lazy-loaded to prevent blocking initial page render.
+- [ ] Captions and transcripts available for audio/video materials.
+
+### 38. File Upload / Download & Clipboard Audit
+- [ ] **File Upload:** Whitelist of accepted extensions enforced (`.pdf`, `.jpg`, `.png`).
+- [ ] Oversized, empty, or corrupted files rejected with helpful inline error guidance.
+- [ ] Drag-and-drop file upload zone functional and visually responsive.
+- [ ] Upload progress indicator displays during file transfer; cancel and retry options working.
+- [ ] Mobile camera upload integration verified on mobile iOS/Android devices.
+- [ ] **Clipboard & Download:** "Copy to Clipboard" buttons provide instant visual confirmation toast ("Copied!").
+- [ ] Clipboard API operations fall back gracefully if browser permissions are restricted.
+- [ ] Downloadable files trigger with correct file names, extensions, and MIME headers.
+
+### 39. Authentication & Session Management
+- [ ] Secure login and registration with validation feedback on password strength.
+- [ ] "Forgot Password" workflow sends verified reset link with 15–30 minute expiration window.
+- [ ] Invalid login attempts show generic error message (preventing username enumeration).
+- [ ] Session tokens stored in `HttpOnly`, `Secure` cookies (immune to XSS theft).
+- [ ] Logging out immediately invalidates session tokens on both client and server.
+- [ ] Password reset immediately revokes all other active device sessions.
+
+### 40. User Account & Dashboard Experience
+- [ ] Profile details, email preferences, and passwords editable with instant confirmation.
+- [ ] Order history and past invoices downloadable as PDF records.
+- [ ] Inactive sessions automatically time out after prolonged inactivity.
+- [ ] Server-side authorization prevents Insecure Direct Object References (IDOR) on account records.
 
 ---
 
 # Part 2: Advanced Deep Audits & Special Environments (Sections 41 to 69)
 
-### 41. E-commerce General
+### 41. E-commerce General & Store Operations
 - [ ] **Product Pages:** Title, SKU, price, stock status, high-res images, and reviews display correctly.
 - [ ] **Categories & Search:** Filtering by price, category, and attributes functions without broken pagination.
 - [ ] **Variations:** Color/size variant switching updates price, SKU, and image instantly.
 - [ ] **Cart & Checkout:** Add to cart drawer/page updates count; coupon codes apply; tax and shipping calculate properly.
-- [ ] **Store Policies:** Dedicated Return & Refund Policy link visible in footer.
+- [ ] **Store Policies:** Dedicated Return & Refund Policy link visible in global footer.
 
 ### 42. Payment Integrity *(Sandbox / Authorized Testing)*
-- [ ] Successful test payment creates verified order in backend.
+- [ ] Successful test payment creates verified order in backend database and sends receipt email.
 - [ ] Failed payment displays clear explanation (e.g. card declined) with instant retry option.
-- [ ] Cancelled payment returns customer cleanly to cart without emptying it.
+- [ ] Cancelled payment returns customer cleanly to cart without emptying stored items.
 - [ ] Duplicate clicks on "Pay Now" do not trigger double-charging.
 - [ ] Webhook reconciliation verifies order status even if customer closes browser before redirect.
 
-### 43. Currency / Tax / Shipping
+### 43. Multi-Currency, Tax & Shipping Calculations
 - [ ] Multi-currency switcher updates symbol, decimal precision, and exchange rate accurately.
 - [ ] Shipping rates calculate according to customer destination zip/postal code.
 - [ ] Tax amounts are itemized clearly before final payment authorization.
+- [ ] Checkout calculations match across summary drawer, order confirmation, and invoice receipt.
 
-### 44. Date / Time (Booking & Scheduling Systems)
+### 44. Date / Time & Booking Schedule Logic
 - [ ] Timezones handled correctly (browser local time converted accurately to business calendar time).
 - [ ] Daylight saving adjustments do not cause 1-hour appointment discrepancies.
-- [ ] Expired dates/past slots disabled automatically.
+- [ ] Expired dates and past appointment slots disabled automatically.
 - [ ] Automated reminders trigger at correct relative intervals (24h before, 1h before).
 
 ### 45. CMS General (WordPress, Webflow, Shopify, Drupal)
-- [ ] Core CMS and active extensions updated to secure versions.
-- [ ] Inactive plugins/themes deleted (not just disabled).
+- [ ] Core CMS and active extensions updated to latest stable, secure versions.
+- [ ] Inactive plugins/themes deleted (not merely disabled).
 - [ ] Admin panel protected with strong password policy and 2FA where available.
-- [ ] Draft and private pages not accidentally indexed or accessible via public URLs.
+- [ ] Draft and private pages confirmed unindexed and inaccessible via public URLs.
 
 ### 46. WordPress Deep Audit
 - [ ] **Core:** WP version, PHP version (8.1+ recommended), memory limit (`WP_MEMORY_LIMIT >= 256M`).
-- [ ] **XML-RPC & REST API:** XML-RPC disabled if unused (DDoS/brute-force mitigation).
+- [ ] **XML-RPC & REST API:** XML-RPC disabled if unused (mitigates DDoS and brute-force attacks).
 - [ ] **Theme:** Child theme utilized; functions.php free of hardcoded URLs or bloat.
 - [ ] **Elementor:** Optimized DOM Output enabled; redundant column containers removed; CSS print method set to external file.
 - [ ] **Database:** Autoloaded options (`wp_options`) under 800 KB; expired transients and revisions cleaned; Action Scheduler free of stuck failed jobs.
 
-### 47. GoHighLevel (GHL) Deep Audit
+### 47. GoHighLevel (GHL) Funnels & CRM Deep Audit
 - [ ] **Funnels:** Every funnel step URL, mobile layout, and destination redirect verified.
 - [ ] **Forms & Surveys:** Custom field mapping, lead tags, and pipeline stage assignments confirmed.
 - [ ] **Automations:** Workflow triggers fire without loops; stop conditions configured; SMS compliance (A2P 10DLC) active.
 - [ ] **Calendars:** Slot buffers, appointment confirmation, and cancellation/reschedule links working.
-- [ ] **Agency Snapshots:** Custom values and domain mappings intact across locations.
+- [ ] **Agency Snapshots:** Custom values and domain mappings intact across client locations.
 
-### 48. Shopify Deep Audit
+### 48. Shopify Deep Audit (Liquid, Apps & Checkout)
 - [ ] **Liquid & App Bloat:** Orphaned scripts from uninstalled apps removed from `theme.liquid`.
 - [ ] **Checkout:** Accelerated payment options (Shop Pay, Apple Pay, Google Pay) functioning.
 - [ ] **E-commerce Tracking:** GA4 and Meta Pixel `Purchase` and `AddToCart` events verified without double-firing.
 
-### 49. React / Next.js Deep Audit
-- [ ] **Runtime:** Zero hydration mismatch errors (`Text content did not match`).
-- [ ] **Architecture:** Server Components (RSC) used by default; `"use client"` minimized.
+### 49. React / Next.js Deep Audit (SSR, Hydration, RSC)
+- [ ] **Runtime:** Zero hydration mismatch errors (`Text content did not match server-rendered HTML`).
+- [ ] **Architecture:** Server Components (RSC) used by default; `"use client"` directives minimized.
 - [ ] **Bundle Size:** Code splitting with dynamic imports (`next/dynamic`) on heavy interactive widgets.
 - [ ] **Next.js Features:** `next/image` with proper `sizes`, `next/font` with zero layout shift.
 
-### 50. React Native App Audit
-- [ ] **Device Context:** Verified on low-end Android and modern iOS devices.
+### 50. React Native Mobile App Audit
+- [ ] **Device Context:** Verified on physical low-end Android and modern iOS devices.
 - [ ] **Network Transitions:** Graceful handling of slow network, offline mode, and automatic reconnection.
 - [ ] **Permissions:** Clear rationale shown before prompting for Camera, GPS, or Notifications.
 - [ ] **Crash Behavior:** Crashlytics / error boundary captures uncaught runtime exceptions without freezing screen.
 
-### 51. Localization & Multi-language
+### 51. Localization & Multi-Language (i18n / RTL)
 - [ ] Language switcher preserves current page path (doesn't dump user on homepage).
 - [ ] `hreflang` tags configured with `x-default` fallback.
 - [ ] Dates, numbers, and currency formatted according to selected locale.
 - [ ] RTL (Right-to-Left) layouts render with correct padding/margins for Arabic/Urdu if applicable.
 
-### 52. Content Quality
+### 52. Content Quality & Value Proposition
 - [ ] Free of grammatical errors, typos, and broken placeholder copy ("Lorem ipsum").
 - [ ] Value proposition clear with verifiable business benefits.
 - [ ] Contact details and operating hours accurate and consistent across all pages.
 
-### 53. AI-Era Content & AI Search Readiness
+### 53. AI-Era Content & AI Search Readiness (GEO)
 - [ ] **Machine-Readable Content:** Key business information present in static HTML, not hidden strictly behind JS clicks.
 - [ ] **Structured Schema:** Schema.org `Organization`, `LocalBusiness`, `FAQPage`, or `Product` JSON-LD declared.
 - [ ] **AI Bot Permissions:** Robots.txt reviewed for AI search crawlers (`GPTBot`, `ClaudeBot`, `PerplexityBot`).
 - [ ] **AI Chatbots:** Chatbot provides verified business answers; has seamless fallback/handoff to human agent.
 
-### 54. Privacy & Data Governance
+### 54. Privacy & Data Governance (GDPR / CCPA)
 - [ ] Global Privacy Policy and Terms of Service links accessible from every page.
 - [ ] Cookie consent banner blocks tracking scripts prior to explicit consent in GDPR jurisdictions.
 - [ ] Clear disclosure on contact and lead forms regarding data processing.
 
-### 55. Email Infrastructure & Deliverability
+### 55. Email Infrastructure & Domain Deliverability
 - [ ] SPF (`v=spf1 ... -all`) and DMARC (`v=DMARC1`) records verified in DNS.
 - [ ] Form notification emails sent from authenticated domain (not fake unverified addresses).
 - [ ] Inquiries land reliably in primary inbox, not junk/spam.
@@ -304,7 +434,7 @@ Har finding ko is structure mein document karein:
 - [ ] Single canonical domain enforced (301 redirect between www and non-www).
 - [ ] Domain expiration verified (>60 days remaining).
 
-### 57. Server & Infrastructure *(Credentialed Access)*
+### 57. Server & Infrastructure Health *(Credentialed Access)*
 - [ ] CPU, RAM, and disk I/O usage within safe operating thresholds (<75%).
 - [ ] PHP memory limit adequate for CMS workload (256M–512M).
 - [ ] Server error logs free of recurring fatal errors or memory exhaustion crashes.
@@ -318,7 +448,7 @@ Har finding ko is structure mein document karein:
 - [ ] Zero references to `localhost`, `127.0.0.1`, `staging.`, or `dev.` in production HTML or JS bundles.
 - [ ] Source maps (`.map`), Git repositories (`.git`), and `.env` files blocked from public access.
 
-### 60. Dependency & Supply Chain Security
+### 60. Dependency & Supply Chain Security (CVEs)
 - [ ] No outdated JavaScript libraries with known CVEs (e.g. legacy jQuery 1.x/2.x).
 - [ ] Third-party CDNs load over HTTPS with Subresource Integrity (SRI) hashes where critical.
 
@@ -326,7 +456,7 @@ Har finding ko is structure mein document karein:
 - [ ] Publishing, scheduling, and revision histories function cleanly.
 - [ ] No broken dynamic shortcodes (e.g. `[contact-form-7 404]`) appearing as raw text.
 
-### 62. Notifications (Email, SMS, UI Toasts)
+### 62. Notifications & Communication Triggers
 - [ ] UI toast messages appear on action and auto-dismiss after 3–5 seconds.
 - [ ] SMS and email notifications deliver with correct dynamic tags (customer name, appointment time).
 
@@ -334,16 +464,16 @@ Har finding ko is structure mein document karein:
 - [ ] Third-party scripts in `<head>` load asynchronously (`async` or `defer`).
 - [ ] If an external tracking or widget server hangs, initial page rendering does NOT freeze.
 
-### 64. JavaScript Disabled Test
+### 64. JavaScript Disabled Baseline Test
 - [ ] Primary business copy and navigation links remain accessible in plain HTML if JavaScript is disabled.
 
-### 65. Ad Blocker / Privacy Extension Compatibility
+### 65. Ad Blocker & Privacy Extension Compatibility
 - [ ] Core navigation, forms, and checkout operate normally when uBlock Origin or Brave Shields are active.
 
-### 66. Edge-Case Input Testing
+### 66. Edge-Case Input & Security Fuzzing
 - [ ] Form inputs handle special characters (`&`, `<`, `>`, `"`, `'`), emoji, and very long text without SQL/XSS errors.
 
-### 67. Accessibility of Dynamic Components
+### 67. Accessibility of Dynamic Interactive Components
 - [ ] Modals trap keyboard focus inside while open; return focus to trigger button upon pressing `ESC`.
 - [ ] Accordions and dropdowns toggle `aria-expanded="true/false"` dynamically.
 
@@ -355,23 +485,6 @@ Har finding ko is structure mein document karein:
 
 ---
 
-## The 5 Real Customer Journeys (Sales Closing Engine)
-
-Har audit engagement mein client ko convince karne ke liye yeh 5 journeys test karke report karein:
-
-1. **Journey 1 (The First-Time Visitor):**
-   `Google / Ad → Homepage → 5-Second Clarity → Click Primary CTA`
-2. **Journey 2 (The Inquiring Lead):**
-   `Service Page → Contact Option (Call / WhatsApp / Form) → Form Submit → Lead Reaches CRM`
-3. **Journey 3 (The Mobile Customer):**
-   `320px Mobile Screen → Sticky CTA Tap → Instant Mobile Dialer / Booking`
-4. **Journey 4 (The Returning User):**
-   `Direct Link → State Preservation → Resource Access → Fast Cached Experience`
-5. **Journey 5 (The Failure Recovery):**
-   `Input Error / Payment Interruption → Helpful Inline Message → Retry → Conversion`
-
----
-
 # Part 3: Framework, Evidence & High-Ticket Delivery (Sections 70 to 84)
 
 ### 70. Permissions / Roles (Multi-User Applications)
@@ -380,7 +493,7 @@ Har audit engagement mein client ko convince karne ke liye yeh 5 journeys test k
 - [ ] Role privileges persist correctly during active session.
 - [ ] Session tokens invalidated immediately upon logout.
 
-### 71. Customer Journey Audit
+### 71. Customer Journey Audit — Mandatory (5 Journeys)
 Mandatory high-value journeys evaluated in every Webarg audit:
 - **Journey A — New Visitor:** `Search → Homepage → 5-Second Clarity → Primary CTA`
 - **Journey B — Inquiring Lead:** `Homepage → Contact Form / Phone → Submission → Notification Delivery`
@@ -389,7 +502,7 @@ Mandatory high-value journeys evaluated in every Webarg audit:
 - **Journey E — Failure Recovery:** `Wrong Input / Payment / 404 Route → Clear Inline Guidance → Retry → Success`
 *Status for each:* `PASS` 🟢 | `WARNING` 🟠 | `CRITICAL` 🔴
 
-### 72. Evidence Collection
+### 72. Evidence Collection & Proof Standards
 Every reported issue must have verifiable proof:
 - Screenshot / visual clip of defect
 - Target URL and exact DOM selector
@@ -400,7 +513,7 @@ Every reported issue must have verifiable proof:
 - Core Web Vitals metric reading (LCP, CLS, INP)
 - Step-by-step reproduction instructions
 
-### 73. Finding Quality Rules
+### 73. Finding Quality Rules & Documentation Standards
 - ❌ **Poor Finding:** *"The website is slow."*
 - ✅ **Professional Finding:**
   > **High — Homepage LCP exceeds Core Web Vitals target (4.1s)**  
@@ -410,7 +523,7 @@ Every reported issue must have verifiable proof:
   > **Recommendation:** Convert hero image to WebP/AVIF, resize to 1200px max width, and add `fetchpriority="high"`.  
   > **Verification:** Re-scan mobile performance after deployment to confirm LCP drops below 2.0s.
 
-### 74. Business Impact Classification
+### 74. Business Impact Classification & Commercial Risk
 Every technical flaw is categorized by commercial risk:
 1. **Revenue Leakage:** Checkout failure, payment gateway crash, shopping cart bugs.
 2. **Lead Leakage:** Broken contact forms, unclickable phone numbers, missing SPF/DMARC.
@@ -418,13 +531,13 @@ Every technical flaw is categorized by commercial risk:
 4. **Buyer Trust:** Broken SSL certificates, outdated copyright ("© 2021"), console crashes.
 5. **Accessibility Risk:** Keyboard traps, missing form labels, WCAG compliance failure.
 
-### 75. Prioritized Sprint Roadmap
+### 75. Prioritized Sprint Roadmap (Priority 1 to 4)
 - **Priority 1 (Fix Immediately):** Broken forms, checkout failure, lead leakage, critical security risks, fatal JS crashes.
 - **Priority 2 (Next Scheduled Sprint):** Mobile UX friction, Core Web Vitals optimizations, SEO blockers, accessibility issues.
 - **Priority 3 (Optimization):** Code minification, asset cleanup, minor responsive spacing.
 - **Priority 4 (Polish):** Typography micro-tuning, minor animation transitions.
 
-### 76. Final QA Before Report Delivery
+### 76. Final QA Before Delivering Report
 - [ ] Re-test every Critical issue to confirm reproducibility.
 - [ ] Eliminate false positives and verify screenshots match the live site.
 - [ ] Clearly demarcate automated URL observations from access-gated internal recommendations.
@@ -441,7 +554,7 @@ WEBARG — Technical Website Audit & Inspection Report
 └── Prioritized Remediation Roadmap (Priority 1, 2, 3 with effort estimations)
 ```
 
-### 78. Webarg Product Recommendation
+### 78. Webarg Product Recommendation & Positioning
 Webarg replaces generic Lighthouse scores with a holistic diagnosis:
 $$\text{Overall Health} \rightarrow \text{Business Impact} \rightarrow \text{4 Core Scores} \rightarrow \text{Technical Evidence} \rightarrow \text{Conversion Journeys} \rightarrow \text{Remediation}$$
 
@@ -452,7 +565,7 @@ Identifies underlying architecture: WordPress, WooCommerce, Elementor, Shopify, 
 - **Level 1 (Audited Live):** Public URL surface (DOM, CSS, JS errors, SEO, DNS, SSL, security headers).
 - **Level 2 & 3 (Manual Playbook Sprint):** CMS Admin, GHL Automations, Payment Sandbox, Physical Device Dialers, Database Internals.
 
-### 81. The One-Day Audit Rule
+### 81. The One-Day Audit Rule (Deep Sampling)
 A one-day audit is deep rather than wide. Uses intelligent sampling across key templates and high-value conversion funnels rather than superficial scanning of 1,000 pages.
 
 ### 82. The Most Important Principle
@@ -481,6 +594,23 @@ Status: [Open / Remediation In Progress / Verified Fixed]
 
 ### 84. Final Audit Completion Checklist
 Confirm all inspection surfaces were evaluated: Functional, Conversion, Click-to-call, WhatsApp, Email, Forms, Console, Network, CWV, Images, Fonts, CSS, JS, DOM, SEO, Schema, Accessibility, Mobile 320px, Security, Cookies, Privacy, Analytics, CMS, CRM/GHL, Shopify, E-commerce, Payments, DNS, Email Infra, Server, Database, Backups, AI Readiness, 5 Customer Journeys, Evidence, Remediation.
+
+---
+
+## The 5 Real Customer Journeys (Sales Closing Engine)
+
+Har audit engagement mein client ko convince karne ke liye yeh 5 journeys test karke report karein:
+
+1. **Journey 1 (The First-Time Visitor):**
+   `Google / Ad → Homepage → 5-Second Clarity → Click Primary CTA`
+2. **Journey 2 (The Inquiring Lead):**
+   `Service Page → Contact Option (Call / WhatsApp / Form) → Form Submit → Lead Reaches CRM`
+3. **Journey 3 (The Mobile Customer):**
+   `320px Mobile Screen → Sticky CTA Tap → Instant Mobile Dialer / Booking`
+4. **Journey 4 (The Returning User):**
+   `Direct Link → State Preservation → Resource Access → Fast Cached Experience`
+5. **Journey 5 (The Failure Recovery):**
+   `Input Error / Payment Interruption → Helpful Inline Message → Retry → Conversion`
 
 ---
 

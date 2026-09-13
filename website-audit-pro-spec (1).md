@@ -22,6 +22,28 @@ typography, copy, and reliability — not API count. If a genuine gap is
 found after pitching real clients with v1, add specific, named checks then
 — not preemptively.
 
+**Decision log (2026-09-13):** A batch of unrelated GitHub links was
+proposed for inclusion (generic "awesome API list" repos, a dictionary
+API, an enterprise API gateway, and several unofficial/reverse-engineered
+ChatGPT proxy repos). Rejected all of them:
+- Curated link-list repos (`public-apis`, `awesome-*`) are directories,
+  not integrable tools — nothing to add.
+- Anything unrelated to website auditing (dictionary APIs, domain lists)
+  fails the "named real gap" test outright.
+- Enterprise infrastructure (API gateways) is the wrong scale for a
+  single-endpoint, low-volume personal tool.
+- **Unofficial/reverse-engineered API proxies (e.g. free ChatGPT proxy
+  repos) are never acceptable, regardless of cost.** They typically
+  violate the underlying provider's terms of service, route requests
+  (including real scanned-client data) through an uncontrolled
+  third-party server, and can disappear or get blocked without notice
+  since they are themselves a ToS violation. Use only official free
+  tiers (Section 9 elsewhere in this doc / the LLM options already
+  evaluated) instead.
+- A UI/design change is never implied by an API/backend decision —
+  design tokens (Section 5) are independent of what data sources power
+  the scan. Don't conflate the two.
+
 ## 2. What Gets Scanned (v1) — Quick scan vs Deep scan
 
 **Decision log (2026-09-12):** Two scan modes, not one. This is the
