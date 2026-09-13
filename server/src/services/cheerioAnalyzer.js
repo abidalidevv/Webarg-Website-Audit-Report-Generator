@@ -292,6 +292,8 @@ export function analyzeHtml(html, baseUrl) {
   // 8. Third-Party Script Domains & Mixed Content Scripts
   const thirdPartyDomains = new Set();
   let mixedContentScripts = 0;
+  let blockingThirdPartyScripts = 0;
+  let outdatedJquery = null;
 
   $('script').each((_, el) => {
     const src = $(el).attr('src');
@@ -301,8 +303,19 @@ export function analyzeHtml(html, baseUrl) {
       }
       try {
         const scriptUrl = new URL(src, baseUrl);
-        if (scriptUrl.hostname !== targetHost && !scriptUrl.hostname.endsWith('.' + targetHost)) {
+        const isThirdParty = scriptUrl.hostname !== targetHost && !scriptUrl.hostname.endsWith('.' + targetHost);
+        if (isThirdParty) {
           thirdPartyDomains.add(scriptUrl.hostname);
+          // Section 63: Render-blocking third party script in head
+          const inHead = $(el).parents('head').length > 0;
+          const isAsyncOrDefer = $(el).attr('async') !== undefined || $(el).attr('defer') !== undefined || $(el).attr('type') === 'module';
+          if (inHead && !isAsyncOrDefer) {
+            blockingThirdPartyScripts++;
+          }
+        }
+        // Section 60: Outdated jQuery vulnerability check
+        if (/(?:jquery[-/](?:1\.|2\.))/i.test(src)) {
+          outdatedJquery = src;
         }
       } catch {}
     }
@@ -316,6 +329,67 @@ export function analyzeHtml(html, baseUrl) {
       title: 'Mixed content detected',
       evidence: `${totalMixed} insecure HTTP assets requested on HTTPS page (${mixedContentScripts} scripts, ${mixedContentImages} images)`,
       recommendation: 'Update all asset URLs to use https:// to prevent browser blocking and MITM risks.'
+    });
+  }
+
+  if (blockingThirdPartyScripts > 0) {
+    issues.push({
+      category: 'Performance / Reliability',
+      severity: 'Warning',
+      title: 'Render-blocking third-party scripts in <head>',
+      evidence: `${blockingThirdPartyScripts} external script(s) loaded synchronously in head without async/defer`,
+      userImpact: 'If external CDN/analytics servers experience high latency, page rendering completely freezes.',
+      businessImpact: 'Third-party single point of failure increases bounce rates.',
+      recommendation: 'Add async or defer attributes to all non-critical third-party scripts in document <head>.',
+      effort: 'Low'
+    });
+  }
+
+  if (outdatedJquery) {
+    issues.push({
+      category: 'Security / Supply Chain',
+      severity: 'Critical',
+      title: 'Outdated legacy jQuery library detected',
+      evidence: `Page loads deprecated jQuery version with known CVEs: "${outdatedJquery.slice(0, 80)}"`,
+      userImpact: 'Exposes users to known Cross-Site Scripting (XSS) and prototype pollution vulnerabilities.',
+      businessImpact: 'High security risk and compliance failure.',
+      recommendation: 'Upgrade to jQuery 3.7+ or migrate away from jQuery to modern vanilla JavaScript.',
+      effort: 'Medium'
+    });
+  }
+
+  // 8b. E-commerce Storefront & Return Policy (Section 41 & 54)
+  const isEcommerce = Boolean(
+    $('[class*="woocommerce" i], [id*="woocommerce" i], [class*="shopify" i], [id*="shopify" i], a[href*="/cart" i], a[href*="/checkout" i]').length > 0
+  );
+  if (isEcommerce) {
+    const hasRefund = $('a[href*="refund" i], a[href*="return" i]').length > 0;
+    if (!hasRefund) {
+      issues.push({
+        category: 'E-commerce / Legal',
+        severity: 'Warning',
+        title: 'Missing Refund & Returns Policy link on store',
+        evidence: 'E-commerce shopping cart detected, but no Return/Refund Policy link exists in footer or navigation',
+        userImpact: 'Shoppers cannot verify return guarantees before purchasing.',
+        businessImpact: 'Checkout abandonment and rejection by Google Shopping / payment merchant accounts.',
+        recommendation: 'Add a clear Return & Refund Policy link in global footer.',
+        effort: 'Low'
+      });
+    }
+  }
+
+  // 8c. AI Machine-Readability & Structured Data Footprint (Section 53)
+  const jsonLdScripts = $('script[type="application/ld+json"]');
+  if (jsonLdScripts.length === 0) {
+    issues.push({
+      category: 'SEO / AI Readiness',
+      severity: 'Low',
+      title: 'Missing structured data (JSON-LD) for AI search engines',
+      evidence: 'No application/ld+json structured schema found in document',
+      userImpact: 'AI search bots (Perplexity, ChatGPT, Google Search Generative) struggle to parse business entities.',
+      businessImpact: 'Reduced visibility in generative AI search summaries and rich SERP snippets.',
+      recommendation: 'Add Schema.org JSON-LD structured data (Organization, LocalBusiness, or Product).',
+      effort: 'Low'
     });
   }
 
