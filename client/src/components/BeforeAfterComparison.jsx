@@ -25,9 +25,9 @@ export default function BeforeAfterComparison({ comparison }) {
     <div className="before-after-strip shell" aria-label="Remediation Score Delta">
       <div className="before-after-header">
         <div className="before-after-tag-wrap">
-          <span className="section-tag">REMEDIATION PROGRESS</span>
+          <span className="section-tag">MEASURED SCAN COMPARISON</span>
           <span className="before-after-sub mono">
-            Baseline: {formattedDate} (ID: {previousReportId})
+            Verified Baseline: {formattedDate} (ID: #{previousReportId}) → Current Scan
           </span>
         </div>
         {resolvedFindingsCount > 0 && (
@@ -82,6 +82,10 @@ export default function BeforeAfterComparison({ comparison }) {
             {renderDiff(security.diff)}
           </div>
         </div>
+      </div>
+
+      <div className="before-after-disclosure mono" style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '10px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '6px' }}>
+        * Measured score delta between two real, independently saved scans of this domain. This is not an estimated or predicted projection.
       </div>
     </div>
   );

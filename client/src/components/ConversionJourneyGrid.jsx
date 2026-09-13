@@ -71,19 +71,22 @@ export default function ConversionJourneyGrid({ journey = {}, trust = {}, custom
 
       {customerJourneys && customerJourneys.length > 0 && (
         <div className="customer-journeys-wrap" style={{ marginTop: '24px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
             <span style={{ fontSize: '11px', letterSpacing: '0.08em', color: 'var(--accent)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
-              SECTION 71 · 5 REAL CUSTOMER JOURNEYS
+              SECTION 71 · CUSTOMER JOURNEY PROXIES
             </span>
             <span style={{ fontSize: '11px', color: 'rgba(237,238,231,0.5)', fontFamily: 'var(--font-mono)' }}>
-              SIMULATED USER &amp; LEAD FLOWS
+              HEURISTIC SIGNALS · UNVERIFIED BY HUMAN TRIAL
             </span>
           </div>
+          <p style={{ fontSize: '11px', color: 'rgba(237,238,231,0.5)', lineHeight: 1.45, margin: '0 0 12px', fontFamily: 'var(--font-mono)' }}>
+            * Note: Status is inferred from public DOM signals (e.g. presence of tel: hrefs, form tags, 404 response). Actual cellular phone dialers, SMS/email inbox receipt, and authenticated user journeys cannot be tested automatically and require Abid's credentialed manual audit (see Access Level Matrix below).
+          </p>
 
           <div className="customer-journeys-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {customerJourneys.map((cj) => {
               const badgeClass = cj.status === 'pass' ? 'badge-live' : 'badge-playbook';
-              const dotSymbol = cj.status === 'pass' ? '● PASS' : cj.status === 'warning' ? '▲ WARNING' : '✕ CRITICAL';
+              const dotSymbol = cj.status === 'pass' ? 'INFERRED: PASS' : cj.status === 'warning' ? 'INFERRED: FRICTION' : 'INFERRED: RISK';
               return (
                 <div key={cj.id} className={`cj-row row-${cj.status}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '4px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>

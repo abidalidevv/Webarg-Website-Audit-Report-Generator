@@ -717,4 +717,64 @@ Abid
   - Delete obsolete reports or inspect comparative delta views (`?compare=true`).
 
 ---
+
+## 10. Phase 6, 7 & 8 Verification, Open Items & Anti-Fabrication Retraction Matrix
+
+### A. Real Measured PDF Output
+- **Headless Chromium Print Engine (`pdfGenerator.js`):** A4 vector PDF rendered via Puppeteer `page.pdf({ format: 'A4', printBackground: true })`.
+- **Measured File Size (Live Disk Measurement):**
+  - `server/data/fresh-test.pdf`: **523,094 bytes (510.83 KB)**
+  - `server/data/zHpqs2S19Ma2.pdf`: **420,045 bytes (410.20 KB)**
+  - `server/data/cloudflare-audit.pdf`: **357,477 bytes (349.10 KB)**
+- **Discrepancy Explanation:**
+  - The legacy raster approach (`html2canvas` + `jspdf`) rasterized high-DPI full-height DOM canvases, creating uncompressed 4.8 MB bitmap blobs.
+  - Chromium headless print outputs native Skia vector paths and embedded TrueType fonts, compressing identical reports to 350–520 KB with crisp text clarity.
+
+### B. 84-Point Playbook: Automated vs Manual Retraction
+- **Level 1 Automated Live Checks (18 verified check types across 15 services):**
+  1. DNS resolution, IPv4/IPv6, NS records, DNSSEC.
+  2. TLS/SSL certificate expiration, issuer, protocol negotiation.
+  3. HTTP → HTTPS redirect chains, www canonicalization.
+  4. Custom 404 response vs soft-404 status 200 detection.
+  5. robots.txt presence, crawl-delay, sitemap.xml presence.
+  6. Exposed environment files (.env, .git, wp-config, /xmlrpc.php).
+  7. Security headers (HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy).
+  8. HTML title, meta description, H1 count/duplication, missing image alt attributes.
+  9. Canonical URL consistency and OpenGraph/Twitter social cards.
+  10. Mixed content detection (HTTP subresources on HTTPS origin).
+  11. Click-to-call (`tel:` link vs unlinked phone numbers in body text).
+  12. WhatsApp direct link (`wa.me`) detection.
+  13. Email link (`mailto:`) detection.
+  14. Lead capture `<form>` tag verification.
+  15. Google Maps iframe embed presence.
+  16. Conversion CTA anchor integrity (detecting dummy `href="#"` buttons).
+  17. Asset compression (gzip/brotli), Cache-Control, and `font-display: swap`.
+  18. Technology footprint (CMS, e-commerce, frontend library, analytics).
+- **Manual Audit Only (66 items retracted to Section 80 Access Level Matrix):**
+  - CMS internal database queries, plugin vulnerability CVEs, GHL SMS/Email autoresponder triggers, webhook inbox reconciliation, physical iPhone/Android carrier dialer tests, Stripe sandbox 3D Secure triggers, NVDA audio screen-reader walkthroughs, server disk I/O.
+  - These are marked `🔒 MANUAL ONLY — NOT AUTOMATED` in both code and UI.
+
+### C. Before/After Remediation Delta Formula & Data Source
+- **Formula:**
+  - `overall.diff = currentReport.overallScore - previousReport.overallScore`
+  - `performance.diff = currentScores.performance - previousScores.performance`
+  - `seo.diff = currentScores.seo - previousScores.seo`
+  - `resolvedFindingsCount = previousFindings.filter(pf => !currentFindingHeadlines.has(pf.headline)).length`
+- **Data Source:**
+  - Two independent, real JSON scan reports stored on disk in `/server/data/reports/`, matched by matching hostname.
+  - Zero projected estimates or heuristic predictions. If no prior scan exists, the component does not render.
+
+### D. Revenue Impact Integrity
+- **Zero Fabricated Dollar Figures:**
+  - No dollar ($) figures are generated or shown.
+  - Commercial impact is strictly the qualitative business consequence of verified technical obstacles (e.g. "Dead CTA buttons link to dummy # anchor: Frustrated prospects bounce immediately; zero lead capture").
+
+### E. Customer Journeys as Heuristic Proxies
+- **Labeling Reconciled with Access Level Matrix:**
+  - Section 71 journeys are labeled: `HEURISTIC PROXY SIGNALS · UNVERIFIED BY HUMAN TRIAL`.
+  - Badges indicate `INFERRED: PASS`, `INFERRED: FRICTION`, or `INFERRED: RISK`.
+  - An explicit footnote informs the client that actual dialing, form delivery, and authenticated user flows require credentialed manual audit.
+
+---
 *Webarg — Technical Website Audit & Inspection Engine · Built for High-Trust Client Remediation.*
+

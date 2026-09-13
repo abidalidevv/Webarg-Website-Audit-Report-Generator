@@ -30,6 +30,9 @@ export default function RevenueImpact({ revenueImpact, findings }) {
         <h3 className="revenue-title">{title}</h3>
       </div>
       <p className="revenue-description">{description}</p>
+      <div className="revenue-disclosure mono" style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '8px' }}>
+        * Note: Commercial impact describes verified technical friction points (e.g. broken click-to-call links, dead form anchors, missing security certificates) that cause prospect bounce. Webarg never guesses unverified dollar revenue or traffic losses.
+      </div>
     </section>
   );
 }
