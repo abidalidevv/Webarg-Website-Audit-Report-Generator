@@ -2042,6 +2042,65 @@ details[open] .issue-chevron {
   background: rgba(193, 67, 43, 0.25);
 }
 
+/* Bottom Right Floating Diagnostic Trigger */
+.admin-bottom-right-diagnose {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.admin-floating-diagnose-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(62, 110, 142, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-floating-diagnose-btn:hover {
+  background: #4c85aa;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55), 0 0 16px rgba(62, 110, 142, 0.4);
+}
+
+.admin-floating-diagnose-btn:active {
+  transform: translateY(0);
+}
+
+.admin-floating-diagnose-btn .diagnose-icon {
+  font-size: 18px;
+}
+
+.admin-portal-link {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+}
+
+.admin-portal-link:hover {
+  border-color: var(--accent);
+  color: #fff;
+  background: rgba(62, 110, 142, 0.15);
+}
+
 /* ==========================================================================
    PHASE 7: GRAPH VIEW & PRESENTATION SWITCHER
    ========================================================================== */

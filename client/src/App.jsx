@@ -348,7 +348,7 @@ export default function App() {
       </main>
 
       {/* 8. Sticky CTA Lead-Gen Footer */}
-      {!isPrintView && <StickyFooter />}
+      {!isPrintView && <StickyFooter onNavigateAdmin={handleNavigateAdmin} />}
     </div>
   );
 }

@@ -419,6 +419,20 @@ export default function AdminPanel({ onNavigateHome }) {
           )}
         </section>
       </main>
+
+      {/* Bottom-Right Floating Diagnose Website Action */}
+      <div className="admin-bottom-right-diagnose">
+        <button
+          type="button"
+          onClick={onNavigateHome}
+          className="admin-floating-diagnose-btn"
+          id="adminDiagnoseBtn"
+          title="Diagnose a website — Launch scan engine"
+        >
+          <span className="diagnose-icon" aria-hidden="true">⚡</span>
+          <span className="diagnose-text">Diagnose Website</span>
+        </button>
+      </div>
     </div>
   );
 }

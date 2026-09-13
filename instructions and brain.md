@@ -1,40 +1,131 @@
-# Website Audit Master Checklist — 2026
-*The Definitive Technical, Conversion & Deep Manual Audit Playbook (Sections 1 to 84)*
+# WEBARG — Master Technical Spec, Engineering Instructions & Audit Brain (2026)
+*Consolidated Master Knowledge Base: Architectural Specs, 84-Section Audit Playbook, Design System & Remediation Framework*
 
 ---
 
-## Purpose & Philosophy
+## 1. Executive Purpose & Product Scope
 
-Yeh master checklist kisi client ki website, web app, CMS, funnel, e-commerce store, GHL setup, React/Next.js application, ya mobile app ka **deep manual + technical audit** karne ke liye design kiya gaya hai.
+**Webarg** is a precision technical inspection and conversion diagnostic engine built for independent developer **Abid**. It operates as a high-trust lead generation and diagnostic instrument — not a bloated multi-tenant SaaS tool.
 
-Goal sirf surface-level bugs dhoondhna nahi hai. Final report ko 5 core questions ka verifiable answer dena chahiye:
+### The Core Business Workflow:
+$$\text{Enter Prospect URL} \rightarrow \text{Deep Automated Scan} \rightarrow \text{Verifiable Shareable Report + PDF} \rightarrow \text{Client Pitch} \rightarrow \text{Paid Remediation Sprint (\$1,500–\$3,500)}$$
 
-1. **Kya broken hai?** (The exact technical failure)
-2. **Evidence kya hai?** (URL, DOM selector, HTTP status, console log, timestamp, screenshot)
-3. **User par kya impact hai?** (User experience friction, broken interaction, confusion)
-4. **Business / conversion par kya impact hai?** (Lost leads, checkout abandonment, SEO drop, security breach)
-5. **Fix ki priority kya honi chahiye?** (Priority 1 immediate fix vs Priority 2 scheduled sprint)
+1. **Inspection Run:** Abid enters a prospective client's URL into Webarg.
+2. **Deterministic Evidence:** The tool executes deep multi-layer diagnostics (Console, Core Web Vitals, HTML, Security, DNS, SSL, Accessibility, Conversion Journeys) and outputs verifiable evidence (DOM selectors, HTTP response codes, console logs, timestamps).
+3. **Shareable Delivery:** Generates an unbranded, permanent public report link (`/report/:id`) and pixel-perfect downloadable PDF.
+4. **The Client Pitch:** Abid approaches the prospect with undeniable technical proof ("Your mobile checkout is failing and your phone numbers are unclickable plain text — here is the live report").
+5. **High-Ticket Upsell:** The automated report serves as the initial hook to close a comprehensive **\$1,500 to \$3,500 remediation sprint** covering internal CMS, GoHighLevel funnels, database optimization, and custom development.
 
-### The Standard Finding Format
-Har finding ko is structure mein document karein:
-
-> **Severity → Finding → Evidence → User Impact → Business Impact → Recommendation → Verification**
-
-### Severity Classification
-- **🔴 CRITICAL:** Functionality completely broken, revenue loss, form/lead failure, major security vulnerability, ya core customer journey blocked.
-- **🟠 HIGH / WARNING:** Conversion friction, severe performance drag (Core Web Vitals), search indexing risk, mobile layout shift, ya accessibility barrier.
-- **🟡 MEDIUM / POLISH:** Quality flaws, missing metadata, unoptimized assets, minor responsive imperfections.
-- **⚪ LOW:** Technical debt, minor code cleanup, deprecation warnings.
-- **🟢 PASS:** Technical standard successfully verified.
-
-### Access Level Matrix (Anti-Hallucination Boundary)
-- **Level 1 (Automated Public URL):** Webarg's automated engine scans everything publicly reachable without authentication (Cheerio, Browserless, Lighthouse, axe-core, DNS, SSL).
-- **Level 2 (Credentialed CMS / CRM / Sandbox):** WordPress admin, GHL workflows, Shopify admin, payment test modes, email inboxes. (Audited in manual sprint).
-- **Level 3 (Server / Infrastructure / Physical):** cPanel/SSH, database queries, physical iOS/Android dialers, cellular network tests. (Audited in high-tier manual sprint).
+### What is Explicitly OUT of Scope for v1:
+- Subscription billing, Stripe consumer checkouts, user accounts, multi-tenant database isolation.
+- Competing feature-for-feature with generic SEO crawlers (Ahrefs, SEMrush, Moz).
+- Unofficial reverse-engineered scrapers or unreliable third-party proxies.
 
 ---
 
-# Part 1: Foundational Audit & Frontend Architecture (Sections 1 to 40)
+## 2. Engineering Decisions & Architectural Log
+
+### Decision Log (2026-09-12) — Rejection of API Bloat & Fake Complexity:
+Considered adding a large, unscoped set of third-party GitHub APIs and CDNs to "look like an expensive enterprise site." **Rejected.** More third-party vendor dependencies introduce catastrophic failure points during live client demos, rate-limit bottlenecks, and supply chain vulnerabilities. A premium, high-trust diagnostic feel comes from design restraint, crisp typography, copy precision, and bulletproof uptime — not API quantity.
+
+### Decision Log (2026-09-13) — Rejection of Unofficial Proxies & Link Directories:
+A batch of unrelated GitHub repositories was proposed (generic "awesome-api" lists, dictionary APIs, enterprise API gateways, and unofficial reverse-engineered ChatGPT proxy repositories). **Rejected completely:**
+1. **Curated Link Lists (`public-apis`, `awesome-*`):** Directories, not integrable tools.
+2. **Unrelated Utilities:** Dictionary lookups and domain registries have zero relevance to website diagnostic audits.
+3. **Enterprise Gateways:** Over-engineered infrastructure unsuitable for a focused single-endpoint diagnostic engine.
+4. **Reverse-Engineered ChatGPT Proxies:** Unofficial proxies violate provider Terms of Service, route confidential client audit data through uncontrolled intermediary servers, and risk abrupt IP bans. Webarg uses only official, verified APIs (Browserless hosted Chrome, Lighthouse, axe-core, Google Gemini official API).
+
+---
+
+## 3. Technology Stack & System Architecture
+
+| Architecture Layer | Production Choice | Rationale |
+| :--- | :--- | :--- |
+| **Frontend Framework** | **React (Vite)** | Blazing fast single continuous scrolling page; zero dashboard bloat. |
+| **Styling & Design** | **Custom CSS & Design Tokens** | Maximum control over clinical lab aesthetic; no generic Tailwind defaults. |
+| **Backend Runtime** | **Node.js + Express** | Single primary endpoint (`POST /scan`), fast asynchronous I/O, lean architecture. |
+| **Headless Scan Engine** | **Browserless.io / Headless Chrome** | Hosted Chrome container for console/pageerror capture, DOM rendering, and PDF export. |
+| **Diagnostic Engines** | **Lighthouse, axe-core, Cheerio** | Industry-gold-standard Core Web Vitals, a11y compliance, and static DOM parsing. |
+| **Network & Security** | **Node DNS, SSL Checker** | Native `dns.promises` (A, AAAA, MX, TXT, SPF, DMARC) and TLS certificate validation. |
+| **PDF Generation** | **Headless Chrome Native `page.pdf()`** | Native rendering pipeline matching the live report route (`/report/:id?print=true`). |
+| **Data Persistence** | **Flat JSON on Disk (`/server/data/reports`)** | Lightweight, crash-proof document store keyed by random nanoids. |
+| **Administration** | **Password-Gated `/admin` Route** | Single-user access key (`admin-webarg-secret-2026`) with runtime API keys management. |
+
+---
+
+## 4. Security Guardrails & SSRF Blocklist
+
+All scan requests are subjected to strict non-negotiable security controls:
+
+1. **Protocol Validation:** Strict rejection of non-http/https URI schemes (blocks `file://`, `ftp://`, `gopher://`).
+2. **SSRF Guard (Server-Side Request Forgery):** Resolves the target hostname prior to network requests and rejects private, reserved, and cloud metadata ranges:
+   - `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16` (RFC 1918 Private Networks)
+   - `127.0.0.0/8` (Loopback / Localhost)
+   - `169.254.169.254` / `169.254.0.0/16` (Cloud Instance Metadata Service)
+   - `::1` (IPv6 Loopback)
+3. **Hard Scan Timeouts:** 60-second ceiling for Quick Scan; 10-minute maximum for Deep Scan.
+4. **Console Log Sanitization:** Captured browser console output is automatically scrubbed via regex before storage or display, redacting JWT tokens, API keys, passwords, bearer authorization headers, and cookies.
+5. **Rate Limiting:** Maximum 5 scan requests per IP per hour via `express-rate-limit` to prevent open-proxy exploitation.
+
+---
+
+## 5. Visual Design Direction & Clinical Aesthetic
+
+Generic AI-generated SaaS design clusters around predictable tropes: warm cream backgrounds, serif fonts, terracotta accents, identical rounded cards with fuzzy grey shadows, ALL-CAPS eyebrow labels, and arrows on every button.
+
+**Webarg deliberately rejects these defaults.** It is styled as a **precision diagnostic instrument** — closer to a clinical pathology lab report or aerospace structural inspection than a marketing dashboard.
+
+### Design Tokens:
+- **Base Dark Surface (`--ink`):** `#14181F` (Deep blue-tinted dark surface, not neutral near-black).
+- **Print / Light Surface (`--paper`):** `#EDEEE7` (Soft warm paper tone for clean printing).
+- **Signal Critical (`--signal-critical`):** `#C1432B` (Muted brick red, reserved strictly for critical findings).
+- **Signal Warning (`--signal-warning`):** `#B8863D` (Muted ochre, warning findings only).
+- **Signal Pass (`--signal-pass`):** `#4C7A5E` (Muted sage green, passing checks).
+- **Interactive Accent (`--accent`):** `#3E6E8E` (Steel-teal for active states, links, and buttons).
+
+### Typography Scale:
+- **Headings:** *Barlow Condensed* (Technical, condensed engineering character).
+- **Body Text:** *Manrope* (Humanist sans, optimized for reading density).
+- **Data & Numbers:** *DM Mono* / *IBM Plex Mono* (Strictly reserved for metrics, error codes, and timestamps).
+
+### Motion Philosophy:
+- **Single Choreographed Moment:** The Three.js wireframe mesh scan beam during initial scan.
+- All other elements are static, calm, and legible. No gratuitous fade-up-on-scroll or glowing cards.
+
+---
+
+## 6. Access Level Matrix & Anti-Hallucination Boundary
+
+To preserve high client trust and technical integrity, Webarg enforces the **Anti-Hallucination Rule**:
+An automated scanner running against a public URL cannot access private CMS dashboards, CRM automations, or internal databases. Webarg never fabricates checks it cannot perform.
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       ACCESS LEVEL MATRIX & AUDIT SCOPE                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ LEVEL 1: PUBLIC URL AUTOMATED AUDIT (Webarg Automated Engine)               │
+│ - DOM Structure & HTML Semantics           - Security Headers (HSTS, CSP)   │
+│ - Console Runtime Errors & Exceptions      - SSL Validity & Expiry          │
+│ - Network Latency & TTFB                   - DNS Records (SPF & DMARC)      │
+│ - Core Web Vitals (LCP, CLS, INP)          - Click-to-Call & WhatsApp Links │
+│ - Broken Images & 404 Links                - JSON-LD Structured Schema      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ LEVEL 2: CREDENTIALED CMS & CRM AUDIT (Abid's Manual Remediation Sprint)    │
+│ - WordPress wp-admin & Plugins             - Shopify Theme Liquid & Apps    │
+│ - GoHighLevel (GHL) Workflows & Triggers   - Stripe / PayPal Sandbox Orders │
+│ - Elementor Container Nesting Optimization - Email Delivery & Spam Testing  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ LEVEL 3: SERVER INFRASTRUCTURE & PHYSICAL DEVICES (High-Tier Engagement)    │
+│ - cPanel / VPS CPU, RAM & Disk I/O         - Database Transient Queries     │
+│ - Physical iPhone & Android Real Dialers   - Cellular Network Handover Tests│
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+# 7. The Master 84-Section Website Audit Playbook & Checklist
+
+Every section below represents a verified inspection surface. Use this checklist during both automated scans and manual deep audits.
 
 ### 1. One-Day Audit Schedule & Methodology
 - [ ] 30 min: Full site walkthrough (navigation, CTAs, layout integrity, cross-page consistency).
@@ -48,7 +139,7 @@ Har finding ko is structure mein document karein:
 - [ ] 30 min: Analytics & Tracking Tags (GA4, GTM, Meta Pixel, Hotjar, event firing).
 - [ ] 45 min: Full Crawl & Broken Links (404 status, redirect chains, dead `#` anchors, reverse tabnabbing).
 - [ ] 45 min: Final QA, Evidence Gathering & Client Pitch Formulation.
-- [ ] *For 100+ page sites:* Sample homepage, top landing pages, key service/product pages, contact/conversion pages, and error/edge-state templates.
+- [ ] *Sampling Rule for 100+ Page Sites:* Inspect homepage, top 5 landing pages, core service/product templates, contact/checkout funnels, and error templates.
 
 ### 2. Full Site Walkthrough & Real-World Actions
 - [ ] Logo clicks navigate directly back to homepage (`/`).
@@ -335,10 +426,6 @@ Har finding ko is structure mein document karein:
 - [ ] Inactive sessions automatically time out after prolonged inactivity.
 - [ ] Server-side authorization prevents Insecure Direct Object References (IDOR) on account records.
 
----
-
-# Part 2: Advanced Deep Audits & Special Environments (Sections 41 to 69)
-
 ### 41. E-commerce General & Store Operations
 - [ ] **Product Pages:** Title, SKU, price, stock status, high-res images, and reviews display correctly.
 - [ ] **Categories & Search:** Filtering by price, category, and attributes functions without broken pagination.
@@ -483,10 +570,6 @@ Har finding ko is structure mein document karein:
 ### 69. Subscription & Membership Lifecycle
 - [ ] Signup, automated renewal, card update portal, and cancellation workflows operate smoothly.
 
----
-
-# Part 3: Framework, Evidence & High-Ticket Delivery (Sections 70 to 84)
-
 ### 70. Permissions / Roles (Multi-User Applications)
 - [ ] Role hierarchy verified: Visitor, Registered User, Manager, Administrator.
 - [ ] Hidden UI elements are backed by server-side authorization guards (unauthorized URLs return 401/403).
@@ -597,34 +680,7 @@ Confirm all inspection surfaces were evaluated: Functional, Conversion, Click-to
 
 ---
 
-## The 5 Real Customer Journeys (Sales Closing Engine)
-
-Har audit engagement mein client ko convince karne ke liye yeh 5 journeys test karke report karein:
-
-1. **Journey 1 (The First-Time Visitor):**
-   `Google / Ad → Homepage → 5-Second Clarity → Click Primary CTA`
-2. **Journey 2 (The Inquiring Lead):**
-   `Service Page → Contact Option (Call / WhatsApp / Form) → Form Submit → Lead Reaches CRM`
-3. **Journey 3 (The Mobile Customer):**
-   `320px Mobile Screen → Sticky CTA Tap → Instant Mobile Dialer / Booking`
-4. **Journey 4 (The Returning User):**
-   `Direct Link → State Preservation → Resource Access → Fast Cached Experience`
-5. **Journey 5 (The Failure Recovery):**
-   `Input Error / Payment Interruption → Helpful Inline Message → Retry → Conversion`
-
----
-
-## Bottom Line
-
-A genuinely valuable 2026 website audit is not a generic Lighthouse score plus a list of broken links. It is:
-
-$$\text{Real User Journeys} + \text{Technical Evidence} + \text{Commercial Impact} + \text{Platform-Specific Inspection} + \text{Prioritized Remediation}$$
-
-That is the level at which an audit report commands high trust and naturally closes a **$1,500 – $3,500 development and remediation sprint**.
-
----
-
-## Client Pitch Script
+## 8. Client Pitch Script & Sales Closing Engine
 
 ```text
 Hi [Client Name],
@@ -645,6 +701,20 @@ Would you like me to resolve these issues for you in a focused remediation sprin
 Best regards,
 Abid
 ```
+
+---
+
+## 9. Admin Console Credentials & Configuration
+
+- **Admin Access Route:** `/admin` (e.g. `http://localhost:5173/admin`)
+- **Admin Authentication Method:** Master Key Token verification
+- **Environment Password:** `admin-webarg-secret-2026`
+  *(Defined in `/server/.env` as `ADMIN_PASSWORD`)*
+- **Admin Capabilities:**
+  - View full scan history and persisted reports on disk.
+  - Launch live website diagnosis directly from the bottom-right floating trigger.
+  - Manage live runtime API keys for Browserless.io and Gemini AI.
+  - Delete obsolete reports or inspect comparative delta views (`?compare=true`).
 
 ---
 *Webarg — Technical Website Audit & Inspection Engine · Built for High-Trust Client Remediation.*
