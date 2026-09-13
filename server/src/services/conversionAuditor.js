@@ -173,6 +173,30 @@ export function auditConversionJourneys(html, baseUrl) {
         effort: 'Low'
       });
     }
+
+    // 6b. Form Autofill Attributes Check (Autofill & Password Manager friction)
+    $('form').each((_, el) => {
+      const textInputs = $(el).find('input[type="text"], input[type="email"], input[type="tel"]');
+      let missingAutocomplete = 0;
+      textInputs.each((__, input) => {
+        const ac = $(input).attr('autocomplete');
+        if (!ac || ac === 'off') {
+          missingAutocomplete++;
+        }
+      });
+      if (textInputs.length >= 2 && missingAutocomplete === textInputs.length) {
+        issues.push({
+          category: 'Conversion / Forms',
+          severity: 'Low',
+          title: 'Form fields lack standard autocomplete attributes',
+          evidence: `${missingAutocomplete} input fields have no autocomplete attribute defined`,
+          userImpact: 'Mobile and desktop users must manually type details; browser autofill cannot assist seamlessly.',
+          businessImpact: 'Increases form friction and abandonment rates on mobile devices.',
+          recommendation: 'Add standard autocomplete attributes (e.g. autocomplete="name", autocomplete="email", autocomplete="tel").',
+          effort: 'Low'
+        });
+      }
+    });
   }
 
   // 7. Google Maps Embed Check

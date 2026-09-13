@@ -97,6 +97,37 @@ export async function runBrowserlessScan(targetUrl, options = {}) {
 
     renderedHtml = await page.content();
 
+    // 3b. Browser Storage & Sensitive Token Audit (Section 41)
+    try {
+      const storageAudit = await page.evaluate(() => {
+        try {
+          const localKeys = Object.keys(localStorage || {});
+          const sessionKeys = Object.keys(sessionStorage || {});
+          const sensitivePattern = /(jwt|token|apikey|api_key|password|secret|auth|bearer|credential)/i;
+          const flaggedLocal = localKeys.filter((k) => sensitivePattern.test(k));
+          const flaggedSession = sessionKeys.filter((k) => sensitivePattern.test(k));
+          return {
+            totalKeys: localKeys.length + sessionKeys.length,
+            flagged: [...new Set([...flaggedLocal, ...flaggedSession])]
+          };
+        } catch {
+          return null;
+        }
+      });
+
+      if (storageAudit && storageAudit.flagged.length > 0) {
+        issues.push({
+          category: 'Security / Storage',
+          severity: 'Warning',
+          title: 'Sensitive token keys detected in client browser storage',
+          evidence: `Client storage contains keys matching authentication patterns: ${storageAudit.flagged.join(', ')}`,
+          userImpact: 'Client-side scripts (including compromised third-party trackers) can read these tokens.',
+          businessImpact: 'Risk of credential leakage or session hijacking via Cross-Site Scripting (XSS).',
+          recommendation: 'Store sensitive session tokens in HttpOnly, Secure cookies rather than accessible LocalStorage.'
+        });
+      }
+    } catch {}
+
     // 4. If deep scan, run axe-core accessibility check in page context
     if (options.runAxe) {
       try {

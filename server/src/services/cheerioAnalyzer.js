@@ -77,6 +77,43 @@ export function analyzeHtml(html, baseUrl) {
       evidence: '<link rel="canonical"> tag is absent',
       recommendation: 'Specify a self-referencing canonical tag to prevent duplicate content indexing.'
     });
+  } else {
+    try {
+      const canonicalUrl = new URL(canonical, baseUrl);
+      const targetUrl = new URL(baseUrl);
+      if (canonicalUrl.protocol !== targetUrl.protocol) {
+        issues.push({
+          category: 'SEO',
+          severity: 'Warning',
+          title: 'Canonical protocol mismatch',
+          evidence: `Canonical points to ${canonicalUrl.protocol} while page is served over ${targetUrl.protocol}`,
+          recommendation: 'Ensure canonical link matches the secure HTTPS URL scheme.'
+        });
+      } else if (canonicalUrl.hostname !== targetUrl.hostname) {
+        issues.push({
+          category: 'SEO',
+          severity: 'Warning',
+          title: 'Cross-domain canonical tag',
+          evidence: `Canonical points to "${canonicalUrl.hostname}" instead of current host "${targetUrl.hostname}"`,
+          recommendation: 'Verify cross-domain canonicalization is intentional to avoid dropping page from search index.'
+        });
+      }
+    } catch {}
+  }
+
+  // 4a. Hreflang / Multi-language Check (Section 44)
+  const hreflangTags = $('link[rel="alternate"][hreflang]');
+  if (hreflangTags.length > 0) {
+    const hasXDefault = $('link[rel="alternate"][hreflang="x-default" i]').length > 0;
+    if (!hasXDefault) {
+      issues.push({
+        category: 'SEO / Internationalization',
+        severity: 'Low',
+        title: 'Missing hreflang x-default fallback',
+        evidence: `${hreflangTags.length} regional hreflang tags declared, but missing hreflang="x-default" fallback`,
+        recommendation: 'Add <link rel="alternate" hreflang="x-default" ...> for unmatched global users.'
+      });
+    }
   }
 
   // 4b. Favicon Check (Section 11)
@@ -298,6 +335,60 @@ export function analyzeHtml(html, baseUrl) {
       title: 'Empty initial HTML (JS-disabled crawlability risk)',
       evidence: `Initial server HTML contains only ${rawBodyText.length} text characters inside SPA container.`,
       recommendation: 'Implement Server-Side Rendering (SSR) or static pre-rendering so search bots and non-JS clients can index critical content and navigation.'
+    });
+  }
+
+  // 11. Development / Staging Environment Leakage (Section 55)
+  const htmlLower = html.toLowerCase();
+  const devLeaks = [];
+  if (htmlLower.includes('localhost:') || htmlLower.includes('http://localhost') || htmlLower.includes('https://localhost')) {
+    devLeaks.push('localhost references');
+  }
+  if (htmlLower.includes('127.0.0.1')) {
+    devLeaks.push('127.0.0.1 loopback IP');
+  }
+  if (/(?:staging\.[a-z0-9\-]+\.[a-z]{2,}|dev\.[a-z0-9\-]+\.[a-z]{2,})/i.test(html)) {
+    devLeaks.push('staging/dev subdomains');
+  }
+  if (devLeaks.length > 0) {
+    issues.push({
+      category: 'Security / Deployment',
+      severity: 'Critical',
+      title: 'Development/Staging environment leakage detected',
+      evidence: `Production source contains references to ${devLeaks.join(', ')}`,
+      userImpact: 'External visitors encounter broken local links or test assets.',
+      businessImpact: 'Unprofessional appearance and accidental exposure of non-production servers.',
+      recommendation: 'Replace all staging endpoints and localhost URLs with production domain paths.',
+      effort: 'Low'
+    });
+  }
+
+  // 12. CMS / Elementor Deep DOM Nesting Bloat (Section 56 / WordPress audit)
+  const hasElementor = $('.elementor, [data-elementor-type]').length > 0;
+  const totalDivs = $('div').length;
+  if (hasElementor && totalDivs > 450) {
+    issues.push({
+      category: 'Performance / DOM Architecture',
+      severity: 'Warning',
+      title: 'Elementor DOM container bloat detected',
+      evidence: `Page utilizes Elementor with ${totalDivs} <div> wrapper elements, creating deep DOM nesting`,
+      userImpact: 'Slows down style recalculations and causes jank on mobile scrolling.',
+      businessImpact: 'Worse Google Core Web Vitals (INP/TBT) and lower mobile organic rankings.',
+      recommendation: 'Enable Elementor Optimized DOM Output experiment and consolidate nested column containers.',
+      effort: 'Medium'
+    });
+  }
+
+  // 13. Web App Manifest & Mobile PWA Identity
+  const hasManifest = $('link[rel="manifest" i]').length > 0;
+  const hasAppleTouchIcon = $('link[rel="apple-touch-icon" i]').length > 0;
+  if (!hasManifest && !hasAppleTouchIcon) {
+    issues.push({
+      category: 'Mobile / PWA',
+      severity: 'Low',
+      title: 'Missing mobile touch icon / web manifest',
+      evidence: 'No <link rel="apple-touch-icon"> or manifest.json declared in <head>',
+      recommendation: 'Add apple-touch-icon and web app manifest for crisp home-screen bookmarks on iOS and Android.'
     });
   }
 
