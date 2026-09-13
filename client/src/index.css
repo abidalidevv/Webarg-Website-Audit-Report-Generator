@@ -1006,11 +1006,13 @@ details[open] .issue-chevron {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
 .cta-byline {
   font-family: var(--font-heading);
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
   color: #fff;
@@ -1019,50 +1021,95 @@ details[open] .issue-chevron {
 .cta-subline {
   font-size: 12px;
   color: var(--text-soft);
+  max-width: 680px;
 }
 
 .cta-buttons {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+}
+
+.cta-footer-btn {
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all 0.15s ease;
+}
+
+.cta-footer-btn span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
 }
 
 .cta-btn-whatsapp {
   background: #1E6B48;
   color: #fff;
   border: 1px solid #2B8A5E;
-  padding: 10px 20px;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  transition: all 0.15s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .cta-btn-whatsapp:hover {
   background: #257F56;
+  border-color: #35A370;
+  color: #fff;
 }
 
 .cta-btn-email {
   background: var(--ink-raised);
   color: #fff;
   border: 1px solid var(--line-hover);
-  padding: 10px 18px;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  transition: all 0.15s ease;
 }
 
 .cta-btn-email:hover {
   background: #252D37;
   border-color: #586B7C;
+  color: #fff;
+}
+
+.cta-btn-docs {
+  background: rgba(62, 110, 142, 0.12);
+  color: #8EB7D3;
+  border: 1px solid rgba(62, 110, 142, 0.35);
+}
+
+.cta-btn-docs:hover {
+  background: rgba(62, 110, 142, 0.22);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.cta-btn-admin {
+  background: var(--ink-surface);
+  color: var(--text-soft);
+  border: 1px solid var(--line);
+}
+
+.cta-btn-admin:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--accent);
+  color: #fff;
 }
 
 /* Section Headings */
@@ -2128,15 +2175,28 @@ details[open] .issue-chevron {
 }
 
 .admin-portal-link {
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background: transparent;
   border: 1px solid var(--line);
   color: var(--text-soft);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 8px 12px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 0 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 3px;
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .admin-portal-link:hover {

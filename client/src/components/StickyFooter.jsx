@@ -19,38 +19,37 @@ export default function StickyFooter({ onNavigateAdmin }) {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="cta-btn-whatsapp"
+            className="cta-footer-btn cta-btn-whatsapp"
             id="whatsappCtaBtn"
           >
             <span>💬</span> Message on WhatsApp
           </a>
           <a
             href={emailUrl}
-            className="cta-btn-email"
+            className="cta-footer-btn cta-btn-email"
             id="emailCtaBtn"
           >
-            Email Remediation Request
+            <span>✉️</span> Email Request
           </a>
           <a
             href="/docs.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="admin-portal-link"
+            className="cta-footer-btn cta-btn-docs"
             id="docsFooterLink"
             title="Open HTML User Guide & Documentation"
-            style={{ textDecoration: 'none' }}
           >
-            📖 Docs
+            <span>📖</span> Docs
           </a>
           {onNavigateAdmin && (
             <button
               type="button"
               onClick={onNavigateAdmin}
-              className="admin-portal-link"
+              className="cta-footer-btn cta-btn-admin"
               id="adminPortalFooterLink"
               title="Access Developer Admin Console"
             >
-              🔒 Admin Console
+              <span>🔒</span> Admin Console
             </button>
           )}
         </div>
