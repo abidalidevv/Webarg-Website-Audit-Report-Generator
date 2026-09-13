@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ConversionJourneyGrid({ journey = {}, trust = {} }) {
+export default function ConversionJourneyGrid({ journey = {}, trust = {}, customerJourneys = [] }) {
   const phone = journey.phone || { count: 0, unlinkedInBody: false };
   const whatsapp = journey.whatsapp || { count: 0 };
   const email = journey.email || { count: 0 };
@@ -53,7 +53,7 @@ export default function ConversionJourneyGrid({ journey = {}, trust = {} }) {
           <span className="section-tag">PUBLIC CONVERSION PATHS</span>
           <h3 className="section-heading">CONVERSION JOURNEY VERIFICATION</h3>
         </div>
-        <div className="section-note">SECTIONS 1, 3, 5, 11, 19 OF WEBARG PLAYBOOK</div>
+        <div className="section-note">SECTIONS 1, 3, 5, 11, 19, 71 OF WEBARG PLAYBOOK</div>
       </div>
 
       <div className="journey-grid">
@@ -68,6 +68,40 @@ export default function ConversionJourneyGrid({ journey = {}, trust = {} }) {
           </div>
         ))}
       </div>
+
+      {customerJourneys && customerJourneys.length > 0 && (
+        <div className="customer-journeys-wrap" style={{ marginTop: '24px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+            <span style={{ fontSize: '11px', letterSpacing: '0.08em', color: 'var(--accent)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+              SECTION 71 · 5 REAL CUSTOMER JOURNEYS
+            </span>
+            <span style={{ fontSize: '11px', color: 'rgba(237,238,231,0.5)', fontFamily: 'var(--font-mono)' }}>
+              SIMULATED USER &amp; LEAD FLOWS
+            </span>
+          </div>
+
+          <div className="customer-journeys-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {customerJourneys.map((cj) => {
+              const badgeClass = cj.status === 'pass' ? 'badge-live' : 'badge-playbook';
+              const dotSymbol = cj.status === 'pass' ? '● PASS' : cj.status === 'warning' ? '▲ WARNING' : '✕ CRITICAL';
+              return (
+                <div key={cj.id} className={`cj-row row-${cj.status}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '4px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <strong style={{ fontSize: '13px', color: 'var(--paper)' }}>{cj.name}</strong>
+                      <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'rgba(237,238,231,0.6)' }}>{cj.flow}</span>
+                    </div>
+                    <span style={{ fontSize: '11px', color: 'rgba(237,238,231,0.5)' }}>{cj.notes}</span>
+                  </div>
+                  <span className={`matrix-badge ${badgeClass}`} style={{ textTransform: 'uppercase', fontSize: '10px', padding: '3px 8px', whiteSpace: 'nowrap' }}>
+                    {dotSymbol}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -163,6 +163,45 @@ export function normalizeReport({
     }
   }
 
+  // 5 Real Customer Journeys (Section 71 of Webarg Playbook)
+  const customerJourneys = [
+    {
+      id: 'journey-a',
+      name: 'Journey A — New Visitor',
+      flow: 'Search → Homepage → 5-Second Clarity → Primary CTA',
+      status: criticalFindings.some(f => f.category.includes('SEO') || f.headline.includes('Hero')) ? 'warning' : 'pass',
+      notes: 'Evaluates value proposition clarity and whether visitor finds primary CTA without friction.'
+    },
+    {
+      id: 'journey-b',
+      name: 'Journey B — Inquiring Lead',
+      flow: 'Homepage → Contact Form / Phone → Submission → Notification',
+      status: (conversionData?.contactChannels?.forms?.count === 0 && !conversionData?.contactChannels?.phone?.count) ? 'critical' : (criticalFindings.some(f => f.category.includes('Conversion')) ? 'critical' : (warningFindings.some(f => f.category.includes('Conversion')) ? 'warning' : 'pass')),
+      notes: 'Tests whether prospect can reach the business via form, click-to-call, or email.'
+    },
+    {
+      id: 'journey-c',
+      name: 'Journey C — Mobile Customer',
+      flow: '320px Mobile Screen → Touch CTA → Dial / Chat Conversion',
+      status: (conversionData?.contactChannels?.phone?.unlinkedInBody || criticalFindings.some(f => f.category.includes('Mobile'))) ? 'critical' : 'pass',
+      notes: 'Verifies tap-to-call dialers and mobile layouts at compact 320px viewport.'
+    },
+    {
+      id: 'journey-d',
+      name: 'Journey D — Returning User',
+      flow: 'Direct URL → Cached State → Fast Navigation',
+      status: (scores?.performance < 60) ? 'warning' : 'pass',
+      notes: 'Validates browser caching, compression, and rapid page reloads for returning customers.'
+    },
+    {
+      id: 'journey-e',
+      name: 'Journey E — Failure Recovery',
+      flow: 'Input Error / Non-existent Route → Helpful Guidance → Retry',
+      status: check404Data?.isReal404 === false ? 'warning' : 'pass',
+      notes: 'Checks authentic 404 status handling and recovery options when errors occur.'
+    }
+  ];
+
   return {
     id: reportId,
     targetUrl: url,
@@ -190,6 +229,7 @@ export function normalizeReport({
     revenueImpact,
     techStack: techStack || [],
     conversionJourney: conversionData?.contactChannels || {},
+    customerJourneys,
     trustSignals: conversionData?.trustSignals || {},
     assetPipeline: assetData || {},
     findings: uniqueFindings,

@@ -289,10 +289,11 @@ export default function App() {
             {/* 3. Platform & CMS Detection (Section 79) */}
             <TechStackBadges techStack={report.techStack} />
 
-            {/* 4. Conversion Journey Audit (Sections 1, 3, 5, 11, 19) */}
+            {/* 4. Conversion Journey Audit (Sections 1, 3, 5, 11, 19, 71) */}
             <ConversionJourneyGrid
               journey={report.conversionJourney}
               trust={report.trustSignals}
+              customerJourneys={report.customerJourneys}
             />
 
             {/* 5. Prioritized Sprint Remediation Plan (Section 82) */}

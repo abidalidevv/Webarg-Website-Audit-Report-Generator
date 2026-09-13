@@ -372,6 +372,128 @@ Har audit engagement mein client ko convince karne ke liye yeh 5 journeys test k
 
 ---
 
+# Part 3: Framework, Evidence & High-Ticket Delivery (Sections 70 to 84)
+
+### 70. Permissions / Roles (Multi-User Applications)
+- [ ] Role hierarchy verified: Visitor, Registered User, Manager, Administrator.
+- [ ] Hidden UI elements are backed by server-side authorization guards (unauthorized URLs return 401/403).
+- [ ] Role privileges persist correctly during active session.
+- [ ] Session tokens invalidated immediately upon logout.
+
+### 71. Customer Journey Audit
+Mandatory high-value journeys evaluated in every Webarg audit:
+- **Journey A — New Visitor:** `Search → Homepage → 5-Second Clarity → Primary CTA`
+- **Journey B — Inquiring Lead:** `Homepage → Contact Form / Phone → Submission → Notification Delivery`
+- **Journey C — Mobile Customer:** `320px Mobile Screen → Touch CTA → Dial / Chat Conversion`
+- **Journey D — Returning User:** `Direct URL → Cached State → Fast Route Navigation`
+- **Journey E — Failure Recovery:** `Wrong Input / Payment / 404 Route → Clear Inline Guidance → Retry → Success`
+*Status for each:* `PASS` 🟢 | `WARNING` 🟠 | `CRITICAL` 🔴
+
+### 72. Evidence Collection
+Every reported issue must have verifiable proof:
+- Screenshot / visual clip of defect
+- Target URL and exact DOM selector
+- Device, browser, and screen resolution
+- Timestamp of inspection
+- HTTP response status code / headers
+- Console runtime error text and line number
+- Core Web Vitals metric reading (LCP, CLS, INP)
+- Step-by-step reproduction instructions
+
+### 73. Finding Quality Rules
+- ❌ **Poor Finding:** *"The website is slow."*
+- ✅ **Professional Finding:**
+  > **High — Homepage LCP exceeds Core Web Vitals target (4.1s)**  
+  > **Evidence:** LCP measured at 4.1s on 4G mobile emulation; hero banner image `hero.png` is 3.8 MB uncompressed.  
+  > **User Impact:** Mobile visitors stare at an empty viewport for over 4 seconds before reading the value proposition.  
+  > **Business Impact:** High bounce rate on mobile paid traffic; organic search ranking penalties from Google.  
+  > **Recommendation:** Convert hero image to WebP/AVIF, resize to 1200px max width, and add `fetchpriority="high"`.  
+  > **Verification:** Re-scan mobile performance after deployment to confirm LCP drops below 2.0s.
+
+### 74. Business Impact Classification
+Every technical flaw is categorized by commercial risk:
+1. **Revenue Leakage:** Checkout failure, payment gateway crash, shopping cart bugs.
+2. **Lead Leakage:** Broken contact forms, unclickable phone numbers, missing SPF/DMARC.
+3. **Search Visibility:** Indexation blocks (`noindex`), canonical mismatches, slow CWV metrics.
+4. **Buyer Trust:** Broken SSL certificates, outdated copyright ("© 2021"), console crashes.
+5. **Accessibility Risk:** Keyboard traps, missing form labels, WCAG compliance failure.
+
+### 75. Prioritized Sprint Roadmap
+- **Priority 1 (Fix Immediately):** Broken forms, checkout failure, lead leakage, critical security risks, fatal JS crashes.
+- **Priority 2 (Next Scheduled Sprint):** Mobile UX friction, Core Web Vitals optimizations, SEO blockers, accessibility issues.
+- **Priority 3 (Optimization):** Code minification, asset cleanup, minor responsive spacing.
+- **Priority 4 (Polish):** Typography micro-tuning, minor animation transitions.
+
+### 76. Final QA Before Report Delivery
+- [ ] Re-test every Critical issue to confirm reproducibility.
+- [ ] Eliminate false positives and verify screenshots match the live site.
+- [ ] Clearly demarcate automated URL observations from access-gated internal recommendations.
+
+### 77. Final Client Report Architecture
+```text
+WEBARG — Technical Website Audit & Inspection Report
+├── Executive Summary (Overall health, top risks, commercial impact)
+├── 4 Core Scores (Performance, SEO, Accessibility, Security)
+├── Conversion Journey Verification (Call, WhatsApp, Email, Forms, CTAs)
+├── 5 Simulated Customer Journeys (A, B, C, D, E)
+├── Technical Diagnostics (Console, Infrastructure, Security, Caching, Assets)
+├── Live Evidence (DOM selectors, HTTP codes, console logs, timestamps)
+└── Prioritized Remediation Roadmap (Priority 1, 2, 3 with effort estimations)
+```
+
+### 78. Webarg Product Recommendation
+Webarg replaces generic Lighthouse scores with a holistic diagnosis:
+$$\text{Overall Health} \rightarrow \text{Business Impact} \rightarrow \text{4 Core Scores} \rightarrow \text{Technical Evidence} \rightarrow \text{Conversion Journeys} \rightarrow \text{Remediation}$$
+
+### 79. Platform & Tech Stack Detection
+Identifies underlying architecture: WordPress, WooCommerce, Elementor, Shopify, Webflow, GoHighLevel, Wix, Squarespace, React, Next.js, Vue, Nuxt, Laravel, or Native mobile apps.
+
+### 80. Access Level Matrix & Anti-Hallucination Boundary
+- **Level 1 (Audited Live):** Public URL surface (DOM, CSS, JS errors, SEO, DNS, SSL, security headers).
+- **Level 2 & 3 (Manual Playbook Sprint):** CMS Admin, GHL Automations, Payment Sandbox, Physical Device Dialers, Database Internals.
+
+### 81. The One-Day Audit Rule
+A one-day audit is deep rather than wide. Uses intelligent sampling across key templates and high-value conversion funnels rather than superficial scanning of 1,000 pages.
+
+### 82. The Most Important Principle
+Never state: *"There are 23 issues."*  
+State:  
+> *"Inspection identified 23 verified checks. 4 require immediate attention to prevent lead leakage, 7 affect conversion consistency or search visibility, and 12 are scheduled optimization opportunities."*
+
+### 83. Universal Finding Template
+```text
+ID: [Unique ID]
+Category: [SEO / Security / Conversion / Performance / Console]
+Severity: [Critical / High / Medium / Low]
+URL: [Exact Page URL]
+Device / Browser: [Mobile / Desktop - Chrome / Safari]
+Timestamp: [ISO Timestamp]
+
+Finding: [Clear statement of the defect]
+Evidence: [Verifiable proof: selector, code, log, status code]
+User Impact: [What the customer experiences]
+Business Impact: [Financial, lead, or trust consequence]
+Recommendation: [Specific, actionable fix]
+Verification: [How to retest after fix]
+Effort: [Low / Medium / High]
+Status: [Open / Remediation In Progress / Verified Fixed]
+```
+
+### 84. Final Audit Completion Checklist
+Confirm all inspection surfaces were evaluated: Functional, Conversion, Click-to-call, WhatsApp, Email, Forms, Console, Network, CWV, Images, Fonts, CSS, JS, DOM, SEO, Schema, Accessibility, Mobile 320px, Security, Cookies, Privacy, Analytics, CMS, CRM/GHL, Shopify, E-commerce, Payments, DNS, Email Infra, Server, Database, Backups, AI Readiness, 5 Customer Journeys, Evidence, Remediation.
+
+---
+
+## Bottom Line
+
+A genuinely valuable 2026 website audit is not a generic Lighthouse score plus a list of broken links. It is:
+
+$$\text{Real User Journeys} + \text{Technical Evidence} + \text{Commercial Impact} + \text{Platform-Specific Inspection} + \text{Prioritized Remediation}$$
+
+That is the level at which an audit report commands high trust and naturally closes a **$1,500 – $3,500 development and remediation sprint**.
+
+---
+
 ## Client Pitch Script
 
 ```text
