@@ -72,7 +72,8 @@ a {
   width: min(var(--max), calc(100% - 48px));
   max-width: 100%;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .mono {
@@ -93,13 +94,14 @@ h1, h2, h3, h4, p {
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
 }
 
 .logo {
@@ -620,7 +622,7 @@ h1, h2, h3, h4, p {
 
 /* Revenue Impact Callout */
 .revenue-callout {
-  margin: 36px 0;
+  margin: 36px auto;
   padding: 24px 30px;
   background: #181E27;
   border-left: 4px solid var(--signal-critical);
@@ -1260,7 +1262,7 @@ details[open] .issue-chevron {
 
 /* Access Level Matrix (webarge.txt Section 80) */
 .access-matrix-section {
-  margin: 54px 0 68px;
+  margin: 54px auto 68px;
 }
 
 .matrix-table-wrap {
@@ -1453,7 +1455,7 @@ details[open] .issue-chevron {
   }
   .revenue-callout {
     padding: 16px 14px;
-    margin: 24px 0;
+    margin: 24px auto;
   }
   .revenue-title {
     font-size: 18px;
@@ -1806,13 +1808,14 @@ details[open] .issue-chevron {
   backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .admin-nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
 }
 
 .admin-nav-brand {
@@ -2176,8 +2179,7 @@ details[open] .issue-chevron {
 
 /* --- Graph View Container & Grid --- */
 .graph-view-section {
-  width: 100%;
-  margin-bottom: 40px;
+  margin: 0 auto 40px;
   animation: graphFadeIn 220ms ease forwards;
 }
 
