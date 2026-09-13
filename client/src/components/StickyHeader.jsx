@@ -85,6 +85,17 @@ export default function StickyHeader({
 
           {!isPrintView && (
             <>
+              <a
+                href="/docs.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary"
+                id="docsNavBtn"
+                title="Open HTML User Guide & Documentation"
+                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+              >
+                Docs
+              </a>
               <button
                 type="button"
                 className="btn-secondary"

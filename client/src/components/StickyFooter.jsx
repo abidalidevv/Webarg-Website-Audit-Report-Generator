@@ -31,6 +31,17 @@ export default function StickyFooter({ onNavigateAdmin }) {
           >
             Email Remediation Request
           </a>
+          <a
+            href="/docs.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="admin-portal-link"
+            id="docsFooterLink"
+            title="Open HTML User Guide & Documentation"
+            style={{ textDecoration: 'none' }}
+          >
+            📖 Docs
+          </a>
           {onNavigateAdmin && (
             <button
               type="button"

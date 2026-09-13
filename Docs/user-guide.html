@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webarg — User Documentation & Operator Manual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #10151B;
+      --ink-surface: #151B22;
+      --ink-raised: #1C232B;
+      --line: #2D3742;
+      --line-hover: #414E5D;
+      --text: #EEF1F3;
+      --text-soft: #A2ACB6;
+      --muted: #6E7985;
+      --accent: #3E6E8E;
+      --accent-glow: rgba(62, 110, 142, 0.28);
+      --signal-pass: #4C7A5E;
+      --signal-warn: #B8863D;
+      --signal-crit: #C1432B;
+      --font-heading: "Barlow Condensed", sans-serif;
+      --font-body: "Manrope", system-ui, sans-serif;
+      --font-mono: "DM Mono", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ink);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(16, 21, 27, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand-logo {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--accent);
+      position: relative;
+    }
+    .brand-logo::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background: var(--accent);
+    }
+
+    .brand-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 26px;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      background: rgba(62, 110, 142, 0.16);
+      border: 1px solid var(--accent);
+      color: #8EB7D3;
+      border-radius: 3px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-soft);
+    }
+    .btn-secondary:hover {
+      border-color: var(--line-hover);
+      color: var(--text);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    /* Layout Wrapper */
+    .docs-layout {
+      display: flex;
+      max-width: 1380px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Sidebar Navigation */
+    .docs-sidebar {
+      width: 300px;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+      padding: 28px 20px 48px;
+      background: var(--ink);
+    }
+
+    .sidebar-search {
+      margin-bottom: 20px;
+    }
+    .sidebar-search input {
+      width: 100%;
+      background: var(--ink-surface);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 13px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      outline: none;
+    }
+    .sidebar-search input:focus {
+      border-color: var(--accent);
+    }
+
+    .nav-group {
+      margin-bottom: 24px;
+    }
+    .nav-group-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      padding-left: 10px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .nav-links a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 4px;
+      color: var(--text-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.12s ease;
+    }
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      transform: translateX(3px);
+    }
+    .nav-links a.active {
+      background: rgba(62, 110, 142, 0.15);
+      color: #9ECBE7;
+      font-weight: 600;
+      border-left: 2px solid var(--accent);
+    }
+
+    /* Main Content Area */
+    .docs-content {
+      flex: 1;
+      min-width: 0;
+      padding: 44px 54px 96px;
+      max-width: 960px;
+    }
+
+    .doc-hero {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--line);
+    }
+    .doc-hero-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .doc-hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(40px, 5vw, 56px);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .doc-hero p {
+      font-size: 16px;
+      color: var(--text-soft);
+      max-width: 740px;
+    }
+
+    /* Content Sections */
+    section.doc-section {
+      margin-bottom: 64px;
+      scroll-margin-top: 88px;
+    }
+
+    h2 {
+      font-family: var(--font-heading);
+      font-size: 32px;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    h2 .num {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: var(--accent);
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 28px 0 10px;
+      color: var(--text);
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: #CCD4DB;
+      font-size: 15px;
+    }
+
+    ul, ol {
+      margin: 0 0 20px 24px;
+      color: #CCD4DB;
+      font-size: 14px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Visual Callout Cards */
+    .callout {
+      padding: 18px 22px;
+      border-radius: 6px;
+      background: var(--ink-surface);
+      border: 1px solid var(--line);
+      margin: 24px 0;
+      position: relative;
+    }
+    .callout-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .callout-info { border-left: 3px solid var(--accent); }
+    .callout-info .callout-title { color: #8EB7D3; }
+    .callout-pass { border-left: 3px solid var(--signal-pass); }
+    .callout-pass .callout-title { color: #6DBE8B; }
+    .callout-crit { border-left: 3px solid var(--signal-crit); }
+    .callout-crit .callout-title { color: #E56A54; }
+
+    /* Code Blocks */
+    pre {
+      background: #0D1117;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      margin: 16px 0 24px;
+      color: #D3DEE9;
+    }
+    code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #8EC4E6;
+    }
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* Comparison Table */
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 32px;
+      font-size: 13px;
+      border: 1px solid var(--line);
+    }
+    .docs-table th {
+      background: var(--ink-surface);
+      text-align: left;
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .docs-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      vertical-align: top;
+      color: #CCD4DB;
+    }
+    .docs-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .badge-pass { background: rgba(76, 122, 94, 0.2); color: #6DBE8B; border: 1px solid rgba(76, 122, 94, 0.4); }
+    .badge-warn { background: rgba(184, 134, 61, 0.2); color: #E0A656; border: 1px solid rgba(184, 134, 61, 0.4); }
+    .badge-crit { background: rgba(193, 67, 43, 0.2); color: #E56A54; border: 1px solid rgba(193, 67, 43, 0.4); }
+    .badge-derived { background: rgba(62, 110, 142, 0.2); color: #8EB7D3; border: 1px solid rgba(62, 110, 142, 0.4); }
+
+    /* Interactive Stepper */
+    .step-card {
+      display: flex;
+      gap: 18px;
+      margin: 16px 0;
+      background: var(--ink-surface);
+      border: 1px solid var(--line);
+      padding: 18px;
+      border-radius: 6px;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .step-body h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .step-body p {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin: 0;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 0;
+      margin-top: auto;
+      background: var(--ink);
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 900px) {
+      .docs-sidebar { display: none; }
+      .docs-content { padding: 24px 20px; }
+      .top-bar { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <a href="/" class="brand-wrap">
+      <div class="brand-logo"></div>
+      <span class="brand-title">WEBARG</span>
+      <span class="brand-badge">OPERATOR MANUAL</span>
+    </a>
+    <div class="top-actions">
+      <a href="/" class="btn btn-secondary">← Back to Scanner</a>
+      <a href="/admin" class="btn btn-primary">Admin Console</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="docs-layout">
+
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-search">
+        <input type="text" id="filterInput" placeholder="Search documentation…" onkeyup="filterDocs()">
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Getting Started</div>
+        <ul class="nav-links">
+          <li><a href="#overview" class="active">1. Overview & Purpose</a></li>
+          <li><a href="#quickstart">2. Quick Start & Setup</a></li>
+          <li><a href="#scanning">3. Running a Website Scan</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Report Diagnostics</div>
+        <ul class="nav-links">
+          <li><a href="#scores">4. Understanding Health Scores</a></li>
+          <li><a href="#revenue">5. Revenue & Lead Friction</a></li>
+          <li><a href="#journeys">6. 5 Customer Journeys</a></li>
+          <li><a href="#presentation">7. Table vs. Graph View</a></li>
+          <li><a href="#before-after">8. Before/After Rescans</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Delivery & Admin</div>
+        <ul class="nav-links">
+          <li><a href="#exporting">9. Sharing & PDF Export</a></li>
+          <li><a href="#admin">10. Admin Console & Logins</a></li>
+          <li><a href="#diagnose">11. Live System Diagnostics</a></li>
+          <li><a href="#security">12. Security & Rate Limits</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+
+      <!-- Hero Header -->
+      <div class="doc-hero">
+        <span class="doc-hero-tag">Official Documentation (2026)</span>
+        <h1>Webarg Operator Manual</h1>
+        <p>A step-by-step technical and operational handbook for running website audits, interpreting evidence-based reports, pitching clients, and diagnosing system services.</p>
+      </div>
+
+      <!-- Section 1: Overview -->
+      <section id="overview" class="doc-section">
+        <h2><span class="num">01.</span> Overview & Business Purpose</h2>
+        <p><strong>Webarg</strong> is an objective, deterministic website diagnostic and conversion inspection tool designed for independent developer <strong>Abid</strong>. It acts as an authoritative, high-trust diagnostic instrument to pitch and close paid <strong>$1,500 to $3,500 remediation sprints</strong>.</p>
+        
+        <div class="callout callout-info">
+          <div class="callout-title">The Core Workflow</div>
+          Enter Prospect URL → Deep Automated Scan → Verifiable Shareable Report + Branded PDF → Client Pitch → High-Ticket Remediation Sprint.
+        </div>
+
+        <p>Unlike generic SEO crawlers that produce vanity metrics, Webarg focuses on <strong>hard evidence</strong>:</p>
+        <ul>
+          <li><strong>Deterministic Evidence:</strong> Specific DOM element selectors, HTTP response status codes, console error timestamps, and real Core Web Vitals measurements.</li>
+          <li><strong>Revenue Impact:</strong> Pinpoints lead drop-off points such as unclickable phone numbers on mobile screens, missing form validation, or layout shifts.</li>
+          <li><strong>No Synthetic Data:</strong> Real measurements only. Missing data is transparently reported as unmeasured rather than substituted with fake numbers.</li>
+        </ul>
+      </section>
+
+      <!-- Section 2: Quick Start -->
+      <section id="quickstart" class="doc-section">
+        <h2><span class="num">02.</span> Quick Start & Starting the App</h2>
+        <p>Webarg consists of a React (Vite) client and an Express.js backend engine.</p>
+        
+        <h3>Starting the Backend Engine</h3>
+        <pre><code>cd server
+node src/index.js</code></pre>
+        <p>The backend initializes on <code>http://localhost:5000</code> and is ready to process scan requests.</p>
+
+        <h3>Starting the Frontend Client</h3>
+        <pre><code>cd client
+npm run dev</code></pre>
+        <p>Open <code>http://localhost:5173</code> in your browser to access the Webarg auditor interface.</p>
+      </section>
+
+      <!-- Section 3: Scanning -->
+      <section id="scanning" class="doc-section">
+        <h2><span class="num">03.</span> Running a Website Scan</h2>
+        
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Enter the Prospect's Website URL</h4>
+            <p>Input any domain or URL in the search input (e.g. <code>efix.ae</code>, <code>https://targetsite.com</code>). If omitted, <code>https://</code> is automatically prepended.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Choose Scan Depth</h4>
+            <p><strong>Quick (Public Checks):</strong> ~10-15s check covering DNS, SSL/TLS, HTTP response headers, robots.txt, sitemap.xml, custom 404 handler, and initial DOM structure.<br>
+            <strong>Deep (Full Diagnostic):</strong> ~30-45s full inspection using headless Chromium to capture console runtime errors, failed network assets, Axe-core accessibility, and mobile layout at 320px.</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Observe Live Inspection Animation &amp; Progress</h4>
+            <p>When you click <strong>Inspect website</strong>, the tactical oscillating wavy grid mesh and sweeping laser beam appear, displaying live progress (<code>0% → 100%</code>) and the current diagnostic phase.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Health Scores -->
+      <section id="scores" class="doc-section">
+        <h2><span class="num">04.</span> Understanding Health Scores &amp; Badges</h2>
+        <p>Webarg presents five health indicators in the Executive Summary Strip:</p>
+
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Indicator</th>
+              <th>Type</th>
+              <th>Weight</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Overall Health</strong></td>
+              <td><span class="badge badge-pass">Aggregate</span></td>
+              <td>100%</td>
+              <td>Weighted average across actually measured scores. Categorized as HEALTHY (80+), NEEDS ATTENTION (55-79), or AT RISK (&lt;55).</td>
+            </tr>
+            <tr>
+              <td><strong>Conversion Health</strong></td>
+              <td><span class="badge badge-derived">Derived Heuristic</span></td>
+              <td>Heuristic</td>
+              <td>Computed from observed friction factors (critical findings drop the score by 15 pts; warnings by 5 pts). Labeled as derived so it is not confused with lab scores.</td>
+            </tr>
+            <tr>
+              <td><strong>Performance &amp; CWV</strong></td>
+              <td><span class="badge badge-pass">Measured CWV</span></td>
+              <td>30%</td>
+              <td>Measured via Google Lighthouse &amp; PageSpeed. Reflects LCP, CLS, and TBT. Displays null/dash if unmeasured.</td>
+            </tr>
+            <tr>
+              <td><strong>SEO &amp; Identity</strong></td>
+              <td><span class="badge badge-pass">Measured Spec</span></td>
+              <td>25%</td>
+              <td>Directly checks title tags, meta descriptions, duplicate H1 headers, canonical links, and crawl signals.</td>
+            </tr>
+            <tr>
+              <td><strong>Security &amp; Headers</strong></td>
+              <td><span class="badge badge-pass">Measured SSL/TLS</span></td>
+              <td>25%</td>
+              <td>Validates TLS certificate validity, HSTS, CSP, X-Frame-Options, and server signature leaks.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 5: Revenue Callout -->
+      <section id="revenue" class="doc-section">
+        <h2><span class="num">05.</span> Lead &amp; Commercial Revenue Leakage Callout</h2>
+        <p>Positioned immediately beneath the scores, this callout isolates the <strong>single highest-impact blocker</strong> hurting business revenue.</p>
+        
+        <div class="callout callout-crit">
+          <div class="callout-title">Sample Revenue Leakage Alert</div>
+          <strong>CRITICAL REVENUE &amp; LEAD LEAKAGE IDENTIFIED</strong><br>
+          <em>Unlinked Phone Number in Body:</em> Phone numbers displayed as plain text without <code>tel:</code> hyperlinks on mobile devices force visitors to memorize or copy/paste numbers, creating massive conversion friction.
+        </div>
+      </section>
+
+      <!-- Section 6: Customer Journeys -->
+      <section id="journeys" class="doc-section">
+        <h2><span class="num">06.</span> 5 Real Customer Journeys</h2>
+        <p>Audits five vital prospect funnels defined in Section 71 of the Webarg Playbook, distinguishing between directly measured technical signals and indirect heuristic proxies:</p>
+
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Journey</th>
+              <th>Confidence</th>
+              <th>How It Is Evaluated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Journey A — New Visitor</strong></td>
+              <td><span class="badge badge-derived">Indirect Proxy</span></td>
+              <td>Evaluates 5-second clarity and whether the primary Call-To-Action (CTA) is immediately visible without friction.</td>
+            </tr>
+            <tr>
+              <td><strong>Journey B — Inquiring Lead</strong></td>
+              <td><span class="badge badge-derived">Indirect Proxy</span></td>
+              <td>Checks whether contact forms, phone links, or email channels exist in the DOM (actual message receipt requires manual testing).</td>
+            </tr>
+            <tr>
+              <td><strong>Journey C — Mobile Customer</strong></td>
+              <td><span class="badge badge-pass">Direct Signal</span></td>
+              <td>Directly checks tap-to-call dialers and mobile layout at 320px viewport width.</td>
+            </tr>
+            <tr>
+              <td><strong>Journey D — Returning User</strong></td>
+              <td><span class="badge badge-pass">Direct Signal</span></td>
+              <td>Validates caching headers, compression (Gzip/Brotli), and repeat performance metrics.</td>
+            </tr>
+            <tr>
+              <td><strong>Journey E — Failure Recovery</strong></td>
+              <td><span class="badge badge-pass">Direct Signal</span></td>
+              <td>Sends a request to an intentional 404 route and verifies authentic HTTP 404 status handling.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 7: Table vs Graph View -->
+      <section id="presentation" class="doc-section">
+        <h2><span class="num">07.</span> Table View vs. Visual Graph View</h2>
+        <p>Webarg offers two complementary presentation views:</p>
+        <ul>
+          <li><strong>Table View (Default):</strong> Provides detailed expandable accordions for each finding with exact CSS selectors, HTTP headers, code lines, user impacts, and technical recommendations.</li>
+          <li><strong>Visual Graph View:</strong> Displays SVG Score Breakdown bars, a Severity Distribution donut chart, and Google PageSpeed <strong>Core Web Vitals Threshold Spectrums</strong> (LCP, CLS, TBT) with clear Good, Needs Work, and Poor benchmark zones.</li>
+        </ul>
+      </section>
+
+      <!-- Section 8: Before & After -->
+      <section id="before-after" class="doc-section">
+        <h2><span class="num">08.</span> Before &amp; After Comparative Rescans</h2>
+        <p>When you re-scan a website after making fixes, Webarg automatically compares the current scan against prior scans of the <strong>exact same domain</strong>.</p>
+        
+        <div class="callout callout-pass">
+          <div class="callout-title">Genuine Set Diff Proof</div>
+          Webarg does not guess deltas. It computes a true set difference between previous and current finding headlines to show the exact count and list of <strong>Resolved Issues</strong> along with score improvements (e.g. <code>+19 pts</code>).
+        </div>
+      </section>
+
+      <!-- Section 9: Sharing & PDF -->
+      <section id="exporting" class="doc-section">
+        <h2><span class="num">09.</span> Sharing &amp; PDF Export</h2>
+        <ul>
+          <li><strong>GTmetrix-Style Link:</strong> Every audit report generates a permanent ID (e.g. <code>/report/dRrnnlcJT555</code>). Sending this URL to anyone loads the complete report without rescanning.</li>
+          <li><strong>Download PDF:</strong> Clicking <strong>Download PDF</strong> in the header invokes headless Chrome to render an exact print-styled PDF report (<code>webarg-audit-[domain]-[date].pdf</code>).</li>
+          <li><strong>WhatsApp / Email Outreaches:</strong> Footer buttons generate pre-drafted client pitch messages containing the live report link ready to send.</li>
+        </ul>
+      </section>
+
+      <!-- Section 10: Admin Console -->
+      <section id="admin" class="doc-section">
+        <h2><span class="num">10.</span> Admin Console &amp; Credentials</h2>
+        <p>To view saved audits or manage report records:</p>
+        <ul>
+          <li><strong>URL:</strong> <code>http://localhost:5173/admin</code> (or click <strong>Admin</strong> in the header)</li>
+          <li><strong>Username:</strong> <code>admin</code></li>
+          <li><strong>Password:</strong> <code>webarg2026!</code></li>
+        </ul>
+        <p>From the admin console, you can review audit history, search prior scans, view raw JSON data, and delete test entries.</p>
+      </section>
+
+      <!-- Section 11: Live System Diagnostics -->
+      <section id="diagnose" class="doc-section">
+        <h2><span class="num">11.</span> Live System Diagnostics ("Diagnose Website")</h2>
+        <p>Located in the bottom-right corner of the Admin Dashboard is the floating <strong>Diagnose System</strong> button.</p>
+        <p>Clicking it triggers an end-to-end operational diagnostic across all services:</p>
+        <ol>
+          <li><strong>Express API Server:</strong> Tests port 5000 route handling and latency.</li>
+          <li><strong>SSRF Guard &amp; DNS:</strong> Validates DNS resolution and private network blocking.</li>
+          <li><strong>Browserless Connectivity:</strong> Verifies WebSocket connection to hosted Chromium.</li>
+          <li><strong>Gemini AI API:</strong> Confirms API key validity and deterministic fallback responses.</li>
+          <li><strong>PDF Generator:</strong> Tests Puppeteer print engine rendering.</li>
+        </ol>
+      </section>
+
+      <!-- Section 12: Security & Rate Limits -->
+      <section id="security" class="doc-section">
+        <h2><span class="num">12.</span> Security &amp; Rate Limits</h2>
+        <ul>
+          <li><strong>Rate Limit:</strong> 5 scans per hour per IP. Express uses proxy-aware <code>req.ip</code> to prevent header spoofing via <code>X-Forwarded-For</code>.</li>
+          <li><strong>SSRF &amp; TOCTOU Protection:</strong> Blocks internal addresses (<code>127.0.0.1</code>, <code>169.254.169.254</code>, <code>192.168.x.x</code>). Browserless navigation pins the validated public IP via <code>--host-resolver-rules</code> to prevent DNS rebinding.</li>
+          <li><strong>Read-Only Inspection:</strong> Safe, non-invasive auditing that never modifies client data.</li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    WEBARG · TECHNICAL &amp; CONVERSION WEBSITE AUDIT PLATFORM · 2026
+  </footer>
+
+  <script>
+    function filterDocs() {
+      const q = document.getElementById('filterInput').value.toLowerCase();
+      const sections = document.querySelectorAll('.doc-section');
+      sections.forEach(sec => {
+        const text = sec.innerText.toLowerCase();
+        sec.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    // Highlight active link on scroll
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('.doc-section');
+      const navLinks = document.querySelectorAll('.nav-links a');
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 120;
+        if (pageYOffset >= top) {
+          current = sec.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
